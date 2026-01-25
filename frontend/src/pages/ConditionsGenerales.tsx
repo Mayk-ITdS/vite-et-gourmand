@@ -26,8 +26,7 @@ export default function ConditionsGenerales() {
           Conditions générales
         </h1>
         <p className="mt-2 max-w-2xl text-muted-foreground">
-          Modèle à adapter selon ton offre (menus, options, livraison,
-          paiement). Dernière mise à jour : {updated}.
+          Dernière mise à jour : {updated}.
         </p>
       </div>
 
@@ -181,8 +180,8 @@ export default function ConditionsGenerales() {
           </section>
 
           <p className="text-xs text-muted-foreground">
-            Modèle projet/ECF. Avant production : adapter CGV/CGU, rétractation,
-            médiation, clauses B2C, etc.
+            {/* Modèle projet/ECF. Avant production : adapter CGV/CGU, rétractation,
+            médiation, clauses B2C, etc. */}
           </p>
         </div>
       </div>
