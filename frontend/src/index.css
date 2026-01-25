@@ -1,5 +1,19 @@
 @import "tailwindcss";
 @import "tw-animate-css";
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0 auto;
+  padding: 0;
+}
+
+.container {
+  max-width: 1600px;
+  margin: 0 auto;
+  padding: 0;
+  box-sizing: border-box;
+}
 
 @custom-variant dark (&:is(.dark *));
 
@@ -24,6 +38,7 @@
   }
 }
 :root {
+  --borde-box: border-box;
   --radius: 0.625rem;
   --background: oklch(1 0 0);
   --foreground: oklch(0.13 0.028 261.692);
@@ -136,7 +151,7 @@
 
 .wine-bordeaux {
   /* light but not banal*/
-  --background: oklch(0.99 0.005 90);
+  --background: oklch(0.98 0.008 30);
   --foreground: oklch(0.13 0.028 261.692);
 
   --card: oklch(1 0 0);
