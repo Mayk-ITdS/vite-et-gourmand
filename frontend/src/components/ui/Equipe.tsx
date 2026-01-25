@@ -5,26 +5,25 @@ type EquipeProps = { members: TeamMember[] };
 
 const Equipe: React.FC<EquipeProps> = ({ members }) => {
   return (
-    <section className="mx-auto max-w-6xl py-12">
+    <section className="container mx-auto max-w-6xl py-12">
       <header className="mb-10 text-center">
-        <h2 className="text-3xl font-semibold tracking-tight">
+        <h2 className="text-4xl font-semibold tracking-tight">
           Une équipe de professionnels dédiée à votre événement
         </h2>
-        <p className="mt-3 text-sm text-muted-foreground">
+        <p className="mt-3 text-md text-muted-foreground">
           Chefs & sommelier travaillent ensemble pour garantir qualité,
           régularité et accords parfaits.
         </p>
       </header>
-
-      <div className="grid gap-6 md:grid-cols-3">
+      <div className="grid md:grid-cols-6 py-20">
         {members.map((p) => (
           <Card
             key={p.name}
-            className="overflow-hidden transition hover:shadow-lg"
+            className="transition col-span-2 m-auto border-border/40 bg-background/70 full-w max-w-[320px] backdrop-blur-xl transition-shadow hover:shadow-lg"
           >
-            <div className="relative aspect-[3/4]">
+            <div className="relative w-full max-h-[350px] max-w-[320px] sm:max-h-[350px] overflow-hidden aspect-[4/5]">
               <img
-                className="h-full w-full object-cover"
+                className="h-full w-full object-center rounded-md object-cover"
                 src={p.image}
                 alt={`${p.name}, ${p.role}`}
               />
@@ -36,8 +35,8 @@ const Equipe: React.FC<EquipeProps> = ({ members }) => {
               </div>
             </div>
 
-            <CardContent className="space-y-4 p-6">
-              <div>
+            <CardContent className="space-y-4 p-6 sm:max-h-40 md:max-h-36  ">
+              <div className="md:max-h-30">
                 <h3 className="text-lg font-semibold">{p.name}</h3>
                 <p className="mt-1 text-sm text-muted-foreground">
                   {p.subtitle}
