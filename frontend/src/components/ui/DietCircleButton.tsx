@@ -19,7 +19,6 @@ export function DietCircleButton({ diet, selected = false, onSelect }: Props) {
       onClick={() => {
         onSelect?.(diet);
         toast(`Filtre mis à jour Tu as choisi : ${diet}.`);
-        () => (selected = true);
       }}
       className={cn(
         "group relative h-16 w-16 rounded-full",
