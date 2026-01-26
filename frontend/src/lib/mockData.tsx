@@ -1,7 +1,9 @@
 import type { ClientOpinion } from "@/types/avis";
-import type { Section } from "@/types/menus";
+import type { MenuTheme, Section } from "@/types/menus";
 import { DietCircleButton } from "@/components/ui/DietCircleButton";
 import { Slider } from "@/components/ui/slider";
+import { themeValues } from "@/types/menus";
+import { cn } from "./utils";
 export const opinions: ClientOpinion[] = [
   {
     _id: { $id: "65b0a1f2c9d84a1a2b3c4d01" },
@@ -105,6 +107,7 @@ export const opinions: ClientOpinion[] = [
   },
 ];
 const diets = ["Classique", "Vegan", "Vegetarien"] as const;
+
 export const sections: Section[] = [
   {
     id: "prix",
@@ -151,12 +154,27 @@ export const sections: Section[] = [
       <div className="space-y-3">
         {
           <fieldset className="flex flex-col">
-            <button className="m-4 p-5 bg-primary/70 rounded-full text-white">
-              Wine-bordeaux
-            </button>
-            <button className="p-5 m-4 bg-secondary rounded-full text-blue">
-              Darken
-            </button>
+            {themeValues.map((theme) => (
+              <button
+                key={theme}
+                data-theme={theme}
+                onClick={(e) => {
+                  const selected = e.currentTarget.dataset.theme as MenuTheme;
+                  setState((prev) => ({
+                    ...prev,
+                    theme: selected,
+                  }));
+                }}
+                className={cn(
+                  "h-30 w-50 text-3xl rounded-md border-border/40 bg-primary/40 backdrop-blur-xl shadow-xl",
+                  state.theme === theme
+                    ? "m-4 p-5 text-white"
+                    : "m-4 p-5 bg-secondary/70 rounded-full text-white",
+                )}
+              >
+                {theme}
+              </button>
+            ))}
           </fieldset>
         }
       </div>

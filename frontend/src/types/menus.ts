@@ -1,7 +1,15 @@
-export type Theme = "Noel" | "Paques" | "Classique" | "Evenement";
-export type Regime = "Vegetarien" | "Vegan" | "Classique";
+type Regime = "Vegetarien" | "Vegan" | "Classique";
+const themeValues = [
+  "all",
+  "Noël",
+  "Pâques",
+  "Classique",
+  "Événement",
+  "Soirée romantique",
+] as const;
 
-export type Allergen =
+type ThemeValue = (typeof themeValues)[number];
+type Allergen =
   | "Gluten"
   | "Lactose"
   | "Oeuf"
@@ -10,20 +18,20 @@ export type Allergen =
   | "Poisson"
   | "Crustaces";
 
-export type DishCategory = "Entree" | "Plat" | "Dessert";
+type DishCategory = "Entree" | "Plat" | "Dessert";
 
-export interface Dish {
+interface Dish {
   id: string;
   name: string;
   category: DishCategory;
   allergens?: Allergen[];
 }
 
-export interface Menu {
+interface Menu {
   id: string;
   title: string;
   description: string;
-  theme: Theme;
+  theme: ThemeValue;
   regime: Regime;
   images: string[];
   dishes: Dish[];
@@ -32,13 +40,18 @@ export interface Menu {
   conditions: string;
   stock: number;
 }
-export type MenuTheme = "Noel" | "Paques" | "Classique" | "Evenement";
-export type MenuRegime = "Vegetarien" | "Vegan" | "Classique";
+type MenuTheme =
+  | "Noel"
+  | "Paques"
+  | "Classique"
+  | "Evenement"
+  | "Soiree romantique";
+type MenuRegime = "Vegetarien" | "Vegan" | "Classique";
 
-export type FiltersState = {
-  priceMax?: number; // prix maximum
-  priceMin?: number; // fourchette min
-  priceRangeMax?: number; // fourchette max
+type FiltersState = {
+  priceMax?: number;
+  priceMin?: number;
+  priceRangeMax?: number;
   theme?: MenuTheme | "all";
   regime?: MenuRegime | "all";
   minPeople?: number;
@@ -46,12 +59,24 @@ export type FiltersState = {
   rangePeople?: number[];
 };
 
-export type Section = {
+type Section = {
   id: string;
   label: string;
-  // tu będzie komponent/JSX sekcji
   render: (
     state: FiltersState,
     setState: React.Dispatch<React.SetStateAction<FiltersState>>
   ) => React.ReactNode;
+};
+export {
+  themeValues,
+  type ThemeValue,
+  type Regime,
+  type Menu,
+  type FiltersState,
+  type Section,
+  type MenuRegime,
+  type MenuTheme,
+  type Dish,
+  type DishCategory,
+  type Allergen,
 };
