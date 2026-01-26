@@ -52,10 +52,10 @@ export default function MentionsLegales() {
             <Card className={glassCard}>
               <CardContent className="p-6 space-y-3">
                 <h2 className="text-xl font-semibold tracking-tight">
-                  Éditeur du site
+                  Éditeur du site: Mayk_ITds
                 </h2>
                 <p className="text-sm text-muted-foreground">
-                  Informations d’identification de l’éditeur du site.
+                  Derniere mise a jour: {updated}
                 </p>
                 <Separator />
 
