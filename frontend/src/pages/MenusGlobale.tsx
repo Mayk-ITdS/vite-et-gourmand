@@ -2,14 +2,22 @@ import { Card, CardContent, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { glassCard } from "./MentionsLegales";
 import { sections } from "@/lib/mockData";
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import type { FiltersState } from "@/types/menus";
 const MenuGlobale = () => {
   const [filters, setFilters] = useState<FiltersState>({
     theme: "all",
     regime: "all",
   });
-  //   const filteredMenus = useMemo(() => {}, []);
+  // const filteredMenus = useMemo(() => {
+  //   if (filters === undefined) return 0;
+  //   else
+  //     return [
+  //       {
+  //         ...filters,
+  //       },
+  //     ];
+  // }, [filters]);
   return (
     <div className="w-full flex">
       <div className="min-h-screen">
@@ -37,9 +45,17 @@ const MenuGlobale = () => {
         </aside>
       </div>
       <div>
-        <Card className="m-auto border-border/40 bg-background/70 backdrop-blur">
-          <CardContent></CardContent>
-        </Card>
+        {Object.entries(filters).map(([key, value]) => (
+          <Card
+            key={key}
+            className="m-auto border-border/40 bg-background/70 backdrop-blur-md shadow-lg"
+          >
+            <CardContent>
+              <strong>{key} :</strong> {String(value ?? "-")}
+            </CardContent>
+          </Card>
+        ))}
+        ;
       </div>
     </div>
   );
