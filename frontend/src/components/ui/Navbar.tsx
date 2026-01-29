@@ -14,8 +14,8 @@ const Navbar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <div className="mx-auto container flex items-center justify-between px-4 py-4">
-      <div className="text-4xl font-semibold">
+    <div className="mx-auto z-100 container flex items-center justify-between py-4">
+      <div className="text-4xl mx-4 font-semibold">
         <Link to="/">Vites & Gourmand</Link>
       </div>
       <nav className="hidden md:flex items-center gap-3">
@@ -24,7 +24,7 @@ const Navbar: React.FC = () => {
             size={"lg"}
             key={k}
             variant="secondary"
-            className="h-8 text-md bg-base"
+            className="text-xl bg-background"
             asChild
           >
             <Link to={p.href}>{p.label}</Link>
