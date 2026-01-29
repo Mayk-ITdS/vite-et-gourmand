@@ -6,6 +6,7 @@ body,
   height: 100%;
   margin: 0 auto;
   padding: 0;
+  box-sizing: border-box;
 }
 
 .container {
@@ -151,7 +152,7 @@ body,
 
 .wine-bordeaux {
   /* light but not banal*/
-  --background: oklch(0.98 0.008 30);
+  --background: oklch(0.98 0.02 30);
   --foreground: oklch(0.13 0.028 261.692);
 
   --card: oklch(1 0 0);

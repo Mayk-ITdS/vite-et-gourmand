@@ -4,13 +4,13 @@ import { Link } from "react-router-dom";
 
 const Footer = () => {
   return (
-    <footer className="items-center w-full bg-primary">
-      <section className="flex flex-col items-center text-base text-secondary text-center justify-center mt-2">
-        <Badge variant="default" className="mt-10 text-2xl">
+    <footer className="flex justify-center items-center w-full bg-primary">
+      <section className="flex flex-col w-full items-center text-base text-secondary text-center justify-center mt-2">
+        <Badge variant="default" className="mt-10 sm:text-xl text-2xl">
           Vites & Gourmand
         </Badge>
         <Separator className="mt-3" />
-        <ul className="flex flex-wrap gap-4 py-4 mt-4 px-2 justify-center text-xl color-white">
+        <ul className="flex flex-wrap gap-4 py-4 mt-4 sm:text-sm px-2 justify-center text-xl">
           <li>Inquire </li>
           <li>References </li>
           <li>Media </li>
