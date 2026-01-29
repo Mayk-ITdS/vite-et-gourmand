@@ -4,6 +4,7 @@ import { DietCircleButton } from "@/components/ui/DietCircleButton";
 import { Slider } from "@/components/ui/slider";
 import { themeValues } from "@/types/menus";
 import { cn } from "./utils";
+import { glassCard } from "@/pages/MentionsLegales";
 export const opinions: ClientOpinion[] = [
   {
     _id: { $id: "65b0a1f2c9d84a1a2b3c4d01" },
@@ -113,7 +114,7 @@ export const sections: Section[] = [
     id: "prix",
     label: "Prix",
     render: (state, setState) => (
-      <div className="space-y-3">
+      <div className={cn(glassCard, "space-y-3")}>
         {
           <fieldset className="flex flex-col">
             <label>min</label>
@@ -127,7 +128,7 @@ export const sections: Section[] = [
                   priceMin: Number(e.target.value),
                 }))
               }
-              className="h-10 p-4 hover:outline rounded backdrop-blur-10"
+              className="h-10 p-4 hover:outline bg-secondary/70 rounded backdrop-blur-10"
             />
             <label>max</label>
             <input
@@ -140,7 +141,7 @@ export const sections: Section[] = [
                 }))
               }
               id="prix-max"
-              className="h-10 p-4 hover:outline rounded backdrop-blur-10"
+              className="h-10 p-4 hover:outline bg-secondary/70 rounded backdrop-blur-10"
             />
           </fieldset>
         }
@@ -166,10 +167,10 @@ export const sections: Section[] = [
                   }));
                 }}
                 className={cn(
-                  "h-30 w-50 text-3xl rounded-md border-border/40 bg-primary/40 backdrop-blur-xl shadow-xl",
+                  "aspect-ratio[3/5] text-sm md:text-lg rounded-md border-border/40 bg-primary/40 backdrop-blur-xl shadow-xl cursor-pointer",
                   state.theme === theme
-                    ? "m-4 p-5 text-white"
-                    : "m-4 p-5 bg-secondary/70 rounded-full text-white",
+                    ? "m-4 p-5 text-white bg-primary/60 rounded-md "
+                    : "m-4 p-5 text-black bg-secondary/70 rounded-md",
                 )}
               >
                 {theme}
