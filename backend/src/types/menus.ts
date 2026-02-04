@@ -27,30 +27,20 @@ interface Dish {
   category: DishCategory;
   allergens?: Allergen[];
 }
+
 interface Menu {
+  id: string;
+  title: string;
   description: string;
-  diet_type: string;
-  menu_id: string;
-  menu_name: string;
-  menu_theme: string;
-  min_persons: number;
-  min_preparation_time: number;
-  prix_unitaire: number;
-  quantity_in_stock: number;
+  theme: ThemeValue;
+  regime: RegimeValue[];
+  images: string[];
+  dishes: Dish[];
+  minPeople: number;
+  minPrice: number;
+  conditions: string;
+  stock: number;
 }
-// interface MenuFinal {
-//   menu_id: string;
-//   menu_name: string;
-//   description: string;
-//   theme: ThemeValue;
-//   regime: RegimeValue[];
-//   images: string[];
-//   dishes: Dish[];
-//   minPeople: number;
-//   minPrice: number;
-//   conditions: string;
-//   stock: number;
-// }
 type MenuRegime = "Vegetarien" | "Vegan" | "Classique";
 
 type FiltersState = {
@@ -64,23 +54,12 @@ type FiltersState = {
   rangePeople?: number[] | null;
 };
 
-type Section = {
-  id: string;
-  label: string;
-  render: (
-    state: FiltersState,
-    setState: React.Dispatch<React.SetStateAction<FiltersState>>,
-  ) => React.ReactNode;
-};
-
 export {
   themeValues,
-  regimeValues,
   type ThemeValue,
   type RegimeValue,
   type Menu,
   type FiltersState,
-  type Section,
   type MenuRegime,
   type Dish,
   type DishCategory,
