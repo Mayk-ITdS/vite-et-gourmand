@@ -46,7 +46,6 @@ export default function MentionsLegales() {
             </CardContent>
           </Card>
         </aside>
-
         <div className="space-y-6">
           <section id="editeur">
             <Card className={glassCard}>

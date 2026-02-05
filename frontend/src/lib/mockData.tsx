@@ -1,5 +1,5 @@
 import type { ClientOpinion } from "@/types/avis";
-import type { MenuTheme, Section } from "@/types/menus";
+import type { FiltersState, Section, ThemeValue } from "@/types/menus";
 import { DietCircleButton } from "@/components/ui/DietCircleButton";
 import { Slider } from "@/components/ui/slider";
 import { themeValues } from "@/types/menus";
@@ -109,6 +109,20 @@ export const opinions: ClientOpinion[] = [
 ];
 const diets = ["Classique", "Vegan", "Vegetarien"] as const;
 
+const toggleTheme = (
+  value: ThemeValue,
+  setState: React.Dispatch<React.SetStateAction<FiltersState>>,
+) => {
+  setState((prev) => {
+    const current = prev.theme ?? [];
+    return {
+      ...prev,
+      theme: current.includes(value)
+        ? current.filter((v: ThemeValue) => v !== value)
+        : [...current, value],
+    };
+  });
+};
 export const sections: Section[] = [
   {
     id: "prix",
@@ -155,27 +169,24 @@ export const sections: Section[] = [
       <div className="space-y-3">
         {
           <fieldset className="flex flex-col">
-            {themeValues.map((theme) => (
-              <button
-                key={theme}
-                data-theme={theme}
-                onClick={(e) => {
-                  const selected = e.currentTarget.dataset.theme as MenuTheme;
-                  setState((prev) => ({
-                    ...prev,
-                    theme: selected,
-                  }));
-                }}
-                className={cn(
-                  "aspect-ratio[3/5] text-sm md:text-lg rounded-md border-border/40 bg-primary/40 backdrop-blur-xl shadow-xl cursor-pointer",
-                  state.theme === theme
-                    ? "m-4 p-5 text-white bg-primary/60 rounded-md "
-                    : "m-4 p-5 text-black bg-secondary/70 rounded-md",
-                )}
-              >
-                {theme}
-              </button>
-            ))}
+            {themeValues.map((theme) => {
+              const isSelected = state.theme?.includes(theme) ?? false;
+              return (
+                <button
+                  key={theme}
+                  data-theme={state.theme}
+                  onClick={() => toggleTheme(theme, setState)}
+                  className={cn(
+                    "h-30 w-50 text-3xl rounded-md border-border/40 bg-primary/40 backdrop-blur-xl shadow-xl",
+                    isSelected
+                      ? "m-4 p-5 text-white"
+                      : "m-4 p-5 bg-secondary/70 rounded-full text-white",
+                  )}
+                >
+                  {theme}
+                </button>
+              );
+            })}
           </fieldset>
         }
       </div>
@@ -191,9 +202,19 @@ export const sections: Section[] = [
             {diets.map((d) => (
               <div key={d} className="flex flex-col items-center">
                 <DietCircleButton
-                  selected={state.regime === d}
-                  onSelect={(d) => setState((prev) => ({ ...prev, regime: d }))}
+                  selected={state.regime?.includes(d) ?? false}
                   diet={d}
+                  onSelect={(d) =>
+                    setState((prev) => {
+                      const current = prev.regime ?? [];
+                      return {
+                        ...prev,
+                        regime: current.includes(d)
+                          ? current.filter((r) => r !== d)
+                          : [...current, d],
+                      };
+                    })
+                  }
                 />
                 <p className="text-xs font-medium text-secondary-foreground">
                   {d}
