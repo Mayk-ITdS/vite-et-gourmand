@@ -1,15 +1,14 @@
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
-
-type Diet = "Vegan" | "Vegetarien" | "Classique";
+import type { RegimeValue } from "@/types/menus";
 
 type Props = {
-  diet: Diet;
-  selected?: boolean;
-  onSelect?: (diet: Diet) => void;
+  selected: boolean;
+  diet: RegimeValue;
+  onSelect?: (diet: RegimeValue) => void;
 };
 
-export function DietCircleButton({ diet, selected = false, onSelect }: Props) {
+export function DietCircleButton({ selected, diet, onSelect }: Props) {
   const label = diet.toUpperCase();
   const ringText = `${label} • `.repeat(8);
 
@@ -28,7 +27,7 @@ export function DietCircleButton({ diet, selected = false, onSelect }: Props) {
         "hover:shadow-inner",
         "active:translate-y-0 active:shadow-inner",
         "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background",
-        selected && "ring-2 ring-primary ring-offset-2 ring-offset-background"
+        selected && "ring-2 ring-primary ring-offset-2 ring-offset-background",
       )}
       aria-pressed={selected}
     >
@@ -36,7 +35,7 @@ export function DietCircleButton({ diet, selected = false, onSelect }: Props) {
         className={cn(
           "absolute inset-0 grid place-items-center text-[10px] font-semibold tracking-wide",
 
-          "bg-gradient-to-b from-amber-400 via-yellow-500 to-amber-700 bg-clip-text text-transparent"
+          "bg-gradient-to-b from-amber-400 via-yellow-500 to-amber-700 bg-clip-text text-transparent",
         )}
       >
         {label}
@@ -58,7 +57,7 @@ export function DietCircleButton({ diet, selected = false, onSelect }: Props) {
           className={cn(
             "origin-center transition-transform duration-300",
             "group-hover:rotate-16",
-            selected && "rotate-40"
+            selected && "rotate-40",
           )}
         >
           <text className="fill-current text-[9px] tracking-[0.25em] opacity-70">

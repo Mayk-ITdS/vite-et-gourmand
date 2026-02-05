@@ -17,7 +17,7 @@ const MenuMobile: React.FC<{
 }> = ({ onOpenChange, open }) => {
   return (
     <Sheet open={open} onOpenChange={onOpenChange}>
-      <SheetTrigger asChild>
+      <SheetTrigger asChild className="mx-4">
         <HambourgerButton open={open} aria-label="Mobile menu button" />
       </SheetTrigger>
       <SheetContent side="top" className="sm:w-full ">
