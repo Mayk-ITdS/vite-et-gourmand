@@ -1,5 +1,6 @@
-import { cn } from "@/lib/utils";
 import { toast } from "sonner";
+
+import { cn } from "@/lib/utils";
 import type { RegimeValue } from "@/types/menus";
 
 type Props = {

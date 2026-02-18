@@ -3,8 +3,10 @@ import type { FiltersState, Section, ThemeValue } from "@/types/menus";
 import { DietCircleButton } from "@/components/ui/DietCircleButton";
 import { Slider } from "@/components/ui/slider";
 import { themeValues } from "@/types/menus";
-import { cn } from "./utils";
 import { glassCard } from "@/pages/MentionsLegales";
+
+import { cn } from "./utils";
+
 export const opinions: ClientOpinion[] = [
   {
     _id: { $id: "65b0a1f2c9d84a1a2b3c4d01" },
@@ -114,10 +116,10 @@ const toggleTheme = (
   setState: React.Dispatch<React.SetStateAction<FiltersState>>,
 ) => {
   setState((prev) => {
-    const current = prev.theme ?? [];
+    const current = prev.themes ?? [];
     return {
       ...prev,
-      theme: current.includes(value)
+      themes: current.includes(value)
         ? current.filter((v: ThemeValue) => v !== value)
         : [...current, value],
     };
@@ -142,7 +144,7 @@ export const sections: Section[] = [
                   priceMin: Number(e.target.value),
                 }))
               }
-              className="h-10 p-4 hover:outline bg-secondary/70 rounded backdrop-blur-10"
+              className="h-11 px-4 bg-black/40 border border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/50 text-white"
             />
             <label>max</label>
             <input
@@ -155,7 +157,7 @@ export const sections: Section[] = [
                 }))
               }
               id="prix-max"
-              className="h-10 p-4 hover:outline bg-secondary/70 rounded backdrop-blur-10"
+              className="h-11 px-4 bg-black/40 border border-white/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary/50 text-white"
             />
           </fieldset>
         }
@@ -168,19 +170,20 @@ export const sections: Section[] = [
     render: (state, setState) => (
       <div className="space-y-3">
         {
-          <fieldset className="flex flex-col">
+          <fieldset className="flex gap-4 flex-col">
             {themeValues.map((theme) => {
-              const isSelected = state.theme?.includes(theme) ?? false;
+              const isSelected = state.themes?.includes(theme) ?? false;
               return (
                 <button
                   key={theme}
-                  data-theme={state.theme}
+                  data-theme={state.themes}
                   onClick={() => toggleTheme(theme, setState)}
                   className={cn(
-                    "h-30 w-50 text-3xl rounded-md border-border/40 bg-primary/40 backdrop-blur-xl shadow-xl",
+                    "w-full py-3 px-5 rounded-xl text-sm font-medium transition-all duration-300",
+                    "border border-white/10",
                     isSelected
-                      ? "m-4 p-5 text-white"
-                      : "m-4 p-5 bg-secondary/70 rounded-full text-white",
+                      ? "bg-primary text-white shadow-lg"
+                      : "bg-white/5 text-white/70 hover:bg-white/10",
                   )}
                 >
                   {theme}
@@ -196,9 +199,9 @@ export const sections: Section[] = [
     id: "regime",
     label: "Régime",
     render: (state, setState) => (
-      <div className="space-y-3">
+      <div className="py-2 bg-black/10 flex items-center justify-center p-4 rounded-2xl border border-white/10">
         {
-          <fieldset className="flex gap-5 justify-around">
+          <fieldset className="flex gap-5 py-2 justify-around">
             {diets.map((d) => (
               <div key={d} className="flex flex-col items-center">
                 <DietCircleButton
@@ -216,7 +219,7 @@ export const sections: Section[] = [
                     })
                   }
                 />
-                <p className="text-xs font-medium text-secondary-foreground">
+                <p className="text-xs px-2 font-medium text-secondary-foreground">
                   {d}
                 </p>
               </div>
@@ -238,8 +241,7 @@ export const sections: Section[] = [
               min={1}
               max={100}
               defaultValue={[1, 100]}
-              onValueChange={([a, b]) => {
-                if (a > b) return;
+              onValueCommit={([a, b]) => {
                 setState((prev) => ({
                   ...prev,
                   rangePeople: [Math.min(a, b), Math.max(a, b)],
@@ -247,10 +249,9 @@ export const sections: Section[] = [
               }}
             />
           }
-          <p>Actual range :</p>
-          <div className="ml-3">
-            {minP} {"⇒"} {maxP}
-          </div>
+          <p className="text-sm text-white/60 mt-3">
+            {minP} personnes → {maxP} personnes
+          </p>
         </div>
       );
     },
