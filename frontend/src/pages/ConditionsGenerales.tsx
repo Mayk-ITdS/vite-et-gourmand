@@ -2,8 +2,7 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 
-const glassCard =
-  "border border-border/60 bg-background/60 backdrop-blur-xl shadow-sm";
+import { glassCardWine } from "./MentionsLegales";
 
 const sections = [
   { id: "objet", label: "Objet" },
@@ -19,29 +18,34 @@ export default function ConditionsGenerales() {
   const updated = new Date().toLocaleDateString("fr-FR");
 
   return (
-    <div className="space-y-8 container">
-      <div className="rounded-2xl border border-border/60 bg-gradient-to-b from-primary/10 via-background to-background p-6 md:p-8">
-        <Badge variant="secondary">Vente & utilisation</Badge>
-        <h1 className="mt-3 text-4xl font-semibold tracking-tight">
+    <div className="container mx-auto max-w-6xl py-16 space-y-10">
+      <header className="space-y-3">
+        <Badge
+          variant="secondary"
+          className="text-[#c2a56a] bg-[rgba(90,4,20,0.4)] text-sm px-2"
+        >
+          Vente & utilisation
+        </Badge>
+        <h1 className="text-4xl text-[#e8dfcf] font-semibold tracking-tight">
           Conditions générales
         </h1>
-        <p className="mt-2 max-w-2xl text-muted-foreground">
-          Dernière mise à jour : {updated}.
+        <p className="text-sm text-[#e8dfcf] text-muted-foreground">
+          Dernière mise à jour : {updated}
         </p>
-      </div>
+      </header>
 
-      <div className="grid gap-6 md:grid-cols-[280px_1fr]">
-        <aside className="md:sticky md:top-24 h-fit">
-          <Card className={glassCard}>
+      <div className="grid gap-8 md:grid-cols-[280px_1fr]">
+        <aside className="md:sticky md:top-28 h-fit">
+          <Card className={glassCardWine}>
             <CardContent className="p-5">
               <p className="text-sm font-medium">Sommaire</p>
-              <Separator className="my-3" />
-              <nav className="flex flex-col gap-2 text-sm">
+              <Separator className="my-3 opacity-60" />
+              <nav className="flex flex-col gap-1 text-sm">
                 {sections.map((s) => (
                   <a
                     key={s.id}
                     href={`#${s.id}`}
-                    className="rounded-md px-2 py-2 text-muted-foreground hover:bg-accent hover:text-accent-foreground transition"
+                    className="rounded-md px-2 py-2 text-[#e8dfcf] text-muted-foreground hover:bg-white/10 hover:text-foreground transition"
                   >
                     {s.label}
                   </a>
@@ -51,13 +55,13 @@ export default function ConditionsGenerales() {
           </Card>
         </aside>
 
-        <div className="space-y-6">
+        <div className="space-y-8">
           <section id="objet">
-            <Card className={glassCard}>
-              <CardContent className="p-6 space-y-3">
-                <h2 className="text-xl font-semibold tracking-tight">Objet</h2>
+            <Card className={glassCardWine}>
+              <CardContent className="p-6 space-y-4">
+                <h2 className="text-xl font-semibold">Objet</h2>
                 <Separator />
-                <p className="text-sm">
+                <p className="text-sm text-[#e8dfcf] leading-relaxed">
                   Les présentes conditions encadrent l’utilisation du site et la
                   passation de commandes de prestations de catering pour un
                   événement (date, lieu, paramètres).
@@ -67,23 +71,21 @@ export default function ConditionsGenerales() {
           </section>
 
           <section id="commande">
-            <Card className={glassCard}>
-              <CardContent className="p-6 space-y-3">
-                <h2 className="text-xl font-semibold tracking-tight">
-                  Commande
-                </h2>
+            <Card className={glassCardWine}>
+              <CardContent className="p-6 space-y-4">
+                <h2 className="text-xl font-semibold">Commande</h2>
                 <Separator />
-                <ul className="list-disc pl-5 text-sm space-y-2">
+                <ul className="list-disc pl-5 text-[#e8dfcf] text-sm space-y-2 leading-relaxed">
                   <li>
-                    Le client sélectionne des menus/prestations et complète les
-                    informations d’événement.
+                    Le client sélectionne des menus et renseigne les
+                    informations liées à l’événement.
                   </li>
                   <li>
                     Un récapitulatif est présenté avant validation finale.
                   </li>
                   <li>
-                    La commande peut être confirmée après paiement (si
-                    applicable).
+                    La commande est confirmée après validation et paiement (le
+                    cas échéant).
                   </li>
                 </ul>
               </CardContent>
@@ -91,73 +93,66 @@ export default function ConditionsGenerales() {
           </section>
 
           <section id="prix">
-            <Card className={glassCard}>
-              <CardContent className="p-6 space-y-3">
-                <h2 className="text-xl font-semibold tracking-tight">
-                  Prix &amp; paiement
-                </h2>
+            <Card className={glassCardWine}>
+              <CardContent className="p-6 space-y-4">
+                <h2 className="text-xl font-semibold">Prix & paiement</h2>
                 <Separator />
-                <p className="text-sm">
-                  Les prix sont affichés en euros. Les frais éventuels
-                  (livraison / options) sont précisés avant validation.
+                <p className="text-sm text-[#e8dfcf] leading-relaxed">
+                  Les prix sont exprimés en euros et précisés avant la
+                  validation de la commande. Les options et frais
+                  complémentaires sont détaillés.
                 </p>
-                <p className="text-sm text-muted-foreground">
-                  À adapter selon ton PSP (Stripe, etc.) et ton flux “pending
-                  payment”.
+                <p className="text-sm text-[#e8dfcf] text-muted-foreground">
+                  À adapter selon le prestataire de paiement et le workflow
+                  retenu.
                 </p>
               </CardContent>
             </Card>
           </section>
 
           <section id="execution">
-            <Card className={glassCard}>
-              <CardContent className="p-6 space-y-3">
-                <h2 className="text-xl font-semibold tracking-tight">
+            <Card className={glassCardWine}>
+              <CardContent className="p-6 space-y-4">
+                <h2 className="text-xl font-semibold">
                   Exécution de la prestation
                 </h2>
                 <Separator />
-                <p className="text-sm">
+                <p className="text-sm text-[#e8dfcf] leading-relaxed">
                   La prestation est exécutée à la date et à l’adresse indiquées.
-                  Le client garantit l’exactitude des informations et l’accès au
-                  lieu.
+                  Le client garantit l’exactitude des informations transmises.
                 </p>
-                <p className="text-sm">
-                  Contraintes alimentaires (allergènes, régimes) : à communiquer
-                  lors de la commande.
+                <p className="text-sm text-[#e8dfcf] leading-relaxed">
+                  Les contraintes alimentaires doivent être communiquées lors de
+                  la commande.
                 </p>
               </CardContent>
             </Card>
           </section>
 
           <section id="annulation">
-            <Card className={glassCard}>
-              <CardContent className="p-6 space-y-3">
-                <h2 className="text-xl font-semibold tracking-tight">
+            <Card className={glassCardWine}>
+              <CardContent className="p-6 space-y-4">
+                <h2 className="text-xl font-semibold">
                   Annulation / modification
                 </h2>
                 <Separator />
-                <p className="text-sm">
-                  Toute demande doit être effectuée dès que possible. Des frais
-                  peuvent s’appliquer selon l’avancement et la date d’événement.
-                </p>
-                <p className="text-sm text-muted-foreground">
-                  À compléter : politique (J-7 / J-3 / J-1), pourcentages,
-                  exceptions.
+                <p className="text-sm text-[#e8dfcf] leading-relaxed">
+                  Toute demande d’annulation ou de modification doit être
+                  effectuée dans les meilleurs délais. Des frais peuvent
+                  s’appliquer selon l’avancement de la prestation.
                 </p>
               </CardContent>
             </Card>
           </section>
 
           <section id="responsabilite">
-            <Card className={glassCard}>
-              <CardContent className="p-6 space-y-3">
-                <h2 className="text-xl font-semibold tracking-tight">
-                  Responsabilité
-                </h2>
+            <Card className={glassCardWine}>
+              <CardContent className="p-6 space-y-4">
+                <h2 className="text-xl font-semibold">Responsabilité</h2>
                 <Separator />
-                <p className="text-sm">
-                  La responsabilité ne peut être engagée en cas de force
-                  majeure, ou en cas d’informations erronées fournies par le
+                <p className="text-sm text-[#e8dfcf] leading-relaxed">
+                  La responsabilité de la société ne saurait être engagée en cas
+                  de force majeure ou d’informations erronées fournies par le
                   client.
                 </p>
               </CardContent>
@@ -165,23 +160,21 @@ export default function ConditionsGenerales() {
           </section>
 
           <section id="donnees">
-            <Card className={glassCard}>
-              <CardContent className="p-6 space-y-3">
-                <h2 className="text-xl font-semibold tracking-tight">
-                  Données
-                </h2>
+            <Card className={glassCardWine}>
+              <CardContent className="p-6 space-y-4">
+                <h2 className="text-xl font-semibold">Données</h2>
                 <Separator />
-                <p className="text-sm">
-                  Les traitements liés aux comptes et commandes sont décrits
-                  dans les Mentions légales / politique de confidentialité.
+                <p className="text-sm text-[#e8dfcf] leading-relaxed">
+                  Les traitements de données personnelles sont décrits dans les
+                  Mentions légales et la politique de confidentialité.
                 </p>
               </CardContent>
             </Card>
           </section>
 
-          <p className="text-xs text-muted-foreground">
-            {/* Modèle projet/ECF. Avant production : adapter CGV/CGU, rétractation,
-            médiation, clauses B2C, etc. */}
+          <p className="text-xs text-muted-foreground pt-4">
+            Document fourni à titre de modèle dans le cadre d’un projet
+            pédagogique.
           </p>
         </div>
       </div>
