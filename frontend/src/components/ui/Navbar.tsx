@@ -1,37 +1,77 @@
 import { useState } from "react";
-import { Button } from "./button";
-import MenuMobile from "./MenuMobile";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
-const menuElements = [
-  { label: "Notre Equipe", href: "/team" },
-  { label: "Voir les Menus", href: "/menus" },
-  { label: "Connexion", href: "/login" },
-  { label: "Contact", href: "/contact" },
-];
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import { logout } from "@/store/menus/authSlice";
+import { persistor } from "@/store/store";
+
+import MenuMobile from "./MenuMobile";
 
 const Navbar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const { token, user } = useAppSelector((state) => state.auth);
+
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    dispatch(logout());
+    persistor.purge();
+    navigate("/");
+  };
 
   return (
-    <div className="mx-auto z-100 container flex items-center justify-between py-4">
-      <div className="text-4xl mx-4 font-semibold">
+    <div className="mx-auto container flex items-center justify-between py-6">
+      <div className="text-2xl mx-4 font-semibold tracking-tight">
         <Link to="/">Vites & Gourmand</Link>
       </div>
-      <nav className="hidden md:flex items-center gap-3">
-        {menuElements.map((p, k) => (
-          <Button
-            size={"lg"}
-            key={k}
-            variant="secondary"
-            className="text-xl bg-background"
-            asChild
-          >
-            <Link to={p.href}>{p.label}</Link>
-          </Button>
-        ))}
+      <nav className="hidden md:flex items-center gap-10">
+        <Link
+          className="
+          text-md font-medium tracking-wide opaccity-80 
+          hover:opacity-100 transition"
+          to="/team"
+        >
+          Notre Equipe
+        </Link>
+        <Link
+          className="
+          text-md font-medium tracking-wide opaccity-80 
+          hover:opacity-100 transition"
+          to="/menus"
+        >
+          Voir les Menus
+        </Link>
+        <Link
+          className="
+          text-md font-medium tracking-wide opaccity-80 
+          hover:opacity-100 transition"
+          to="/contact"
+        >
+          Contact
+        </Link>
+        {!token ? (
+          <Link to="/auth">Connexion</Link>
+        ) : (
+          <div className="flex items-center gap-4">
+            <Link
+              to="/espaceprive"
+              className="flex items-center gap-2 hover:opacity-80 transition"
+            >
+              <span className="text-xl">👤</span>
+              <span className="font-medium">{user?.email}</span>
+            </Link>
+
+            <button
+              onClick={handleLogout}
+              className="text-red-400 hover:text-red-300 transition"
+            >
+              Logout
+            </button>
+          </div>
+        )}
       </nav>
-      <div className="lg:hidden">
+      <div className="md:hidden">
         <MenuMobile
           onOpenChange={setIsOpen}
           open={isOpen}

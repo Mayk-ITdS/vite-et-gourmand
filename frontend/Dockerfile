@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1
 
-# ---------- Build Stage ----------
+# <!--- Build Stage --->
 FROM node:20-alpine AS build
 WORKDIR /app
 
@@ -10,7 +10,7 @@ RUN npm ci
 
 COPY . .
 RUN npm run build
-# ----- Prod Stage -----
+#<--- Prod Stage ---> 
 FROM nginx:1.27-alpine
 RUN rm -rf /usr/share/nginx/html/*
 
