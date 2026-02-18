@@ -5,7 +5,6 @@ WORKDIR /vite-et-gourmand
 COPY package.json package-lock.json* ./
 
 RUN npm ci 
-# --omit=dev
 
 COPY tsconfig.json ./
 COPY src ./src

@@ -21,6 +21,14 @@ export const connectPostgres = async (retries = 10) => {
     }
   }
 };
+
 export const connectMongo = async () => {
-  await mongoose.connect(ENV.MONGO_URI_ADMIN);
+  const uri = process.env.MONGO_URI_ADMIN;
+
+  if (!uri) {
+    throw new Error("Mongo URI not defined");
+  }
+
+  await mongoose.connect(uri);
+  console.log("Mongo connected");
 };
