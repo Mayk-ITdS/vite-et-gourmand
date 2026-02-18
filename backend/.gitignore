@@ -1,7 +1,12 @@
-node_modules
+# Environment files
+.env
+.env.*
+!.env.example
 
-.env*
+# Build output
 dist/
 
+# Local SQL dumps / test data
 db.sql
 init_test_menus.sql
+node_modules

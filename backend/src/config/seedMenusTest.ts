@@ -70,10 +70,10 @@ const run = async () => {
     const values = Array.from(x);
     await pgPool.query(sql, values);
   }
-  console.log("✅ Menus seeded");
+  console.log("Menus seeded");
   await pgPool.end();
 };
 run().catch((err) => {
-  console.error("❌ Seed failed", err);
+  console.error("Seed failed", err);
   process.exit(1);
 });
