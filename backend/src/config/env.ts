@@ -16,6 +16,9 @@ export const ENV = {
     PASSWORD: must("PG_PASSWORD"),
     DB: must("PG_DB"),
   },
+  JWT: {
+    SECRET: must("JWT_SECRET"),
+  },
 
   MONGO_URI_ADMIN: must("MONGO_URI_ADMIN"),
 };
