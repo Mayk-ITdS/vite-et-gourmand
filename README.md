@@ -9,9 +9,9 @@ It is a structured catering management system built using a **Database-First** a
 The objective was to design a scalable, secure and maintainable digital ecosystem capable of evolving into a production-grade catering platform.
 
 # demo
-
+http://51.20.182.243/menus
 # trello
-
+https://trello.com/b/G02hHQge/vite-gourmand
 ---
 
 ## Tech Stack
