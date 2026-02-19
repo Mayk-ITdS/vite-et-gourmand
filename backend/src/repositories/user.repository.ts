@@ -38,7 +38,7 @@ class UserRepository {
       u.user_first_name,
       u.user_last_name,
       u.user_email,
-      u.user_phone,
+      u.mobile_number,
       r.role_name
     FROM users u
     LEFT JOIN user_roles ur ON u.user_id = ur.user_id

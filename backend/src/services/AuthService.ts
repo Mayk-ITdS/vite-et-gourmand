@@ -50,6 +50,7 @@ export class AuthService {
         user: userWithRole,
       };
     } catch (err) {
+      console.log("Register error : ", err);
       if (err instanceof ApiError) {
         throw err;
       }
