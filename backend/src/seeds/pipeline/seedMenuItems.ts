@@ -47,7 +47,7 @@ export const seedItemsDB = async (items: SeedMenuItems[]) => {
       item_type TEXT,
       min_persons INT,
       is_active BOOLEAN,
-      served_window int4range,
+      served_window Text,
       diet_type TEXT,
       min_preparation_time TEXT,
       in_stock BIGINT,
