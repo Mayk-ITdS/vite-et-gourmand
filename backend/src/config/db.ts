@@ -21,6 +21,7 @@ export const connectPostgres = async (retries = 10) => {
     }
   }
 };
+console.log("MONGO URI:", process.env.MONGO_URI_ADMIN);
 
 export const connectMongo = async () => {
   const uri = process.env.MONGO_URI_ADMIN;

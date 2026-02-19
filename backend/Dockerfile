@@ -4,7 +4,7 @@ WORKDIR /vite-et-gourmand
 
 COPY package.json package-lock.json* ./
 
-RUN npm ci 
+RUN npm ci
 
 COPY tsconfig.json ./
 COPY src ./src

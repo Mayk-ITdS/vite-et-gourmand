@@ -7,7 +7,7 @@
     "build": "tsc",
     "start": "dist/server.js",
     "dev": "tsx watch -r dotenv/config src/server.ts dotenv_config_path=.env.local",
-    "seedMenu:local": "tsx -r dotenv/config src/seeds/pipeline.ts dotenv_config_path=.env.develop"
+    "seed-menu-dev": "tsx -r dotenv/config src/seeds/pipeline/pipeline.ts dotenv_config_path=.env.develop"
   },
   "keywords": [],
   "author": "",
