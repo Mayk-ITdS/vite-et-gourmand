@@ -140,7 +140,8 @@ http://localhost
 
 ### User Roles
 
-User
+
+## User
 
 - Browse menus
 
@@ -148,13 +149,13 @@ User
 
 - Access private dashboard
 
-Employee (Architecture Implemented – UI in Progress)
+## Employee (Architecture Implemented – UI in Progress)
 
 - Validate reservations
 
 - Update status
 
-Admin (Architecture Implemented – UI in Progress)
+## Admin (Architecture Implemented – UI in Progress)
 
 - Manage menus
 
