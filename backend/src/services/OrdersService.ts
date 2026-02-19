@@ -72,7 +72,8 @@ export class OrdersService {
 
     for (const menu of pricing.menus) {
       console.log("SAVING ANALYTICS FOR:", menu.menuId);
-
+      console.log("➡️ ENTER LOOP");
+      console.log("SAVING ANALYTICS FOR:", menu.menuId);
       await this.analytics.registerOrder({
         menuId: Number(menu.menuId),
         totalPrice: menu.final,
