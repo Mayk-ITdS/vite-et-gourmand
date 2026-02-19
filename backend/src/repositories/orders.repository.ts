@@ -36,7 +36,7 @@ export class OrderRepository {
         no_persons,
         event_adress,
         date_res_made,
-        date_res_for,
+        event_date,
         res_status,
         equipement_loaned,
         equipement_returned,
