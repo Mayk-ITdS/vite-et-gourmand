@@ -60,7 +60,7 @@ class MenuService {
               ;
     `,
     );
-    console.log("Trafiles");
+
     return res.rows;
   }
   async getOneMenuByID(id: number) {
