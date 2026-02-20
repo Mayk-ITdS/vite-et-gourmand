@@ -53,7 +53,7 @@ prix_unitaire numeric(10,2) not null,
 description TEXT not null,
 diet_type diet_enum not null, 
 min_persons int not null,
-order_lead_time interval not null,
+order_lead_time TEXT,
 quantity_in_stock bigint not null,
 min_preparation_time interval not null,
 image_url TEXT not null,
@@ -85,7 +85,7 @@ VALUES (
   'Michal',
   'studi@admin.fr',
   crypt('molto87bene', gen_salt('bf', 10)),
-  2
+  3
 );
 ---------------------------------------
 
