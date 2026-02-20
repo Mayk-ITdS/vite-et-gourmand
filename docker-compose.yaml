@@ -8,7 +8,7 @@ services:
 
     volumes:
       - pgdata:/var/lib/postgresql/data
-
+      - ./backend/src/config/001_database_schema.sql:/docker-entrypoint-initdb.d/001_database_schema.sql:ro
   mongo:
     image: mongo:7
     environment:
