@@ -21,7 +21,7 @@ export class OrdersService {
   saveOrder = async (userId: number, data: CreateOrderDTO) => {
     try {
       const { menus, prestation } = data;
-      console.log("Menus: ", menus, "Prestations", prestation);
+
       if (!menus.length) throw new ApiError(400, "No moenus provided");
       const menusFromDB: MenuFromDB[] = await this.orderRepo.findMenusByIds(
         menus.map((m) => Number(m.menuId)),
@@ -46,7 +46,6 @@ export class OrdersService {
         pricing,
       );
     } catch (err) {
-      console.error("SAVE ORDER ERROR:", err);
       throw new ApiError(401, String(err), false);
     }
   };
@@ -71,9 +70,6 @@ export class OrdersService {
     console.log("ANALYTICS INSTANCE:", this.analytics);
 
     for (const menu of pricing.menus) {
-      console.log("SAVING ANALYTICS FOR:", menu.menuId);
-      console.log("➡️ ENTER LOOP");
-      console.log("SAVING ANALYTICS FOR:", menu.menuId);
       await this.analytics.registerOrder({
         menuId: Number(menu.menuId),
         totalPrice: menu.final,

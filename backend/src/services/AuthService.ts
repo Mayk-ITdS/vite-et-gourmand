@@ -18,7 +18,6 @@ export class AuthService {
 
   async register(dto: RegisterDTO) {
     const passwordHash = await bcrypt.hash(dto.password, 10);
-    console.log("HASH GENERATED:", passwordHash);
 
     const payload = {
       user_first_name: dto.firstName,
@@ -36,15 +35,13 @@ export class AuthService {
       const user = await this.userRepo.createUser("authClient", payload);
       if (!user) throw new ApiError(500, "Failed to create a user", false);
       const userWithRole = await this.userRepo.findById(Number(user.user_id));
-      console.log("User created:", user);
-      console.log("User with role:", userWithRole);
-      console.log("JWT secret:", ENV.JWT.SECRET);
+
       const token = jwt.sign(
         { sub: userWithRole.id, role: userWithRole.role },
         ENV.JWT.SECRET,
         { expiresIn: "1h" },
       );
-      console.log("Generated token:", token);
+
       return {
         token,
         user: userWithRole,
@@ -60,14 +57,12 @@ export class AuthService {
   }
 
   async login(dto: LoginDTO) {
-    console.log("DTO:", dto);
-
     try {
       let account;
       let role: "user" | "admin";
 
       const user = await this.userRepo.findByEmail(dto.email);
-      console.log("User FROM DB:", user);
+
       if (user) {
         account = user;
         role = "user";
@@ -79,15 +74,13 @@ export class AuthService {
         account = admin;
         role = "admin";
       }
-      console.log("ADMIN FROM DB:", account);
 
       if (!account.password_hash) {
         throw new ApiError(450, "Invalid credentials", false);
       }
 
       const isValid = await bcrypt.compare(dto.password, account.password_hash);
-      console.log("haslo z bazy:", account.password_hash);
-      console.log("haslo z dto:", dto.password);
+
       if (!isValid) throw new ApiError(450, "Invalid credentials", false);
       const token = jwt.sign(
         {
