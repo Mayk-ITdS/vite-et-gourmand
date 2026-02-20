@@ -40,6 +40,7 @@ function App() {
             <Route path="/contact" element={<ContactPage />} />
             <Route path="/menus" element={<MenusGlobale />} />
             <Route path="/menus/:id" element={<MenuDetails />} />
+            <Route path="/" element={<Home />} />
             <Route element={<AuthGuard />}>
               <Route path="/orders" element={<OrderPage />} />
               <Route
