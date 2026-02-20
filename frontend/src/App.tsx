@@ -54,7 +54,7 @@ function App() {
             </Route>
           </Route>
 
-          <Route element={<RoleGuard allowedRoles={["user"]} />}>
+          <Route element={<RoleGuard allowedRoles={["admin"]} />}>
             <Route path="/admin" element={<AdminLayout />}>
               <Route index element={<AdminDashboard />} />
               {/* <Route path="menus" element={<AdminMenus />} />

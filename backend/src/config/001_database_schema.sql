@@ -86,7 +86,7 @@ VALUES (
   'Michal',
   'studi@admin.fr',
   crypt('molto87bene', gen_salt('bf', 10)),
-  3
+  2
 );
 ---------------------------------------
 
