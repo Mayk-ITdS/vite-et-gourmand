@@ -1,7 +1,7 @@
 import { Router } from "express";
 import authMiddleware from "../middlewares/auth.js";
 import { requireRole } from "../middlewares/requireRole.js";
-import { OrdersController } from "../controlllers/OrdersController.js";
+import { OrdersController } from "../controllers/OrdersController.js";
 
 const router = Router();
 router.get(
@@ -13,7 +13,7 @@ router.get(
 router.post(
   "/me",
   authMiddleware,
-  requireRole(["user", "admin"]),
+  requireRole(["user"]),
   new OrdersController().saveNewOrders,
 );
 export default router;

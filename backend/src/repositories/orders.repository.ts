@@ -1,4 +1,5 @@
 import { pgPool } from "../config/db.js";
+import { OrderRow } from "../types/orders/types.js";
 
 export class OrderRepository {
   async findByUser(id: number) {
@@ -10,6 +11,16 @@ export class OrderRepository {
     WHERE menu_id = ANY($1)`;
     const result = pgPool.query(sql, [ids]);
     return (await result).rows;
+  }
+  async findOrderById(id: number): Promise<OrderRow | null> {
+    const sql = `SELECT res_id, res_status As status
+    FROM reservations
+    WHERE res_id = $1`;
+    const result = await pgPool.query<OrderRow>(sql, [id]);
+    if (!result.rowCount) {
+      return null;
+    }
+    return result.rows[0];
   }
   async createReservationTransaction(
     userId: number,
