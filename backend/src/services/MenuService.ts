@@ -19,46 +19,47 @@ class MenuService {
     }
   }
   async getAllMenus() {
+    console.log("menus -> hit");
     const res = await pgPool.query(
-      `Select m.menu_id, 
-      m.menu_name, 
-      m.image_url,
-      m.description, 
-      m.prix_unitaire,
-      m.images,
-      m.diet_type,
-      m.min_persons,
-      m.order_lead_time,
-      array_agg(DISTINCT t.theme_name) as themes, 
-      json_agg(
-  DISTINCT jsonb_build_object(
-    'item_id', mi.item_id,
-    'item_name', mi.item_name,
-    'item_type', mi.item_type,
-    'diet_type', mi.diet_type,
-    'min_preparation_time', mi.min_preparation_time
-  )
-) AS items 
-      from menus m 
-      join menu_themes mt 
-      on m.menu_id = mt.menu_id 
-      join themes t 
-      on mt.theme_id = t.theme_id 
-      join menu_items_menus it 
-      on m.menu_id = it.menu_id 
-      join menu_items mi 
-      on it.item_id = mi.item_id 
-      group by m.menu_id,
-              m.menu_name,
-              m.description,
-              m.prix_unitaire,
-              m.diet_type,
-              m.min_persons,
-              m.order_lead_time,
-              m.image_url,
-              m.images
-              ;
-    `,
+      `Select m.menu_id,
+          m.menu_name,
+          m.image_url,
+          m.description,
+          m.prix_unitaire,
+          m.images,
+          m.diet_type,
+          m.min_persons,
+          m.order_lead_time,
+          array_agg(DISTINCT t.theme_name) as themes,
+          json_agg(
+      DISTINCT jsonb_build_object(
+        'item_id', mi.item_id,
+        'item_name', mi.item_name,
+        'item_type', mi.item_type,
+        'diet_type', mi.diet_type,
+        'min_preparation_time', mi.min_preparation_time
+      )
+    ) AS items
+          from menus m
+          join menu_themes mt
+          on m.menu_id = mt.menu_id
+          join themes t
+          on mt.theme_id = t.theme_id
+          join menu_items_menus it
+          on m.menu_id = it.menu_id
+          join menu_items mi
+          on it.item_id = mi.item_id
+          group by m.menu_id,
+                  m.menu_name,
+                  m.description,
+                  m.prix_unitaire,
+                  m.diet_type,
+                  m.min_persons,
+                  m.order_lead_time,
+                  m.image_url,
+                  m.images
+                  ;
+        `,
     );
 
     return res.rows;
@@ -67,7 +68,7 @@ class MenuService {
     try {
       const data = await pgPool.query(
         `
-      SELECT 
+      SELECT
         m.menu_id,
         m.menu_name,
         m.image_url,
@@ -79,7 +80,7 @@ class MenuService {
         m.quantity_in_stock,
         m.min_preparation_time,
         COALESCE(array_agg(DISTINCT t.theme_name)FILTER(WHERE t.theme_name IS NOT NULL),
-        '{}' 
+        '{}'
       )AS themes,
         COALESCE(
         json_agg(
@@ -99,7 +100,7 @@ class MenuService {
       LEFT JOIN menu_items_menus it ON m.menu_id = it.menu_id
       LEFT JOIN menu_items mi ON it.item_id = mi.item_id
       WHERE m.menu_id = $1
-      GROUP BY 
+      GROUP BY
         m.menu_id,
         m.menu_name,
         m.image_url,
