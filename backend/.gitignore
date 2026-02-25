@@ -10,3 +10,4 @@ dist/
 db.sql
 init_test_menus.sql
 node_modules
+.history/
