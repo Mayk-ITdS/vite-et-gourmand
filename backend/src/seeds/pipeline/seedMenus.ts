@@ -1,8 +1,8 @@
-import { pgPool } from "../../config/db.js";
+import { PoolClient } from "pg";
 import { SeedMenusDB } from "../../types/menus/menus.js";
 import { makeCode } from "../helpers.js";
 
-export const seedMenus = async (menus: SeedMenusDB[]) => {
+export const seedMenus = async (client: PoolClient, menus: SeedMenusDB[]) => {
   const payload = menus.map((m, i) => ({
     ...m,
     menu_code: makeCode("MNU", i + 1, 4),
@@ -54,10 +54,13 @@ export const seedMenus = async (menus: SeedMenusDB[]) => {
     RETURNING menu_id, menu_code;
   `;
 
-  const res = await pgPool.query(sql, [JSON.stringify(payload)]);
+  const res = await client.query(sql, [JSON.stringify(payload)]);
 
   const menuMap = new Map<string, number>();
   res.rows.forEach((r) => menuMap.set(r.menu_code, r.menu_id));
 
-  return { menuMap, payload };
+  return {
+    inserted: res.rowCount ?? 0,
+    menuMap,
+  };
 };
