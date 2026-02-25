@@ -6,9 +6,9 @@
   "scripts": {
     "build": "tsc",
     "start": "dist/server.js",
-    "dev": "tsx watch -r dotenv/config src/server.ts dotenv_config_path=.env.develop",
-    "seed": "tsx -r dotenv/config src/seeds/pipeline/pipeline.ts dotenv_config_path=.env.develop",
-    "seed:mongo": "tsx -r dotenv/config src/seeds/pipeline/seedAvis.ts dotenv_config_path=.env.develop"
+    "dev": "tsx watch -r dotenv/config src/server.ts dotenv_config_path=.env.local",
+    "seed": "tsx -r dotenv/config src/seeds/pipeline/pipeline.ts dotenv_config_path=.env.local",
+    "seed:mongo": "tsx -r dotenv/config src/seeds/pipeline/seedAvis.ts dotenv_config_path=.env.local"
   },
   "keywords": [],
   "author": "",
