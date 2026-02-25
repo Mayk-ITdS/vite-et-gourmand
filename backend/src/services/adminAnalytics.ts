@@ -1,6 +1,4 @@
-import { MenuStats } from "../models/menuStats.model.js";
-import { MonthlyStats } from "../models/monthlyStats.model.js";
-import { StatusStats } from "../models/statusStats.model.js";
+import { getDBMongo } from "../config/db.js";
 
 export default class AdminAnalyticsService {
   async registerOrder(order: {
@@ -9,13 +7,14 @@ export default class AdminAnalyticsService {
     status: string;
     date: Date;
   }) {
-    console.log("REGISTER ORDER CALLED:", order);
+    console.log("ANALYTICS FUNCTION ENTERED");
 
+    const db = getDBMongo();
     const year = order.date.getFullYear();
     const month = order.date.getMonth() + 1;
 
     try {
-      const res = await MenuStats.findOneAndUpdate(
+      await db.collection("menustats").updateOne(
         { menuId: order.menuId },
         {
           $inc: {
@@ -26,17 +25,39 @@ export default class AdminAnalyticsService {
         { upsert: true },
       );
 
-      console.log("MENUSTATS RESULT:", res);
+      await db
+        .collection("monthlystats")
+        .updateOne(
+          { year, month },
+          { $inc: { totalRevenue: order.totalPrice, oredersCount: 1 } },
+          { upsert: true },
+        );
+
+      await db
+        .collection("statusstats")
+        .updateOne(
+          { status: order.status },
+          { $inc: { count: 1 } },
+          { upsert: true },
+        );
+
+      console.log("ANALYTICS UPDATED SUCCESSFULLY");
     } catch (err) {
-      console.error("MONGO ERROR:", err);
+      console.error("MONGO NATIVE ERROR:", err);
     }
   }
 
   async getFullDashboard() {
+    const db = getDBMongo();
+
     const [menus, months, statuses] = await Promise.all([
-      MenuStats.find().sort({ timesOrdered: -1 }),
-      MonthlyStats.find().sort({ year: 1, month: 1 }),
-      StatusStats.find(),
+      db.collection("menustats").find().sort({ timesOrdered: -1 }).toArray(),
+      db
+        .collection("monthlystats")
+        .find()
+        .sort({ year: 1, month: 1 })
+        .toArray(),
+      db.collection("statusstats").find().toArray(),
     ]);
 
     return {
