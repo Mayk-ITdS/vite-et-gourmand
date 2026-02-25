@@ -1,6 +1,7 @@
-import mongoose from "mongoose";
 import { ENV } from "./env.js";
 import { Pool } from "pg";
+import { MongoClient, Db } from "mongodb";
+import { ApiError } from "../types/users.js";
 export const pgPool = new Pool({
   host: ENV.PG.HOST,
   port: ENV.PG.PORT,
@@ -8,6 +9,9 @@ export const pgPool = new Pool({
   password: ENV.PG.PASSWORD,
   database: ENV.PG.DB,
 });
+console.log("PG_HOST", ENV.PG.HOST);
+console.log("PG_PORT", ENV.PG.PORT);
+console.log(ENV.PG.DB);
 export const connectPostgres = async (retries = 10) => {
   while (retries) {
     try {
@@ -22,14 +26,20 @@ export const connectPostgres = async (retries = 10) => {
   }
 };
 console.log("MONGO URI:", process.env.MONGO_URI_ADMIN);
-
+let clientMongo: MongoClient;
+let dbMongo: Db;
 export const connectMongo = async () => {
   const uri = process.env.MONGO_URI_ADMIN;
 
   if (!uri) {
     throw new Error("Mongo URI not defined");
   }
-
-  await mongoose.connect(uri);
-  console.log("Mongo connected");
+  clientMongo = new MongoClient(uri);
+  await clientMongo.connect();
+  dbMongo = clientMongo.db("vites");
+  console.log("Mongo Connected");
+};
+export const getDBMongo = () => {
+  if (!dbMongo) throw new ApiError(500, "db connection failed", false);
+  return dbMongo;
 };
