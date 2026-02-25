@@ -5,13 +5,12 @@ import AdminAnalyticsService from "../services/adminAnalytics.js";
 import { OrdersService } from "../services/OrdersService.js";
 import { UserRequest } from "../types/users.js";
 
-export class AdminController {
+class AdminController {
   constructor(
     private adminService = new AuthService(),
     private orderService = new OrdersService(),
+    private analyticsService = new AdminAnalyticsService(),
   ) {}
-
-  private analyticsService = new AdminAnalyticsService();
 
   login = async (req: Request<{}, {}, LoginDTO>, res: Response) => {
     try {
@@ -26,6 +25,7 @@ export class AdminController {
     const data = await this.analyticsService.getFullDashboard();
     return res.json(data);
   };
+
   createReservation = async (req: UserRequest, res: Response) => {
     try {
       const userId = Number(req.user?.user_id);
@@ -40,3 +40,5 @@ export class AdminController {
     }
   };
 }
+
+export default new AdminController();
