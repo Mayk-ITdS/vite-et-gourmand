@@ -69,14 +69,14 @@ export class AuthService {
         console.log;
       } else {
         const admin = await new AdminRepository().connect(dto.email);
-        if (!admin) throw new ApiError(450, "Invalid credentials", false);
+        if (!admin) throw new ApiError(401, "Invalid credentials", false);
 
         account = admin;
         role = "admin";
       }
 
       if (!account.password_hash) {
-        throw new ApiError(450, "Invalid credentials", false);
+        throw new ApiError(401, "Invalid credentials", false);
       }
 
       const isValid = await bcrypt.compare(dto.password, account.password_hash);
@@ -90,6 +90,7 @@ export class AuthService {
         ENV.JWT.SECRET,
         { expiresIn: "1h" },
       );
+      console.log("oto token prosze: ", token);
       if (!token) throw new ApiError(401, "No token", false);
       return {
         token,
