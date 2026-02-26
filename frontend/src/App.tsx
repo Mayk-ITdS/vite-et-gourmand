@@ -48,9 +48,7 @@ function App() {
                 element={<OrderConfirmation />}
               />
               <Route path="/espaceprive" element={<UserPanel />} />
-              <Route path="/adminpanel" element={<AdminLayout />} />
               <Route path="/contact" />
-              <Route path="/" element={<Home />} />
             </Route>
           </Route>
 

@@ -55,7 +55,7 @@ const Navbar: React.FC = () => {
         ) : (
           <div className="flex items-center gap-4">
             <Link
-              to="/espaceprive"
+              to={user?.role === "admin" ? "/admin" : "/espaceprive"}
               className="flex items-center gap-2 hover:opacity-80 transition"
             >
               <span className="text-xl">👤</span>

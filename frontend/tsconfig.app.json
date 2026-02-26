@@ -26,5 +26,9 @@
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": true
   },
-  "include": ["src", "../backend/src/types/bigDataMenus.ts"]
+  "include": [
+    "src",
+    "../backend/src/types/bigDataMenus.ts",
+    "../backend/src/types/adminAnalTypes.ts"
+  ]
 }

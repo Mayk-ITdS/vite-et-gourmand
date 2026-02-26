@@ -1,53 +1,39 @@
-import { Router } from "express";
-import ReviewsController from "../controllers/ReviewsController.js";
+import { Router, RequestHandler } from "express";
+
 import authMiddleware from "../middlewares/auth.js";
 import { authorize } from "../middlewares/authorize.js";
+import ReviewsController from "../controllers/ReviewsController.js";
 
 const router = Router();
 
-/**
- * ======================
- * PUBLIC (homepage)
- * ======================
- */
-router.get("/public", ReviewsController.loadReviews);
+router.get("/public", ReviewsController.loadReviews as RequestHandler);
 
-/**
- * ======================
- * USER
- * ======================
- */
 router.post(
   "/:id",
   authMiddleware,
   authorize(["user"]),
-  ReviewsController.createOne,
+  ReviewsController.createOne as RequestHandler,
 );
 
-/**
- * ======================
- * EMPLOYEE / ADMIN
- * ======================
- */
 router.get(
   "/pending",
   authMiddleware,
   authorize(["employee", "admin"]),
-  ReviewsController.getPendingReviews,
+  ReviewsController.getPendingReviews as RequestHandler,
 );
 
 router.patch(
   "/:id/approve",
   authMiddleware,
   authorize(["employee"]),
-  ReviewsController.approveReview,
+  ReviewsController.approveReview as RequestHandler,
 );
 
 router.delete(
   "/:id",
   authMiddleware,
   authorize(["employee"]),
-  ReviewsController.deleteReview,
+  ReviewsController.deleteReview as RequestHandler,
 );
 
 export default router;
