@@ -5,7 +5,7 @@ import AdminAnalyticsService from "../services/adminAnalytics.js";
 import { OrdersService } from "../services/OrdersService.js";
 import { UserRequest } from "../types/users.js";
 
-export class AdminController {
+class AdminController {
   constructor(
     private adminService = new AuthService(),
     private orderService = new OrdersService(),
@@ -40,3 +40,4 @@ export class AdminController {
     }
   };
 }
+export default new AdminController();

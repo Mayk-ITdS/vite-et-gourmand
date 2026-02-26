@@ -25,13 +25,16 @@ export default class AdminAnalyticsService {
         { upsert: true },
       );
 
-      await db
-        .collection("monthlystats")
-        .updateOne(
-          { year, month },
-          { $inc: { totalRevenue: order.totalPrice, oredersCount: 1 } },
-          { upsert: true },
-        );
+      await db.collection("monthlystats").updateOne(
+        { menuId: order.menuId, year, month },
+        {
+          $inc: {
+            monthlyRevenue: order.totalPrice,
+            ordersCount: 1,
+          },
+        },
+        { upsert: true },
+      );
 
       await db
         .collection("statusstats")
@@ -50,19 +53,49 @@ export default class AdminAnalyticsService {
   async getFullDashboard() {
     const db = getDBMongo();
 
-    const [menus, months, statuses] = await Promise.all([
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = now.getMonth() + 1;
+
+    const [menus, monthlyPerMenu, statuses] = await Promise.all([
       db.collection("menustats").find().sort({ timesOrdered: -1 }).toArray(),
-      db
-        .collection("monthlystats")
-        .find()
-        .sort({ year: 1, month: 1 })
-        .toArray(),
+
+      db.collection("monthlystats").find({ year, month }).toArray(),
+
       db.collection("statusstats").find().toArray(),
     ]);
 
+    const monthlyMap = new Map(
+      monthlyPerMenu.map((m) => [m.menuId, m.monthlyRevenue]),
+    );
+
+    const enrichedMenus = menus.map((menu) => ({
+      ...menu,
+      monthlyRevenue: monthlyMap.get(menu.menuId) || 0,
+    }));
+
+    const totalRevenue = enrichedMenus.reduce(
+      (sum, m) => sum + (m.monthlyRevenue || 0),
+      0,
+    );
+
+    const totalOrders = enrichedMenus.reduce(
+      (sum, m) => sum + (Number(m._id) || 0),
+      0,
+    );
+
+    const averageRevenue = totalOrders > 0 ? totalRevenue / totalOrders : 0;
+
+    const topMenuId = enrichedMenus.length > 0 ? enrichedMenus[0]._id : null;
+
     return {
-      menus,
-      months,
+      overview: {
+        totalRevenue,
+        totalOrders,
+        averageRevenue,
+        topMenuId,
+      },
+      menus: enrichedMenus,
       statuses,
     };
   }
