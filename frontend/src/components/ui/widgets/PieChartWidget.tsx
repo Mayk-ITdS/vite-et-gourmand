@@ -1,63 +1,97 @@
-import {
-  pieArcClasses,
-  PieChart,
-  type PieChartProps,
-  pieClasses,
-} from "@mui/x-charts/PieChart";
-import { rainbowSurgePalette } from "@mui/x-charts/colorPalettes";
-import { useTheme } from "@mui/material/styles";
+import { PieChart } from "@mui/x-charts/PieChart";
+import { useMemo } from "react";
+import { useAppSelector } from "@/store/hooks";
 
-export default function PieChartWidget() {
-  const theme = useTheme();
-  const palette = rainbowSurgePalette(theme.palette.mode);
-  const data1 = [
-    { label: "Group A", value: 400 },
-    { label: "Group B", value: 300 },
-    { label: "Group C", value: 300 },
-    { label: "Group D", value: 200 },
-  ];
-  const data2 = [
-    { label: "A1", value: 100, color: palette[0] },
-    { label: "A2", value: 300, color: palette[0] },
-    { label: "B1", value: 100, color: palette[1] },
-    { label: "B2", value: 80, color: palette[1] },
-    { label: "B3", value: 40, color: palette[1] },
-    { label: "B4", value: 30, color: palette[1] },
-    { label: "B5", value: 50, color: palette[1] },
-    { label: "C1", value: 100, color: palette[2] },
-    { label: "C2", value: 200, color: palette[2] },
-    { label: "D1", value: 150, color: palette[3] },
-    { label: "D2", value: 50, color: palette[3] },
-  ];
+function silverTone(index: number, total: number) {
+  const phase = (index / total) * Math.PI * 6;
+  const lightness = 55 + Math.sin(phase) * 18 + Math.cos(phase * 0.7) * 6;
 
-  const settings = {
-    series: [
-      {
-        innerRadius: 0,
-        outerRadius: 80,
-        data: data1,
-        highlightScope: { fade: "global", highlight: "item" },
-      },
-      {
-        id: "outer",
-        innerRadius: 100,
-        outerRadius: 120,
-        data: data2,
-        highlightScope: { fade: "global", highlight: "item" },
-      },
-    ],
-    height: 300,
-    hideLegend: true,
-  } satisfies PieChartProps;
+  return `hsl(210, 8%, ${lightness}%)`;
+}
+
+function darkSilver(index: number, total: number) {
+  const phase = (index / total) * Math.PI * 6;
+  const lightness = 28 + Math.sin(phase) * 8;
+
+  return `hsl(210, 10%, ${lightness}%)`;
+}
+
+export default function DiamondChart() {
+  const { data } = useAppSelector((state) => state.adminAnalytics);
+
+  const facets = useMemo(() => {
+    if (!data?.menus?.length) return [];
+
+    const total = data.menus.length;
+
+    return data.menus.map((m, i) => ({
+      id: m.menuId,
+      value: m.timesOrdered || 1,
+      label: `Menu ${m.menuId}`,
+      color: silverTone(i, total),
+    }));
+  }, [data]);
+
+  const outerFacets = useMemo(() => {
+    if (!facets.length) return [];
+    const total = facets.length;
+
+    return facets.map((f, i) => ({
+      ...f,
+      color: darkSilver(i, total),
+    }));
+  }, [facets]);
+
+  if (!facets.length) return null;
 
   return (
-    <PieChart
-      {...settings}
-      sx={{
-        [`.${pieClasses.series}[data-series="outer"] .${pieArcClasses.root}`]: {
-          opacity: 0.6,
-        },
-      }}
-    />
+    <div className="bg-[#050b18] p-12 rounded-2xl relative">
+      <PieChart
+        height={520}
+        series={[
+          {
+            data: facets,
+            innerRadius: 0,
+            outerRadius: 185,
+            paddingAngle: 0,
+            cornerRadius: 0,
+            highlightScope: { highlight: "item", fade: "global" },
+            highlighted: {
+              additionalRadius: 18,
+            },
+          },
+
+          {
+            data: outerFacets,
+            innerRadius: 195,
+            outerRadius: 220,
+            paddingAngle: 0,
+            cornerRadius: 0,
+            highlightScope: { highlight: "item", fade: "global" },
+            highlighted: {
+              color: "#e6edf5",
+            },
+          },
+        ]}
+        sx={{
+          "& .MuiChartsArc-root": {
+            stroke: "#050b18",
+            strokeWidth: 0.6,
+          },
+        }}
+      />
+      <div className="absolute inset-0 pointer-events-none">
+        <div
+          className="w-full h-full"
+          style={{
+            background: `
+        radial-gradient(circle at 30% 25%, rgba(255,255,255,0.15), transparent 40%),
+        radial-gradient(circle at 70% 75%, rgba(255,255,255,0.08), transparent 50%)
+      `,
+            mixBlendMode: "screen",
+          }}
+        />
+      </div>
+    </div>
   );
 }
