@@ -1,24 +1,53 @@
 # Vite & Gourmand
 
-Project built as an ECF evaluation at Studi DIgital Education, France
+Project of digitalization of a premium catering platform built as an ECF evaluation at Studi Digital Education (France).
 
-Bussiness aspect idea:
+## Table of Contents
 
-Digital platform for premium catering management.  
-Full-stack academic project designed with production-oriented architecture.
+- Architectural Philosophy
+- Business Context
+- Technology Overview
+- Functional Scope
+- Security Model
+- Development Environment Setup
 
-Vite & Gourmand is not a simple ordering website.  
-It is a structured catering management system built using a **Database-First** and **Security-by-Design** approach.
+## Architecture decicions
 
-The objective was to design a scalable, accessible, secure and maintainable digital ecosystem capable of evolving into a production-grade catering platform.
+DB-first + client-side state layer
 
-# demo
+Although the project was developed in an academic context, I deliberately treated the database layer as if it were part of a real-world system.
+
+Instead of relying only on application-level validation, I chose to push a significant part of the logic and integrity controls directly into PostgreSQL. The goal was to simulate production-oriented constraints: protecting data at the lowest possible level of a system to prevent inconsistent states, and reducing the risk of invalid or malicious input.
+
+For example, the ingest_stock function encapsulates structured stock ingestion logic inside the database, validating input modes and payload structure before any write operation is performed. By centralizing this logic, the system avoids exposing raw insert operations directly to the application layer.
+This was a deliberate decision to simulate real-world database design practices and to understand better how logic can be safely embedded inside low level layers.
+
+This approach reflects an intention to simulate real-world database design practices and to deepen understanding of data integrity and performance considerations.
+
+---
+
+## Security, scalability and architectural consistency
+
+With a database-first layer defined as the foundation of the system, the idea naturally emerged to establish a second core structure on the client side.
+
+If PostgreSQL represents the central logic and integrity layer on the backend, Redux Toolkit plays a similar structural role on the frontend. It acts as the second “heart” of the application, organizing and controlling global state.
+
+The possibilities offered by Redux Toolkit made it possible to structure authentication, role management and reservation flows in a centralized and predictable way. This approach ensures that complex interactions are handled consistently across the application rather than scattered across isolated components.
+
+Redux works particularly well together with TypeScript, reinforcing type safety and making data flow more explicit. React remains responsible for smaller, localized state transitions, while Redux manages the broader application state.
+
+From a security perspective, storing the authentication token within the Redux state layer instead of directly manipulating localStorage aligns with the overall architectural goal: keeping control mechanisms centralized, structured and predictable.
+
+---
+
+# Live Demo
 
 http://51.20.182.243/menus
 
-# trello
+## Project Management
 
-## https://trello.com/b/G02hHQge/vite-gourmand
+Trello board
+https://trello.com/b/G02hHQge/vite-gourmand
 
 ### Additional Documentation
 
@@ -66,9 +95,7 @@ Detailed project building stages, AWS deployment process, architecture diagrams,
 
 ---
 
-# Architecture Overview
-
-Client–Server architecture with strict separation:
+## Deployment Architecture
 
 Frontend → REST API → PostgreSQL & MongoDB
 
@@ -85,7 +112,7 @@ Database schema initializes automatically during container startup.
 
 ---
 
-# Local installation
+## Development Environment Setup
 
 ## Prerequisites
 
@@ -181,64 +208,14 @@ http://localhost:3000/health
 
 ---
 
-## Security Model
-
-Multi-layer security implementation:
-
-- JWT authentication
-- Role-based access control (roles + user_roles)
-- Backend middleware verification
-- PostgreSQL constraints, triggers and custom functions
-- Indexes
-- ENUM types preventing invalid states
-- Data normalization via triggers
-- Stored procedures encapsulating sensitive logic
-- Strict TypeScript typing (compile-time validation)
-
-### Example: ENUM Constraint
-
-```sql
-CREATE TYPE reservation_status_enum AS ENUM
-('pending','confirmed','cancelled','completed');
-
 ```
-
-## State Management
-
-### Redux Toolkit chosen for:
-
-- Predictable global state
-
-- Memoized selectors
-
-- Controlled persistence
-
-- Secure token handling inside the store
-
-- Authentication token is managed via Redux + redux-persist (not directly manipulated in localStorage inside components).
-
-### Example: Typed Async Thunk
-
-```export const loginUser = createAsyncThunk<
-  AuthResponse,
-  LoginDTO,
-  { rejectValue: ClientError }
->("auth/login", async (payload, { rejectWithValue }) => {
-  try {
-    const response = await api.post("/auth/login", payload);
-    return response.data;
-  } catch (error) {
-    return rejectWithValue(toClientError(error));
-  }
-});
-
-```
-
-### Both input and output are strictly typed
 
 ---
 
-## User Roles
+## Functional Scope
+
+The system is structured around role-based access control (RBAC).
+
 
 ### User
 
@@ -272,16 +249,14 @@ Private Dashboard <>
 
 ## Roadmap
 
-- Full Admin UI
+Planned extensions include:
 
-- Advanced stock analytics module
-
-- Google API integration (logistics & geolocation)
-
-- Extended RBAC policy model
-
-- Self automated users mouvement implementations
-- Business intelligence extension
+- Full administrative dashboard with MongoDB-powered analytics
+- Progressive accessibility improvements aligned with WCAG recommendations (keyboard navigation, ARIA attributes, contrast validation and screen reader support)
+- Automated workflow simulation engine for continuous system activity and stress testing
+- Distance-based delivery pricing using external geolocation API
+- Advanced stock monitoring with automated alert system
+- Extended RBAC policy with fine-grained permission control
 
 ## Academic Context
 
@@ -296,3 +271,4 @@ Developed as an academic project with emphasis on:
 - scalable engineering practices
 
 The project is conceived as a foundation for a production-ready catering management system.
+```
