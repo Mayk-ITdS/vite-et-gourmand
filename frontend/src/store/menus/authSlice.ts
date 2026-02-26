@@ -5,7 +5,6 @@ import api, { setAuthToken } from "@/utils/api";
 
 import { toClientError } from "../funcs/toClientError";
 
-
 /* =======================
    TYPES
 ======================= */
@@ -33,8 +32,8 @@ type AuthResponse = {
     firstName: string;
     lastName: string;
     email: string;
-    role: "user" | "admin";
-  } | null;
+    role: "user" | "admin" | "employee";
+  };
 };
 
 type AuthState = {

@@ -16,12 +16,14 @@ import { authReducer } from "./menus/authSlice";
 import { menuReducer } from "./menus/menusSlice";
 import { userOrdersReducer } from "./orders/userOrdersSlice";
 import { userProfileReducer } from "./slices/userProfileSlice";
+import analReducer from "./slices/adminAnalyticsSlice";
 const rootReducer = combineReducers({
   menus: menuReducer,
   auth: authReducer,
   orders: ordersReducer,
   userOrders: userOrdersReducer,
   profile: userProfileReducer,
+  adminAnalytics: analReducer,
 });
 const persistConfig = {
   key: "root",

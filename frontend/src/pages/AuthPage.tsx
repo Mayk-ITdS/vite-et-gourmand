@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
-
 import { Button } from "@/components/ui/button";
 import {
   loginUser,
@@ -30,16 +29,6 @@ const AuthorizationPage = () => {
     handleSubmit,
     formState: { errors, isSubmitting },
   } = useForm<RegisterPayload>();
-  const user = useAppSelector((state) => state.auth.user);
-  useEffect(() => {
-    if (user?.role === "admin") {
-      navigate("/admin");
-    } else if (user?.role === "employee") {
-      navigate("/employee");
-    } else if (user?.role === "user") {
-      navigate("/espaceprive");
-    }
-  }, [user, navigate]);
 
   const onSubmit = async (data: RegisterPayload) => {
     if (mode === "register") {
@@ -59,9 +48,19 @@ const AuthorizationPage = () => {
         const resultAction = await dispatch(
           loginUser({ email: data.email, password: data.password }),
         );
+
         if (loginUser.fulfilled.match(resultAction)) {
-          setAuthToken(resultAction.payload.token);
-          navigate("/espaceprive");
+          const { token, user } = resultAction.payload;
+
+          setAuthToken(token);
+
+          if (user.role === "admin") {
+            navigate("/admin");
+          } else if (user.role === "employee") {
+            navigate("/employee");
+          } else {
+            navigate("/espaceprive");
+          }
           toast("Login Successful");
         }
       } catch (e) {
