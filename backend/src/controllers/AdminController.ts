@@ -9,9 +9,8 @@ class AdminController {
   constructor(
     private adminService = new AuthService(),
     private orderService = new OrdersService(),
+    private analyticsService = new AdminAnalyticsService(),
   ) {}
-
-  private analyticsService = new AdminAnalyticsService();
 
   login = async (req: Request<{}, {}, LoginDTO>, res: Response) => {
     try {
@@ -26,6 +25,7 @@ class AdminController {
     const data = await this.analyticsService.getFullDashboard();
     return res.json(data);
   };
+
   createReservation = async (req: UserRequest, res: Response) => {
     try {
       const userId = Number(req.user?.user_id);
@@ -40,4 +40,5 @@ class AdminController {
     }
   };
 }
+
 export default new AdminController();

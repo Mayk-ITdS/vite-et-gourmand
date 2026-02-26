@@ -10,7 +10,6 @@ class MenuController {
 
       return res.json({ data });
     } catch (e) {
-      console.warn(e);
       return res.status(500).json({ error: "Internal server error" });
     }
   };

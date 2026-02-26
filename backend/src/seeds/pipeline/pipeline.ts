@@ -5,7 +5,7 @@ import { seedUsers } from "./seedUsers.js";
 import { seedMenuItems } from "./seedMenuItems.js";
 import { seedMenus } from "./seedMenus.js";
 import { linkRelations } from "./seedRelationsMenus.js";
-import { seedReservations } from "./seedTest.js";
+import { seedReservations } from "./seedReservations.js";
 import { seedReservationMenus } from "./seedReservationsItems.js";
 import seedMongoAnalytics from "./seedMongoAnalytics.js";
 import seedReviews from "./seedAvis.js";
