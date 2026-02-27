@@ -10,6 +10,7 @@ Project of digitalization of a premium catering platform built as an ECF evaluat
 - Functional Scope
 - Security Model
 - Development Environment Setup
+- Charte Graphique
 
 ## Architecture decicions
 
@@ -195,27 +196,55 @@ docker compose up --build
 
 - Frontend (React served via Nginx)
 
-## Note: if the database was not automatically initialized
-
 ### Run seed manually:
 
 `docker exec -it <backend_container_name> npm run seed`
 
+## Note: if the database was not automatically initialized
+
+#### Health check
+
 ```
-health check
+
 http://localhost:3000/health
 ```
 
 ---
 
-```
+### Database initialization (PostgreSQL & MongoDB)
+
+1. **Start all containers:**
+
+   ```bash
+   docker compose up -d
+   ```
+
+   This will start PostgreSQL, MongoDB, backend, and frontend containers. The MongoDB database (empty) will be created automatically by Docker Compose.
+
+2. **Initialize PostgreSQL schema (if not created automatically):**
+
+   ```bash
+   docker compose exec -T postgres psql -U app -d vites -f /docker-entrypoint-initdb.d/001_database_schema.sql
+   ```
+
+   This command creates all tables and types defined in `backend/src/config/001_database_schema.sql`.
+
+3. **Seed databases with initial data:**
+   ```bash
+   docker exec -it <backend_container_name> npm run seed
+   ```
+   This will populate PostgreSQL with test data and create initial collections/documents in MongoDB if needed by the app.
+
+> **Note:**
+>
+> - MongoDB is created as an empty database when the container starts (step 1).
+> - Collections and data for MongoDB are created during the seed process (step 3), if your backend uses them.
 
 ---
 
 ## Functional Scope
 
 The system is structured around role-based access control (RBAC).
-
 
 ### User
 
@@ -241,9 +270,17 @@ The system is structured around role-based access control (RBAC).
 
 ### UI Preview
 
-Landing Page <>
+#####
 
-Menu Overview <>
+Welcome page
+
+<img src='./frontend/src/assets/homepage.png'></img>
+
+##### Menu Overview
+
+<img class='height:300px;' src="./frontend/src/assets/menus-g.png"></img>
+
+<>
 
 Private Dashboard <>
 
@@ -270,5 +307,35 @@ Developed as an academic project with emphasis on:
 
 - scalable engineering practices
 
-The project is conceived as a foundation for a production-ready catering management system.
-```
+## Charte Graphique
+
+## Palette de couleurs
+
+| Nom            | HEX     | HSL           | RGBA                | OKLCH                     | Usage                                  |
+| -------------- | ------- | ------------- | ------------------- | ------------------------- | -------------------------------------- |
+| Bordeaux       | #7a1622 | 345, 65%, 28% | rgba(122,22,34,1)   | oklch(0.32 0.18 20)       | Fond, boutons principaux, accents wine |
+| Bordeaux foncé | #4a0c13 | 345, 70%, 16% | rgba(74,12,19,1)    | oklch(0.18 0.13 20)       | Header, footer, overlays               |
+| Beige clair    | #e8dfcf | 40, 38%, 88%  | rgba(232,223,207,1) | oklch(0.95 0.03 90)       | Texte sur fond foncé, bordures         |
+| Bleu profond   | #070c14 | 225, 80%, 6%  | rgba(7,12,20,1)     | oklch(0.13 0.028 261.692) | Dashboard, cartes techniques           |
+| Or             | #c4a07a | 36, 39%, 62%  | rgba(196,160,122,1) |                           | Accents, graphiques, highlights        |
+| Gris argent    | #e6edf5 | 213, 38%, 91% | rgba(230,237,245,1) |                           | Surlignage PieChart                    |
+
+_Exemple :_
+
+- Bordeaux : Utilisé pour les boutons principaux et le fond des sections gastronomiques.
+- Bleu profond : Utilisé pour les dashboards et les parties techniques.
+
+## Typographie
+
+- **Font principale** : Inter, sans-serif
+  - `font-family: 'Inter', Arial, sans-serif;`
+  - Poids : 400 (normal), 500 (medium), 700 (bold)
+  - Exemples : titres (700), paragraphes (400), boutons (500)
+- **Font alternative** : Roboto, Arial, sans-serif (pour fallback)
+
+## Exemples d’utilisation
+
+- Thème "wine-bordeaux" : parties gastronomiques, présentation, pages d’accueil, événements.
+- Thème "bleu profond" : dashboard, statistiques, administration, widgets techniques.
+
+---
