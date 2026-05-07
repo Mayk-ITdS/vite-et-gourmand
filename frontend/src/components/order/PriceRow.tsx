@@ -7,11 +7,7 @@ interface PriceRowProps {
   highlight?: boolean;
 }
 
-export default function PriceRow({
-  label,
-  value,
-  highlight = false,
-}: PriceRowProps) {
+export default function PriceRow({ label, value, highlight = false }: PriceRowProps) {
   return (
     <Box
       sx={{

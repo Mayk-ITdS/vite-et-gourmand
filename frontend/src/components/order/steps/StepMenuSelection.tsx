@@ -33,14 +33,10 @@ export default function StepMenuSelection() {
 
         <div className="text-white/80 text-sm">
           Prix par personne :{" "}
-          <span className="text-yellow-400 font-medium">
-            {order.order.unitPrice.toFixed(2)} €
-          </span>
+          <span className="text-yellow-400 font-medium">{order.order.unitPrice.toFixed(2)} €</span>
         </div>
 
-        <div className="text-white/80 text-sm">
-          Minimum : {order.order.minPersons} personnes
-        </div>
+        <div className="text-white/80 text-sm">Minimum : {order.order.minPersons} personnes</div>
       </div>
       <TextField
         label="Nombre de personnes"

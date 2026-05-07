@@ -4,8 +4,7 @@ import type { ClientError } from "@/types/errors";
 
 export function toClientError(err: unknown): ClientError {
   if (axios.isAxiosError(err)) {
-    if (err.code === "ECONNABORTED")
-      return { kind: "timeout", message: "Timeout" };
+    if (err.code === "ECONNABORTED") return { kind: "timeout", message: "Timeout" };
     if (!err.response) return { kind: "network", message: "No network / CORS" };
 
     const status = err.response.status;

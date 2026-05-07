@@ -20,8 +20,7 @@ export function calculateOrderPrice({
   const discountEligible = persons >= minPersons + 5;
   const discount = discountEligible ? base * 0.1 : 0;
 
-  const delivery =
-    city !== "Bordeaux" ? BASE_DELIVERY + distanceKm * KM_RATE : 0;
+  const delivery = city !== "Bordeaux" ? BASE_DELIVERY + distanceKm * KM_RATE : 0;
 
   const ht = base - discount;
   const tva = ht * VAT_RATE;
