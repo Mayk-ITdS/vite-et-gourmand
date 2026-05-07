@@ -1,5 +1,5 @@
 import { pgPool } from "../config/db.js";
-import { AuthUser, DbUser } from "../types/users.js";
+import { DbUser } from "../types/users.js";
 
 class AdminRepository {
   async connect(email: string): Promise<DbUser> {
@@ -10,7 +10,7 @@ class AdminRepository {
       role_id 
       from administration 
       where admin_email = $1`,
-      [email],
+      [email]
     );
     return admin.rows[0];
   }

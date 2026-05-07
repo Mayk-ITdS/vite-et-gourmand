@@ -4,7 +4,7 @@ class StockController {
   loadData = async (
     req: Request<{}, {}, IngestProductsQuery>,
     res: Response,
-    next: NextFunction,
+    next: NextFunction
   ) => {
     if (!req.body) return new Error("No data my son!");
     try {
