@@ -8,9 +8,7 @@ export async function seedReservationMenus(client: PoolClient) {
   console.log("Seeding reservation_menus...");
 
   let inserted = 0;
-  const reservations = await client.query(
-    `SELECT res_id FROM reservations ORDER BY res_id`,
-  );
+  const reservations = await client.query(`SELECT res_id FROM reservations ORDER BY res_id`);
 
   const menus = await client.query(`SELECT menu_id, prix_unitaire FROM menus`);
 
@@ -34,7 +32,7 @@ export async function seedReservationMenus(client: PoolClient) {
         (res_id, menu_id, unit_price_snapshot, quantity, notes)
         VALUES ($1,$2,$3,$4,$5)
         `,
-        [reservation.res_id, menu.menu_id, menu.prix_unitaire, quantity, null],
+        [reservation.res_id, menu.menu_id, menu.prix_unitaire, quantity, null]
       );
       inserted += insertReserv.rowCount ?? 0;
     }
@@ -45,7 +43,7 @@ export async function seedReservationMenus(client: PoolClient) {
       SET total_price = $1
       WHERE res_id = $2
       `,
-      [totalPrice, reservation.res_id],
+      [totalPrice, reservation.res_id]
     );
   }
 

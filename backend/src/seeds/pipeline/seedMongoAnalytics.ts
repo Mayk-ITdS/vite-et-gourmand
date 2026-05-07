@@ -1,9 +1,11 @@
 import { PoolClient } from "pg";
-import { getDBMongo } from "../../config/db.js";
-import AdminAnalyticsService from "../../services/adminAnalytics.js";
+import { connectMongo, getDBMongo } from "../../config/db.js";
+import AdminAnalyticsService from "../../services/AdminAnalyticsService.js";
 
 const seedMongoAnalytics = async (client: PoolClient) => {
+  console.log("Ï`m in mongo analitics");
   const adminAnal = new AdminAnalyticsService();
+  await connectMongo();
   const db = getDBMongo();
   let inserted = 0;
   await db.collection("menustats").deleteMany({});
@@ -25,7 +27,7 @@ const seedMongoAnalytics = async (client: PoolClient) => {
                     GROUP BY r.res_id, r.res_status, r.event_date`;
 
   const reservations = await client.query(sql);
-
+  console.log("Ï`m in mongo analitics just before la boucle");
   for (const res of reservations.rows) {
     inserted++;
     const { res_status, event_date, menus } = res;
@@ -39,6 +41,7 @@ const seedMongoAnalytics = async (client: PoolClient) => {
       });
     }
   }
+  console.log("Ï`m in mongo analitics je reviens cetais chouette!");
   return inserted;
 };
 export default seedMongoAnalytics;

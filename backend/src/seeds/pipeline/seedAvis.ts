@@ -14,7 +14,7 @@ const seedReviews = async () => {
         content: o.content,
         score: o.score,
         createdAt: new Date(o.createdAt.$date),
-      })),
+      }))
     );
   return (await result).insertedCount;
 };

@@ -2,10 +2,7 @@ import { PoolClient } from "pg";
 import { SeedMenuItems } from "../../types/menus/maneuItems.js";
 import { makeCode } from "../helpers.js";
 
-export const seedMenuItems = async (
-  client: PoolClient,
-  items: SeedMenuItems[],
-) => {
+export const seedMenuItems = async (client: PoolClient, items: SeedMenuItems[]) => {
   const payload = items.map((i, k) => ({
     item_code: makeCode("MIT", k + 1, 4),
     item_name: i.item_name,
