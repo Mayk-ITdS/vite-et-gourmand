@@ -7,7 +7,7 @@ import {
   Button,
   Box,
 } from "@mui/material";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 import { useAppDispatch } from "@/store/hooks";
 import { updateProfile } from "@/store/slices/userProfileSlice";
@@ -17,29 +17,26 @@ type Props = {
   onClose: () => void;
   profile: Profile | null;
 };
+type ProfileForm = {
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone: string;
+  city: string;
+  country: string;
+};
+const createInitialUserForm = (initialProfile: Profile | null): ProfileForm => ({
+  firstName: initialProfile?.firstName ?? "",
+  lastName: initialProfile?.lastName ?? "",
+  email: initialProfile?.email ?? "",
+  phone: initialProfile?.phone ?? "",
+  city: initialProfile?.city ?? "",
+  country: initialProfile?.country ?? "",
+});
 
 const EditProfileDialog = ({ open, onClose, profile }: Props) => {
   const dispatch = useAppDispatch();
-
-  const [form, setForm] = useState({
-    firstName: "",
-    lastName: "",
-    phone: "",
-    city: "",
-    country: "",
-  });
-
-  useEffect(() => {
-    if (profile) {
-      setForm({
-        firstName: profile.firstName,
-        lastName: profile.lastName,
-        phone: profile.phone,
-        city: profile.city,
-        country: profile.country,
-      });
-    }
-  }, [profile]);
+  const [form, setForm] = useState<ProfileForm>(() => createInitialUserForm(profile));
 
   const handleChange = (field: string, value: string) => {
     setForm((prev) => ({ ...prev, [field]: value }));

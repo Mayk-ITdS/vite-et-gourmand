@@ -46,9 +46,9 @@ const UserPanel = () => {
         >
           <UserSidebarProfile />
 
-          <SidebarNavItem label="Dashboard" active />
-          <SidebarNavItem label="Orders" />
-          <SidebarNavItem label="Settings" />
+          <SidebarNavItem to="" label="Dashboard" />
+          <SidebarNavItem to="" label="Orders" />
+          <SidebarNavItem to="" label="Settings" />
         </Box>
         <Box sx={{ p: { xs: 2, md: 3 } }}>
           <Typography variant="h5" sx={{ mb: 3 }}>

@@ -43,11 +43,7 @@ const UserSidebarProfile = () => {
       <Button size="small" onClick={() => setOpenEdit(true)}>
         Edit profile
       </Button>
-      <EditProfileDialog
-        open={openEdit}
-        onClose={() => setOpenEdit(false)}
-        profile={profile}
-      />
+      <EditProfileDialog open={openEdit} onClose={() => setOpenEdit(false)} profile={profile} />
     </Box>
   );
 };
