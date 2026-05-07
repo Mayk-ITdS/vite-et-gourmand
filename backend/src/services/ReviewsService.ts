@@ -7,7 +7,7 @@ console.log("REVIEWS REPO FILE LOADED");
 export class ReviewsService {
   constructor(
     private reviewsRepo = new ReviewsRepository(),
-    private orderRepo = new OrderRepository(),
+    private orderRepo = new OrderRepository()
   ) {}
 
   findOneByOrderId = async (id: number) => {

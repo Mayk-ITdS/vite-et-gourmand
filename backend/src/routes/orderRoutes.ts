@@ -8,12 +8,7 @@ router.get(
   "/me",
   authMiddleware,
   requireRole(["admin", "user"]),
-  new OrdersController().getMyOrders,
+  new OrdersController().getMyOrders
 );
-router.post(
-  "/me",
-  authMiddleware,
-  requireRole(["user"]),
-  new OrdersController().saveNewOrders,
-);
+router.post("/me", authMiddleware, requireRole(["user"]), new OrdersController().saveNewOrders);
 export default router;

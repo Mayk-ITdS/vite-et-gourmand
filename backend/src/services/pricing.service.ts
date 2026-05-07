@@ -1,22 +1,16 @@
-import {
-  MenuFromDB,
-  MenuInput,
-  PricingBreakdown,
-} from "../types/menus/pricing.types.js";
+import { MenuFromDB, MenuInput, PricingBreakdown } from "../types/menus/pricing.types.js";
 import { ApiError } from "../types/users.js";
 
 const TVA_RATE = 0.2;
 
 export function calculatePricing(
   menusInput: MenuInput[],
-  menusFromDb: MenuFromDB[],
+  menusFromDb: MenuFromDB[]
 ): PricingBreakdown {
   let totalHT = 0;
 
   const results = menusInput.map((input) => {
-    const dbMenu = menusFromDb.find(
-      (m) => Number(m.menu_id) === Number(input.menuId),
-    );
+    const dbMenu = menusFromDb.find((m) => Number(m.menu_id) === Number(input.menuId));
 
     if (!dbMenu) {
       throw new ApiError(404, "Menu not found in pricing calculation", false);
