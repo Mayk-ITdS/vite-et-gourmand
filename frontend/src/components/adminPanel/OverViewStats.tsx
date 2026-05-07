@@ -1,22 +1,24 @@
-import { useAppSelector } from "@/store/hooks";
 import { KPI } from "./KPICard";
-import {
-  selectAverageRevenue,
-  selectTotalOrders,
-  selectTotalRevenue,
-} from "@/store/slices/adminSelectors";
+type OverviewStatsProps = {
+  totalRevenue: number;
+  totalOrders: number;
+  averageRevenue: number;
+  topMenuLabel: string;
+};
 
-export default function OverviewStats() {
-  const revenue = useAppSelector(selectTotalRevenue);
-  const orders = useAppSelector(selectTotalOrders);
-  const average = useAppSelector(selectAverageRevenue);
-
+const OverviewStats = ({
+  totalRevenue,
+  totalOrders,
+  averageRevenue,
+  topMenuLabel,
+}: OverviewStatsProps) => {
   return (
     <div className="grid md:grid-cols-4 gap-6">
-      <KPI label="Total Revenue" value={`${revenue.toLocaleString()} €`} />
-      <KPI label="Total Orders" value={orders.toString()} />
-      <KPI label="Avg Revenue / Order" value={`${average.toFixed(2)} €`} />
-      <KPI label="Top Menu ID" value="— dynamic later —" />
+      <KPI label="Total Revenue" value={`${totalRevenue?.toLocaleString()} €`} />
+      <KPI label="Total Orders" value={`${totalOrders}`} />
+      <KPI label="Avg Revenue / Order" value={`${averageRevenue.toFixed(2)} €`} />
+      <KPI label="Top Menu ID" value={topMenuLabel} />
     </div>
   );
-}
+};
+export default OverviewStats;

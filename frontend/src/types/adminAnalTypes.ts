@@ -15,8 +15,14 @@ export interface StatusStat {
   status: string;
   count: number;
 }
-
+export interface AdminOverview {
+  totalRevenue: number;
+  totalOrders: number;
+  averageRevenue: number;
+  topMenuId: number;
+}
 export interface AdminDashboardPayload {
+  overview: AdminOverview;
   menus: MenuStat[];
   months: MonthStat[];
   statuses: StatusStat[];

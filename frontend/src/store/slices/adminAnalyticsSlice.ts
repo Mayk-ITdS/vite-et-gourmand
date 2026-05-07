@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import api from "@/utils/api";
 import type { AdminDashboardPayload } from "@/types/adminAnalTypes";
+import { toClientError } from "../funcs/toClientError";
 
 interface AdminAnalyticsState {
   data: AdminDashboardPayload | null;
@@ -14,12 +15,16 @@ const initialState: AdminAnalyticsState = {
   error: null,
 };
 
-const fetchAdminDashboard = createAsyncThunk(
+const fetchAdminDashboard = createAsyncThunk<AdminDashboardPayload, void, { rejectValue: string }>(
   "adminAnalytics/fetchDashboard",
-  async () => {
-    const res = await api.get("/admin/dashboard");
-    return res.data as AdminDashboardPayload;
-  },
+  async (_, { rejectWithValue }) => {
+    try {
+      const res = await api.get<AdminDashboardPayload>("/admin/dashboard");
+      return res.data;
+    } catch (err) {
+      return rejectWithValue(toClientError(err).message);
+    }
+  }
 );
 
 const analyticSlice = createSlice({
@@ -32,6 +37,7 @@ const analyticSlice = createSlice({
         state.loading = true;
         state.error = null;
       })
+
       .addCase(fetchAdminDashboard.fulfilled, (state, action) => {
         state.loading = false;
         state.data = action.payload;
