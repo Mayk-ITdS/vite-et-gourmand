@@ -63,41 +63,39 @@ const initialState: AuthState = {
    THUNKS
 ======================= */
 
-const loginUser = createAsyncThunk<
-  AuthResponse,
-  LoginPayload,
-  { rejectValue: ClientError }
->("auth/login", async (payload, { rejectWithValue }) => {
-  try {
-    const res = await api.request<AuthResponse>({
-      url: "/auth/login",
-      method: "POST",
-      data: payload,
-    });
+const loginUser = createAsyncThunk<AuthResponse, LoginPayload, { rejectValue: ClientError }>(
+  "auth/login",
+  async (payload, { rejectWithValue }) => {
+    try {
+      const res = await api.request<AuthResponse>({
+        url: "/auth/login",
+        method: "POST",
+        data: payload,
+      });
 
-    return res.data;
-  } catch (e) {
-    return rejectWithValue(toClientError(e));
+      return res.data;
+    } catch (e) {
+      return rejectWithValue(toClientError(e));
+    }
   }
-});
+);
 
-const registerUser = createAsyncThunk<
-  AuthState,
-  RegisterPayload,
-  { rejectValue: ClientError }
->("auth/register", async (payload, { rejectWithValue }) => {
-  try {
-    const res = await api.request<AuthState>({
-      url: "/auth/register",
-      method: "POST",
-      data: payload,
-    });
+const registerUser = createAsyncThunk<AuthState, RegisterPayload, { rejectValue: ClientError }>(
+  "auth/register",
+  async (payload, { rejectWithValue }) => {
+    try {
+      const res = await api.request<AuthState>({
+        url: "/auth/register",
+        method: "POST",
+        data: payload,
+      });
 
-    return res.data;
-  } catch (err) {
-    return rejectWithValue(toClientError(err));
+      return res.data;
+    } catch (err) {
+      return rejectWithValue(toClientError(err));
+    }
   }
-});
+);
 
 /* =======================
    SLICE
@@ -146,11 +144,4 @@ const authSlice = createSlice({
 });
 const { logout } = authSlice.actions;
 const authReducer = authSlice.reducer;
-export {
-  logout,
-  authReducer,
-  registerUser,
-  loginUser,
-  type LoginPayload,
-  type RegisterPayload,
-};
+export { logout, authReducer, registerUser, loginUser, type LoginPayload, type RegisterPayload };
