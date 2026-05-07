@@ -1,10 +1,4 @@
-type UserPanelProps =
-  | "profile"
-  | "orders"
-  | "tracking"
-  | "history"
-  | "preferences"
-  | "messages";
+type UserPanelProps = "profile" | "orders" | "tracking" | "history" | "preferences" | "messages";
 interface Profile {
   id: number;
   firstName: string;
