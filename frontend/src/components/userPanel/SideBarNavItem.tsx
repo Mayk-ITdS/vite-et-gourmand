@@ -1,42 +1,33 @@
+import { NavLink } from "react-router-dom";
 import Box from "@mui/material/Box";
 
-const SidebarNavItem = ({
-  label,
-  active,
-}: {
+interface Props {
   label: string;
-  active?: boolean;
-}) => {
+  to: string;
+}
+
+export default function SidebarNavItem({ label, to }: Props) {
   return (
-    <Box
-      sx={{
-        position: "relative",
-        py: 1.2,
-        cursor: "pointer",
-        color: active ? "#C6A56B" : "rgba(255,255,255,0.7)",
-        fontWeight: 400,
-        letterSpacing: active ? "0.5px" : "0px",
-        transition: "all 0.2s ease",
-        "&:hover": {
-          color: "rgba(255,255,255,0.95)",
-          letterSpacing: "0.5px",
-        },
-        "&::after": active
-          ? {
-              content: '""',
-              position: "absolute",
-              bottom: 0,
-              left: 0,
-              width: "60%",
-              height: "1px",
-              background: "linear-gradient(90deg, #6E0F1A, #C6A56B)",
-              boxShadow: "0 0 6px rgba(198,165,107,0.4)",
-            }
-          : {},
-      }}
-    >
-      {label}
-    </Box>
+    <NavLink to={to} style={{ textDecoration: "none" }}>
+      {({ isActive }) => (
+        <Box
+          sx={{
+            px: 2,
+            py: 1.5,
+            borderRadius: 2,
+            fontSize: "0.9rem",
+            transition: "all 0.2s ease",
+            background: isActive ? "rgba(255,255,255,0.08)" : "transparent",
+            color: isActive ? "#fff" : "rgba(255,255,255,0.7)",
+            "&:hover": {
+              background: "rgba(255,255,255,0.05)",
+              color: "#fff",
+            },
+          }}
+        >
+          {label}
+        </Box>
+      )}
+    </NavLink>
   );
-};
-export default SidebarNavItem;
+}

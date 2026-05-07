@@ -30,7 +30,7 @@ export const updateProfile = createAsyncThunk(
       city: string;
       country: string;
     },
-    { rejectWithValue },
+    { rejectWithValue }
   ) => {
     try {
       const res = await api.put("/users/me", data);
@@ -38,7 +38,7 @@ export const updateProfile = createAsyncThunk(
     } catch (err) {
       return rejectWithValue(toClientError(err));
     }
-  },
+  }
 );
 
 const profileSlice = createSlice({
