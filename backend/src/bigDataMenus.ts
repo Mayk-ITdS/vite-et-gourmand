@@ -1250,7 +1250,7 @@ const seedItMenu = async (data: LameMenus[]) => {
         image_url
         ) VALUES(
          $1,$2,$3,$4,$5,$6,$7,$8)`,
-      [x.item_name, x.item_type, 2, true, x.diet_type, 15, +1, x.image],
+      [x.item_name, x.item_type, 2, true, x.diet_type, 15, +1, x.image]
     );
   }
   return console.log(`${shitCount} items successfuly loaded`);

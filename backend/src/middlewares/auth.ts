@@ -7,18 +7,9 @@ type AuthJwtPayload = {
   role: "user" | "admin" | "employee";
 };
 function isAuthPayload(payload: unknown): payload is AuthJwtPayload {
-  return (
-    typeof payload === "object" &&
-    payload !== null &&
-    "sub" in payload &&
-    "role" in payload
-  );
+  return typeof payload === "object" && payload !== null && "sub" in payload && "role" in payload;
 }
-const authMiddleware = async (
-  req: UserRequest,
-  res: Response,
-  next: NextFunction,
-) => {
+const authMiddleware = async (req: UserRequest, res: Response, next: NextFunction) => {
   const token = req.header("Authorization")?.replace("Bearer ", "");
   if (!token) {
     return res.status(401).json({ message: "Unauthorized" });

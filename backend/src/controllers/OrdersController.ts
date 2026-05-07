@@ -24,7 +24,7 @@ export class OrdersController {
       const userId = req.user.user_id;
       const data: CreateOrderDTO = req.body;
 
-      const response = await this.orderService.saveOrder(userId, data);
+      const response = await this.orderService.createReservation(userId, data);
       console.log("Reservation created:", response);
 
       console.log("RES ID:", response?.reservationId);

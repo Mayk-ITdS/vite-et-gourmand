@@ -1,5 +1,5 @@
 import { getDBMongo, pgPool } from "../config/db.js";
-import AdminAnalyticsService from "../services/adminAnalytics.js";
+import AdminAnalyticsService from "../services/AdminAnalyticsService.js";
 import { ObjectId } from "mongodb";
 
 console.log("REVIEWS REPO FILE LOADED");
@@ -8,7 +8,7 @@ export class ReviewsRepository {
   private get collection() {
     return getDBMongo().collection<ReviewUser>("reviews");
   }
-  analytics = new AdminAnalyticsService();
+  analytics = AdminAnalyticsService;
 
   async createReview(resId: number, rating: number, comment: string) {
     console.log("PG CREATE REVIEW CALLED");
@@ -22,7 +22,7 @@ export class ReviewsRepository {
       await client.query(
         `INSERT INTO reviews (res_id, rating, comment)
        VALUES ($1, $2, $3)`,
-        [resId, rating, comment],
+        [resId, rating, comment]
       );
 
       const result = await client.query(
@@ -36,7 +36,7 @@ export class ReviewsRepository {
       JOIN reservation_menus rm ON rm.res_id = r.res_id
       WHERE r.res_id = $1
       `,
-        [resId],
+        [resId]
       );
 
       rows = result.rows;
@@ -73,16 +73,13 @@ export class ReviewsRepository {
     return await this.collection.find().toArray();
   }
   async findPending() {
-    return await this.collection
-      .find({ isApproved: false })
-      .sort({ createdAt: -1 })
-      .toArray();
+    return await this.collection.find({ isApproved: false }).sort({ createdAt: -1 }).toArray();
   }
 
   async approve(id: string) {
     return await this.collection.updateOne(
       { _id: new ObjectId(id) },
-      { $set: { isApproved: true } },
+      { $set: { isApproved: true } }
     );
   }
 
