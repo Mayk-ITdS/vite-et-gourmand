@@ -5,19 +5,14 @@ import AdminController from "../controllers/AdminController.js";
 import { authorize } from "../middlewares/authorize.js";
 console.log("ADMIN ROUTES LOADED");
 const router = Router();
-router.get(
-  "/analytics",
-  authMiddleware,
-  authorize(["admin"]),
-  AdminController.getDashboard,
-);
+router.get("/analytics", authMiddleware, authorize(["admin"]), AdminController.getDashboard);
 router.get(
   "/dashboard",
   authMiddleware,
   authorize(["admin", "employee"]),
-  AdminController.getDashboard,
+  AdminController.getDashboard
 );
-
+router.post("/stock/ingest", authMiddleware, authorize(["admin"]), AdminController.stockIngestion);
 router.get("/analytics", (req, res) => {
   console.log("ANALYTICS ROUTE HIT");
   res.json({ ok: true });

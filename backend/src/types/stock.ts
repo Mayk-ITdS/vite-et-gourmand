@@ -1,6 +1,9 @@
+import { StockDTO } from "../dtos/ingest.dto.js";
+import buildStockPayload from "../funcs/buildStockPayload.js";
+
 interface IngestProductsQuery {
   mode: "lineage" | "synthesis";
-  payload: Record<string, unknown>;
+  payload: ReturnType<typeof buildStockPayload>;
 }
 interface IngestResponse {
   mode: "lineage" | "synthesis";
