@@ -15,10 +15,7 @@ const emptyPricing = {
 };
 
 export const selectOrderPricing = createSelector(
-  [
-    (state: RootState) => state.orders.selectedMenu,
-    (state: RootState) => state.orders.prestation,
-  ],
+  [(state: RootState) => state.orders.selectedMenu, (state: RootState) => state.orders.prestation],
   (menu, prestation) => {
     if (!menu || !prestation) return emptyPricing;
 
@@ -29,7 +26,7 @@ export const selectOrderPricing = createSelector(
       city: prestation.city,
       distanceKm: prestation.distanceKm,
     });
-  },
+  }
 );
 
 /*

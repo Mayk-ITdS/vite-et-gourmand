@@ -20,7 +20,7 @@ export default function StepClientInfo() {
         lastName: authUser.lastName,
         email: authUser.email,
         phone: phone,
-      }),
+      })
     );
 
     dispatch(setStep(+1));
@@ -28,19 +28,9 @@ export default function StepClientInfo() {
 
   return (
     <div className="space-y-6">
-      <TextField
-        label="First Name"
-        fullWidth
-        value={authUser.firstName}
-        disabled
-      />
+      <TextField label="First Name" fullWidth value={authUser.firstName} disabled />
 
-      <TextField
-        label="Last Name"
-        fullWidth
-        value={authUser.lastName}
-        disabled
-      />
+      <TextField label="Last Name" fullWidth value={authUser.lastName} disabled />
 
       <TextField label="Email" fullWidth value={authUser.email} disabled />
 
