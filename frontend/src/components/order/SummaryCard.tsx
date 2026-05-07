@@ -13,7 +13,7 @@ export default function StepSummary() {
   const navigate = useNavigate();
   const pricing = useAppSelector(selectOrderPricing);
   const { client, prestation, order, selectedMenu, status } = useAppSelector(
-    (state) => state.orders,
+    (state) => state.orders
   );
   if (!selectedMenu) {
     return "Menu n`a pas etait choisi";

@@ -21,9 +21,7 @@ export default function OrderSidebarSummary() {
       <Typography>HT: {pricing.ht.toFixed(2)} €</Typography>
       <Typography>TVA (10%): {pricing.tva.toFixed(2)} €</Typography>
 
-      <Typography className="mt-4 text-xl font-bold">
-        TTC: {pricing.ttc.toFixed(2)} €
-      </Typography>
+      <Typography className="mt-4 text-xl font-bold">TTC: {pricing.ttc.toFixed(2)} €</Typography>
     </Paper>
   );
 }

@@ -1,19 +1,12 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-
+import type { MenuWithGallery } from "@/types/menus";
 import api from "@/utils/api";
 
 import { toClientError } from "../funcs/toClientError";
-
-type Reservation = {
-  res_id: number;
-  date_res_for: string;
-  res_status: string;
-  total_price: number;
-  no_persons: number;
-};
+import type { ClientError } from "@/types/errors";
 
 type UserOrdersState = {
-  list: Reservation[];
+  list: MenuWithGallery[];
   status: "idle" | "loading" | "succeeded" | "error";
   error: string | null;
 };
@@ -23,18 +16,19 @@ const initialState: UserOrdersState = {
   status: "idle",
   error: null,
 };
-export const fetchMyOrders = createAsyncThunk(
-  "orders/fetchMyOrders",
-  async (_, { rejectWithValue }) => {
-    try {
-      const res = await api.get("/orders/me");
-      console.log("RESPONSE:", res.data);
-      return res.data.data.rows;
-    } catch (err) {
-      return rejectWithValue(toClientError(err));
-    }
-  },
-);
+export const fetchMyOrders = createAsyncThunk<
+  MenuWithGallery[],
+  void,
+  { rejectValue: ClientError }
+>("orders/fetchMyOrders", async (_, { rejectWithValue }) => {
+  try {
+    const res = await api.get<MenuWithGallery[]>("/orders/me");
+    console.log("RESPONSE:", res.data);
+    return res.data;
+  } catch (err) {
+    return rejectWithValue(toClientError(err));
+  }
+});
 const ordersSlice = createSlice({
   name: "orders/slice",
   initialState: initialState,

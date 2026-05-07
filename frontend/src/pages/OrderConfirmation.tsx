@@ -24,14 +24,9 @@ export default function OrderConfirmation() {
             animate-fade-in
           "
         >
-          <CheckCircleOutlineIcon
-            sx={{ fontSize: 90 }}
-            className="text-white/90 mx-auto"
-          />
+          <CheckCircleOutlineIcon sx={{ fontSize: 90 }} className="text-white/90 mx-auto" />
 
-          <h1 className="text-3xl font-semibold tracking-tight">
-            Commande confirmée.
-          </h1>
+          <h1 className="text-3xl font-semibold tracking-tight">Commande confirmée.</h1>
 
           <p className="text-white/80 text-lg">Merci de votre confiance ✨</p>
 
