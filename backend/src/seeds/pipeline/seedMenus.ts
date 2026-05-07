@@ -50,7 +50,7 @@ export const seedMenus = async (client: PoolClient, menus: SeedMenusDB[]) => {
       themes JSONB
     )
     ON CONFLICT (menu_code) DO UPDATE SET
-      menu_name = EXCLUDED.menu_name
+    menu_name = EXCLUDED.menu_name
     RETURNING menu_id, menu_code;
   `;
 

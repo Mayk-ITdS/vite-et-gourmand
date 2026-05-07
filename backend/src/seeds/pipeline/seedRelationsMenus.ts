@@ -6,11 +6,9 @@ export const linkRelations = async (
   client: PoolClient,
   menus: SeedMenusDB[],
   itemMap: Map<string, number>,
-  menuMap: Map<string, number>,
+  menuMap: Map<string, number>
 ) => {
-  const themeRes = await client.query(
-    `SELECT theme_id, theme_name FROM themes`,
-  );
+  const themeRes = await client.query(`SELECT theme_id, theme_name FROM themes`);
 
   const themeMap = new Map<string, number>();
   themeRes.rows.forEach((t) => themeMap.set(t.theme_name, t.theme_id));
@@ -29,7 +27,7 @@ export const linkRelations = async (
         `INSERT INTO menu_themes(menu_id, theme_id)
          VALUES ($1,$2)
          ON CONFLICT DO NOTHING`,
-        [menuId, themeId],
+        [menuId, themeId]
       );
     }
 
@@ -42,7 +40,7 @@ export const linkRelations = async (
         `INSERT INTO menu_items_menus(menu_id, item_id, quantity)
          VALUES ($1,$2,1)
          ON CONFLICT DO NOTHING`,
-        [menuId, itemId],
+        [menuId, itemId]
       );
     }
   }

@@ -197,7 +197,7 @@ export const seedReservations = async (client: PoolClient) => {
         flags.loaned,
         flags.returned,
         total,
-      ],
+      ]
     );
   }
 
