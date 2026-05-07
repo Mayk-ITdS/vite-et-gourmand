@@ -4,12 +4,7 @@ import { ApiError } from "../types/users.js";
 
 const logger = pino();
 
-const globalErrorHandler = (
-  err: unknown,
-  req: Request,
-  res: Response,
-  _next: NextFunction,
-) => {
+const globalErrorHandler = (err: unknown, req: Request, res: Response, _next: NextFunction) => {
   const isApiError = err instanceof ApiError;
 
   const statusCode = isApiError ? err.statusCode : 500;

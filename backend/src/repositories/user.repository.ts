@@ -8,13 +8,10 @@ type InsertUserResult = {
 };
 
 class UserRepository {
-  async createUser(
-    mode: string,
-    dto: DbUserInsert,
-  ): Promise<{ user_id: number; role: string }> {
+  async createUser(mode: string, dto: DbUserInsert): Promise<{ user_id: number; role: string }> {
     const result = await pgPool.query<InsertUserResult>(
       `SELECT public.insert_new_user($1, $2) as result`,
-      [mode, dto],
+      [mode, dto]
     );
     if (result.rowCount === 0) {
       throw new ApiError(500, "Ingest function error", true);
@@ -23,10 +20,7 @@ class UserRepository {
   }
 
   async findByEmail(email: string): Promise<DbUser> {
-    const result = await pgPool.query<DbUser>(
-      `SELECT * FROM users WHERE user_email = $1`,
-      [email],
-    );
+    const result = await pgPool.query<DbUser>(`SELECT * FROM users WHERE user_email = $1`, [email]);
 
     return result.rows[0] ?? null;
   }
@@ -44,7 +38,7 @@ class UserRepository {
     LEFT JOIN user_roles ur ON u.user_id = ur.user_id
     LEFT JOIN roles r ON ur.role_id = r.role_id
     WHERE u.user_id = $1`,
-      [id],
+      [id]
     );
 
     return result.rows[0] || null;
@@ -67,7 +61,7 @@ class UserRepository {
     FROM users
     WHERE user_id = $1
     `,
-      [userId],
+      [userId]
     );
 
     return result.rows[0] ?? null;
@@ -84,7 +78,7 @@ class UserRepository {
       houseNumber: number;
       zipCode: string;
       country: string;
-    },
+    }
   ) {
     const result = await pgPool.query(
       `
@@ -122,7 +116,7 @@ class UserRepository {
         data.zipCode,
         data.country,
         userId,
-      ],
+      ]
     );
 
     return result.rows[0] ?? null;

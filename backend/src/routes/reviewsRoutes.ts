@@ -12,28 +12,28 @@ router.post(
   "/:id",
   authMiddleware,
   authorize(["user"]),
-  ReviewsController.createOne as RequestHandler,
+  ReviewsController.createOne as RequestHandler
 );
 
 router.get(
   "/pending",
   authMiddleware,
   authorize(["employee", "admin"]),
-  ReviewsController.getPendingReviews as RequestHandler,
+  ReviewsController.getPendingReviews as RequestHandler
 );
 
 router.patch(
   "/:id/approve",
   authMiddleware,
   authorize(["employee"]),
-  ReviewsController.approveReview as RequestHandler,
+  ReviewsController.approveReview as RequestHandler
 );
 
 router.delete(
   "/:id",
   authMiddleware,
   authorize(["employee"]),
-  ReviewsController.deleteReview as RequestHandler,
+  ReviewsController.deleteReview as RequestHandler
 );
 
 export default router;
