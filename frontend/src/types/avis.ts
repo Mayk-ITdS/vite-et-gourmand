@@ -11,3 +11,11 @@ export type ClientOpinion = {
 export type Opinions = {
   opinions: ClientOpinion[];
 };
+export interface ReviewUser {
+  orderId: number;
+  pseudo: string;
+  avatar: string;
+  content: string;
+  score: number;
+  date: string;
+}

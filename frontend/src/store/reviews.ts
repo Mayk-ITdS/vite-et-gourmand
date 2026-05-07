@@ -11,19 +11,18 @@ export interface CreateReviewPayload {
   score: number;
   avatar?: string | null;
 }
-const fetchReviews = createAsyncThunk<
-  ReviewUser[],
-  void,
-  { rejectValue: ClientError }
->("fetch/reviews", async (_, { rejectWithValue }) => {
-  try {
-    const response = await api.get("/reviews/public");
-    // const state = getState() as RootState;
-    return response.data;
-  } catch (err) {
-    return rejectWithValue(toClientError(err));
+const fetchReviews = createAsyncThunk<ReviewUser[], void, { rejectValue: ClientError }>(
+  "fetch/reviews",
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await api.get("/reviews/public");
+      // const state = getState() as RootState;
+      return response.data;
+    } catch (err) {
+      return rejectWithValue(toClientError(err));
+    }
   }
-});
+);
 export const createReview = createAsyncThunk<
   void,
   { resId: number; payload: CreateReviewPayload },

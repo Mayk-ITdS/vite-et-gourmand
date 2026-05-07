@@ -29,40 +29,38 @@ const initialState: MenuState = {
   },
 };
 
-const fetchMenus = createAsyncThunk<
-  MenuWithGallery[],
-  void,
-  { rejectValue: string }
->("menus/fetch", async (_, { rejectWithValue }) => {
-  try {
-    const response = await api.request<{ data: MenuWithGallery[] }>({
-      url: "/menus",
-      method: "GET",
-    });
+const fetchMenus = createAsyncThunk<MenuWithGallery[], void, { rejectValue: string }>(
+  "menus/fetch",
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await api.request<{ data: MenuWithGallery[] }>({
+        url: "/menus",
+        method: "GET",
+      });
 
-    return response.data.data;
-  } catch (err) {
-    console.warn(err);
-    return rejectWithValue("Menu upload failed");
+      return response.data.data;
+    } catch (err) {
+      console.warn(err);
+      return rejectWithValue("Menu upload failed");
+    }
   }
-});
+);
 
-const fetchMenuById = createAsyncThunk<
-  MenuWithGallery,
-  number,
-  { rejectValue: string }
->("menus/fetchMenuById", async (id, { rejectWithValue }) => {
-  try {
-    const response = await api.request<{ data: MenuWithGallery }>({
-      url: `/menus/${id}`,
-      method: "GET",
-    });
-    return response.data.data;
-  } catch (err) {
-    console.warn(err);
-    return rejectWithValue("");
+const fetchMenuById = createAsyncThunk<MenuWithGallery, number, { rejectValue: string }>(
+  "menus/fetchMenuById",
+  async (id, { rejectWithValue }) => {
+    try {
+      const response = await api.request<{ data: MenuWithGallery }>({
+        url: `/menus/${id}`,
+        method: "GET",
+      });
+      return response.data.data;
+    } catch (err) {
+      console.warn(err);
+      return rejectWithValue("");
+    }
   }
-});
+);
 
 const menuSlice = createSlice({
   name: "menus",
