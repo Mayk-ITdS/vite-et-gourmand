@@ -1,28 +1,23 @@
-import { SectionSurface } from "@/layouts/SectionSurface";
-import Box from "@mui/material/Box";
 import { Outlet } from "react-router-dom";
-
-const adminLayoutBackgroundSx = {
-  minHeight: "100vh",
-  padding: "20px",
-  backgroundColor: "#070c14",
-  backgroundImage: `
-    radial-gradient(circle at 20% 10%, rgba(255,255,255,0.03), transparent 40%),
-    radial-gradient(circle at 80% 30%, rgba(255,255,255,0.02), transparent 45%),
-    radial-gradient(circle at 50% 120%, rgba(0,0,0,0.6), transparent 60%)
-  `,
-  color: "#e5e7eb",
-};
+import AdminSidebar from "./AdminSidebar";
 
 const AdminLayout = () => {
   return (
-    <div className="space-y-8">
-      <SectionSurface>
-        <Box sx={adminLayoutBackgroundSx}>
+    <div className="h-screen overflow-hidden bg-[#070c14] text-slate-100">
+      <div
+        className="
+          flex h-full
+          bg-[radial-gradient(circle_at_20%_10%,rgba(255,255,255,0.03),transparent_40%),radial-gradient(circle_at_80%_30%,rgba(255,255,255,0.02),transparent_45%),radial-gradient(circle_at_50%_120%,rgba(0,0,0,0.6),transparent_60%)]
+        "
+      >
+        <AdminSidebar />
+
+        <main className="min-w-0 flex-1 overflow-y-auto px-8 py-6">
           <Outlet />
-        </Box>
-      </SectionSurface>
+        </main>
+      </div>
     </div>
   );
 };
+
 export default AdminLayout;

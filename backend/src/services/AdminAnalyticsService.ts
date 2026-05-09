@@ -1,11 +1,10 @@
-import { jwt, map, overwrite } from "zod";
 import { getDBMongo } from "../config/db.js";
-import { privateEncrypt } from "node:crypto";
-import buildStockPayload, { StockDTO, StockMode } from "../dtos/ingest.dto.js";
+import { StockMode } from "../dtos/ingest.dto.js";
 import { ApiError } from "../types/users.js";
 import { StockRepository } from "../repositories/StockRepository.js";
-import { ZodMiniCustomStringFormat, ZodMiniNonOptional } from "zod/mini";
 import { IngestProductsQuery } from "../types/stock.js";
+import { generateKeySync } from "node:crypto";
+import type { MonthStat } from "../types/orders/types.js";
 
 type MenuStatsDoc = {
   _id?: unknown;
@@ -32,7 +31,12 @@ type StatusStatsDoc = {
 class AdminAnalyticsService {
   constructor(private stockRep = new StockRepository()) {}
 
-  async registerOrder(order: { menuId: number; totalPrice: number; status: string; date: Date }) {
+  async registerOrder(order: {
+    menuId: number;
+    totalPrice: number;
+    status: string;
+    date: Date;
+  }) {
     console.log("ANALYTICS FUNCTION ENTERED");
 
     const db = getDBMongo();
@@ -48,7 +52,7 @@ class AdminAnalyticsService {
             totalRevenue: order.totalPrice,
           },
         },
-        { upsert: true }
+        { upsert: true },
       );
 
       await db.collection("monthlystats").updateOne(
@@ -59,7 +63,7 @@ class AdminAnalyticsService {
             ordersCount: 1,
           },
         },
-        { upsert: true }
+        { upsert: true },
       );
 
       await db
@@ -79,24 +83,40 @@ class AdminAnalyticsService {
     const month = now.getMonth() + 1;
     console.info("Wolamy admin analitics");
     const [menus, monthlyPerMenu, statuses] = await Promise.all([
-      db.collection<MenuStatsDoc>("menustats").find().sort({ timesOrdered: -1 }).toArray(),
+      db
+        .collection<MenuStatsDoc>("menustats")
+        .find()
+        .sort({ timesOrdered: -1 })
+        .toArray(),
 
       db.collection<MonthlyStatsDoc>("monthlystats").find().toArray(),
-
       db.collection<StatusStatsDoc>("statusstats").find().toArray(),
     ]);
 
     const totalRevenue = menus.reduce((sum, m) => sum + (Number(m.totalRevenue) || 0), 0);
-    const months = monthlyPerMenu.map((m) => ({
-      menuId: m.menuId,
-      year: m.year,
-      month: m.month,
-      monthlyRevenue: m.monthlyRevenue,
-      ordersCount: m.ordersCount,
-    }));
 
+    const monthlyResults = new Map<string, MonthStat>();
+    for (const x of monthlyPerMenu) {
+      const key = `${x.year}-${x.month}`;
+      const current = monthlyResults.get(key) ?? {
+        year: x.year,
+        month: x.month,
+        totalRevenue: 0,
+        ordersCount: 0,
+      };
+      current.totalRevenue += x.monthlyRevenue | 0;
+      current.ordersCount += x.ordersCount | 0;
+      monthlyResults.set(key, current);
+    }
+
+    const months = [...monthlyResults.values()].sort((a, b) => {
+      if (a.year !== b.year) {
+        return a.year - b.year;
+      }
+
+      return a.month - b.month;
+    });
     const totalOrders = statuses.reduce((sum, m) => sum + (Number(m.count) || 0), 0);
-
     const averageRevenue = totalOrders > 0 ? totalRevenue / totalOrders : 0;
 
     const topMenuId = menus.length > 0 ? menus[0].menuId : null;

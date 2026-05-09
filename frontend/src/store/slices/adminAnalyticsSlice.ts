@@ -4,28 +4,39 @@ import type { AdminDashboardPayload } from "@/types/adminAnalTypes";
 import { toClientError } from "../funcs/toClientError";
 
 interface AdminAnalyticsState {
-  data: AdminDashboardPayload | null;
+  data: AdminDashboardPayload;
   loading: boolean;
   error: string | null;
 }
 
 const initialState: AdminAnalyticsState = {
-  data: null,
+  data: {
+    overview: {
+      totalRevenue: 0,
+      totalOrders: 0,
+      averageRevenue: 0,
+      topMenuId: 0,
+    },
+    menus: [],
+    months: [],
+    statuses: [],
+  },
   loading: false,
   error: null,
 };
 
-const fetchAdminDashboard = createAsyncThunk<AdminDashboardPayload, void, { rejectValue: string }>(
-  "adminAnalytics/fetchDashboard",
-  async (_, { rejectWithValue }) => {
-    try {
-      const res = await api.get<AdminDashboardPayload>("/admin/dashboard");
-      return res.data;
-    } catch (err) {
-      return rejectWithValue(toClientError(err).message);
-    }
+const fetchAdminDashboard = createAsyncThunk<
+  AdminDashboardPayload,
+  void,
+  { rejectValue: string }
+>("adminAnalytics/fetchDashboard", async (_, { rejectWithValue }) => {
+  try {
+    const res = await api.get<AdminDashboardPayload>("/admin/dashboard");
+    return res.data;
+  } catch (err) {
+    return rejectWithValue(toClientError(err).message);
   }
-);
+});
 
 const analyticSlice = createSlice({
   name: "adminAnalytics",

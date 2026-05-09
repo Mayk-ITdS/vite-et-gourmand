@@ -4,7 +4,7 @@ import AdminAnalyticsService from "../../services/AdminAnalyticsService.js";
 
 const seedMongoAnalytics = async (client: PoolClient) => {
   console.log("Ï`m in mongo analitics");
-  const adminAnal = new AdminAnalyticsService();
+  const adminAnal = AdminAnalyticsService;
   await connectMongo();
   const db = getDBMongo();
   let inserted = 0;
