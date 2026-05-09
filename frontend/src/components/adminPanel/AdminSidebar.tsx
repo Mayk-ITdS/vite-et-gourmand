@@ -51,9 +51,11 @@ const sections: SidebarSection[] = [
 
 const AdminSidebar = () => {
   return (
-    <aside className="w-72 min-h-screen border-r border-white/10 bg-slate-900/80 backdrop-blur-xl px-5 py-6">
+    <aside className="w-72 h-screen shrink-0 border-r border-white/10 bg-slate-900/80 backdrop-blur-xl px-5 py-6">
       <div className="mb-8">
-        <p className="text-xs uppercase tracking-[0.3em] text-yellow-400/80">Admin Panel</p>
+        <p className="text-xs uppercase tracking-[0.3em] text-yellow-400/80">
+          Admin Panel
+        </p>
         <h2 className="mt-2 text-xl font-semibold text-white">Vite & Gourmand</h2>
         <p className="mt-1 text-sm text-white/50">Gestion du système</p>
       </div>
@@ -61,7 +63,9 @@ const AdminSidebar = () => {
       <nav className="space-y-7">
         {sections.map((section) => (
           <div key={section.title}>
-            <p className="mb-3 text-xs uppercase tracking-wider text-white/35">{section.title}</p>
+            <p className="mb-3 text-xs uppercase tracking-wider text-white/35">
+              {section.title}
+            </p>
 
             <div className="space-y-1">
               {section.items.map((item) => (

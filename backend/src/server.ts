@@ -21,7 +21,6 @@ app.use("/api/auth", authRoutes);
 app.use("/api/orders/", orderRoutes);
 app.use("/api/reviews", reviewsRoutes);
 console.log("reviewsRoutes =", reviewsRoutes);
-app.use("/api/reviews", reviewsRoutes);
 app.use(globalErrorHandler);
 console.log("BACKEND INSTANCE STARTED", new Date().toISOString());
 const startover = async () => {

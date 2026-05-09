@@ -10,6 +10,7 @@ import { menuReducer } from "./menus/menusSlice";
 import { userOrdersReducer } from "./orders/userOrdersSlice";
 import { userProfileReducer } from "./slices/userProfileSlice";
 import analReducer from "./slices/adminAnalyticsSlice";
+import adminCrudReducer from "@/components/adminPanel/adminCRUDs/model/adminCrudSlice";
 const rootReducer = combineReducers({
   menus: menuReducer,
   auth: authReducer,
@@ -17,6 +18,7 @@ const rootReducer = combineReducers({
   userOrders: userOrdersReducer,
   profile: userProfileReducer,
   adminAnalytics: analReducer,
+  adminCrud: adminCrudReducer,
 });
 const persistConfig = {
   key: "root",

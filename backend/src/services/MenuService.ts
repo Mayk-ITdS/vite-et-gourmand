@@ -2,9 +2,14 @@ import { pgPool } from "../config/db.js";
 import { StockRepository } from "../repositories/StockRepository.js";
 import { ApiError } from "../types/users.js";
 import { IngestProductsQuery } from "../types/stock.js";
+import { MenuPatchBody } from "../types/menus/menus.js";
+import menusRepository from "../repositories/menus.repository.js";
 
 class MenuService {
-  constructor(private stockRepository = new StockRepository()) {}
+  constructor(
+    private stockRepository = new StockRepository(),
+    private menuRepo = menusRepository,
+  ) {}
   async instertMenus(
     mode: IngestProductsQuery["mode"],
     payload: IngestProductsQuery["payload"],
@@ -12,12 +17,21 @@ class MenuService {
     try {
       return await this.stockRepository.ingestStock(mode, payload);
     } catch (e) {
-      throw new ApiError(
-        400,
-        e instanceof Error ? e.message : "Wrong data model",
-      );
+      throw new ApiError(400, e instanceof Error ? e.message : "Wrong data model");
     }
   }
+  patchOneMenu = async (id: number, payload: MenuPatchBody) => {
+    if (!Number.isInteger(id)) {
+      throw new ApiError(400, "Identifiant menu invalide");
+    }
+    return this.menuRepo.patchOne(id, payload);
+  };
+  deleteOneMenu = async (id: number) => {
+    if (!Number.isInteger(id)) {
+      throw new ApiError(400, "Identifiant menu invalide");
+    }
+    return this.menuRepo.deleteOne(id);
+  };
   async getAllMenus() {
     console.log("menus -> hit");
     const res = await pgPool.query(
@@ -37,7 +51,8 @@ class MenuService {
         'item_name', mi.item_name,
         'item_type', mi.item_type,
         'diet_type', mi.diet_type,
-        'min_preparation_time', mi.min_preparation_time
+        'min_preparation_time', mi.min_preparation_time,
+        'is_active', mi.is_active
       )
     ) AS items
           from menus m
@@ -58,10 +73,11 @@ class MenuService {
                   m.order_lead_time,
                   m.image_url,
                   m.images
+                  
                   ;
         `,
     );
-
+    console.log(res.rows);
     return res.rows;
   }
   async getOneMenuByID(id: number) {
