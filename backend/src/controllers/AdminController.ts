@@ -1,16 +1,20 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import { LoginDTO } from "../dtos/auth.dto.js";
 import { AuthService } from "../services/AuthService.js";
 import AdminAnalyticsService from "../services/AdminAnalyticsService.js";
 import { OrdersService } from "../services/OrdersService.js";
 import { ApiError, UserRequest } from "../types/users.js";
-import { privateEncrypt } from "node:crypto";
+import { createCipheriv, privateEncrypt } from "node:crypto";
+import { MenuService } from "../services/MenuService.js";
+import { UserPatchRequest } from "../types/requests/menu.patch.js";
+import { MenuCreateRequest, MenuDeleteRequest } from "../types/menus/menus.js";
 
 class AdminController {
   constructor(
     private adminService = new AuthService(),
     private orderService = new OrdersService(),
-    private analyticsService = AdminAnalyticsService
+    private analyticsService = AdminAnalyticsService,
+    private menuService = new MenuService(),
   ) {}
 
   login = async (req: Request<{}, {}, LoginDTO>, res: Response) => {
@@ -26,7 +30,36 @@ class AdminController {
     const data = await this.analyticsService.getFullDashboard();
     return res.json(data);
   };
-
+  getMenus = async (req: UserRequest, res: Response) => {
+    try {
+      const data = await this.menuService.getAllMenus();
+      console.log(data);
+      return res.status(200).json(data);
+    } catch (err) {}
+  };
+  createMenu = async (req: MenuCreateRequest, res: Response, next: NextFunction) => {
+    try {
+    } catch (err) {}
+  };
+  patchMenu = async (req: UserPatchRequest, res: Response, next: NextFunction) => {
+    try {
+      const id = Number(req.params.id);
+      const payload = req.body;
+      const data = await this.menuService.patchOneMenu(id, payload);
+      return res.status(200).json(data);
+    } catch (err) {
+      next(err);
+    }
+  };
+  deleteMenu = (req: MenuDeleteRequest, res: Response, next: NextFunction) => {
+    try {
+      const menuId = req.params.id;
+      const result = this.menuService.deleteOneMenu(Number(menuId));
+    } catch (error: any) {
+      next(error);
+      throw new ApiError(400, String(error.message), false);
+    }
+  };
   createReservation = async (req: UserRequest, res: Response) => {
     try {
       const data = req.body;

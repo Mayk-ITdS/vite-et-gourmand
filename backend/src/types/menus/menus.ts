@@ -1,3 +1,5 @@
+import { DietType } from "../../dtos/ingest.dto.js";
+import type { Request } from "express";
 const regimeValues = ["Vegetarien", "Vegan", "Classique"] as const;
 type RegimeValue = (typeof regimeValues)[number];
 const themeValues = [
@@ -61,6 +63,30 @@ interface SeedMenusDB {
     drink: string;
   };
 }
+export type MenuCreateBody = {
+  menu_code?: string;
+  menu_name: string;
+  prix_unitaire: number;
+  description?: string | null;
+  diet_type: DietType;
+  min_persons?: number | null;
+  order_lead_time?: string | null;
+  quantity_in_stock?: number | null;
+  min_preparation_time?: string | null;
+  image_url?: string | null;
+  images?: string[];
+  is_active?: boolean;
+};
+
+export type MenuPatchBody = Partial<MenuCreateBody>;
+
+export type IdParams = {
+  id: string;
+};
+
+export type MenuCreateRequest = Request<{}, unknown, MenuCreateBody>;
+export type MenuPatchRequest = Request<IdParams, unknown, MenuPatchBody>;
+export type MenuDeleteRequest = Request<IdParams>;
 
 interface SeedMenuComposition {
   menu_code: string;

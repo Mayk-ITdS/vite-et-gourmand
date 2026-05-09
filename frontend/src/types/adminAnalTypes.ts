@@ -8,7 +8,7 @@ export interface MonthStat {
   year: number;
   month: number;
   totalRevenue: number;
-  oredersCount: number;
+  ordersCount: number;
 }
 
 export interface StatusStat {

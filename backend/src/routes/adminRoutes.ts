@@ -3,16 +3,33 @@ import authMiddleware from "../middlewares/auth.js";
 import { requireRole } from "../middlewares/requireRole.js";
 import AdminController from "../controllers/AdminController.js";
 import { authorize } from "../middlewares/authorize.js";
+import { MenuController } from "../controllers/MenuController.js";
 console.log("ADMIN ROUTES LOADED");
 const router = Router();
-router.get("/analytics", authMiddleware, authorize(["admin"]), AdminController.getDashboard);
+router.get(
+  "/analytics",
+  authMiddleware,
+  authorize(["admin"]),
+  AdminController.getDashboard,
+);
 router.get(
   "/dashboard",
   authMiddleware,
   authorize(["admin", "employee"]),
-  AdminController.getDashboard
+  AdminController.getDashboard,
 );
-router.post("/stock/ingest", authMiddleware, authorize(["admin"]), AdminController.stockIngestion);
+
+router.get("/menus", authMiddleware, authorize(["admin"]), AdminController.getMenus);
+// router.post('menus',authMiddleware, authorize(['admin']), AdminController)
+router.patch("/menus", authMiddleware, authorize(["admin"]), AdminController.patchMenu);
+router.delete("/menus", authMiddleware, authorize(["admin"]), AdminController.deleteMenu);
+
+router.post(
+  "/stock/ingest",
+  authMiddleware,
+  authorize(["admin"]),
+  AdminController.stockIngestion,
+);
 router.get("/analytics", (req, res) => {
   console.log("ANALYTICS ROUTE HIT");
   res.json({ ok: true });

@@ -5,12 +5,16 @@ import RecentStockLotsTable from "./Supply/RecentStockLotsTable";
 import type { DeliveryMode } from "./Supply/supplyTypes";
 import { useState } from "react";
 import buildStockPayload from "./Supply/types/buildStockPayload";
+import { toast } from "sonner";
 
 const AdminSupplyPage = () => {
   const [mode, setMode] = useState<DeliveryMode>("lineage");
-  const [payloadPreview, setPayloadPreview] = useState<ReturnType<typeof buildStockPayload> | null>(
-    null
-  );
+  const [payloadPreview, setPayloadPreview] = useState<ReturnType<
+    typeof buildStockPayload
+  > | null>(null);
+  if (typeof payloadPreview != typeof buildStockPayload) {
+    toast("Wrong data format");
+  }
   return (
     <div className="space-y-6">
       <section className="flex flex-col gap-4 rounded-2xl border bg-white p-6 shadow-sm md:flex-row md:items-center md:justify-between">
@@ -24,8 +28,8 @@ const AdminSupplyPage = () => {
           </h1>
 
           <p className="mt-2 max-w-2xl text-sm text-neutral-600">
-            Centralisez l’ingestion des matières premières, des produits semi-finis et des produits
-            finis tout en conservant une traçabilité claire des ingrédients.
+            Centralisez l’ingestion des matières premières, des produits semi-finis et des
+            produits finis tout en conservant une traçabilité claire des ingrédients.
           </p>
         </div>
 
@@ -41,7 +45,10 @@ const AdminSupplyPage = () => {
           onModeChange={setMode}
           onPreviewChange={setPayloadPreview}
         />
-        <IngestionPreview mode={mode} payload={payloadPreview} />
+        <IngestionPreview
+          mode={mode}
+          payload={payloadPreview}
+        />
       </section>
 
       <RecentStockLotsTable />
