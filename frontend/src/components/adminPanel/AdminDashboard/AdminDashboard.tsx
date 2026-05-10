@@ -19,13 +19,13 @@ const getMenuLabel = (menu: MenuStat) => {
   );
 };
 
-const getMonthLabel = (month: number) => {
-  if (!month) return "—";
+// const getMonthLabel = (month: number) => {
+//   if (!month) return "—";
 
-  return new Intl.DateTimeFormat("fr-FR", {
-    month: "short",
-  }).format(new Date(2026, month - 1, 1));
-};
+//   return new Intl.DateTimeFormat("fr-FR", {
+//     month: "short",
+//   }).format(new Date(2026, month - 1, 1));
+// };
 
 const AdminDashboard = () => {
   const dispatch = useAppDispatch();
@@ -58,11 +58,6 @@ const AdminDashboard = () => {
       bestMenuRevenue: bestMenu?.totalRevenue ?? 0,
     };
   }, [data.overview, menus]);
-
-  const maxMonthlyRevenue = Math.max(
-    ...monthlyStats.map((item) => Number(item.totalRevenue)),
-    1,
-  );
 
   const maxStatusCount = Math.max(...statusStats.map((item) => Number(item.count)), 1);
   const MENU_PAGE_SIZE = 5;
