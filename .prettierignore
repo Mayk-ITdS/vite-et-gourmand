@@ -16,3 +16,9 @@ coverage/
 *.log
 
 package-lock.json
+
+.git
+.vscode
+package-lock.json
+backend/package-lock.json
+frontend/package-lock.json
