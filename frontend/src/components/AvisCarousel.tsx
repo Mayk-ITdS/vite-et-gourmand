@@ -19,7 +19,7 @@ export default function AvisCarousel({ opinions }: Opinions) {
         stopOnInteraction: true,
         stopOnMouseEnter: true,
       }),
-    ],
+    ]
   );
 
   const scrollPrev = useCallback(() => {

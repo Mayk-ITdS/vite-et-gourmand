@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import AdminDataTable from "./AdminDataTable";
-import type { ResourceRef } from "../model/adminCrud.thunks";
 import type { AdminFormData, AdminId, AdminResource, AdminRow } from "../adminCrud.types";
 import ResourceFormDialog from "./ResourceFormDialog";
 import {

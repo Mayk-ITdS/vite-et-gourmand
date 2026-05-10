@@ -6,6 +6,7 @@ import buildStockPayload, { initialStockFormValues } from "./types/buildStockPay
 import IngredientsArray, { type IngredientsArrayProps } from "./IngredientsArray";
 import { useEffect, useState } from "react";
 import IngestionFileForm from "./StockIngestionFileForm";
+import { toClientError } from "@/store/funcs/toClientError";
 
 interface StockIngestionFormProps {
   mode: DeliveryMode;
@@ -109,13 +110,7 @@ const StockIngestionForm = ({
   onModeChange,
   onPreviewChange,
 }: StockIngestionFormProps) => {
-  const {
-    handleSubmit,
-    register,
-    control,
-    setValue,
-    formState: {},
-  } = useForm<StockFormData>({
+  const { handleSubmit, register, control, setValue } = useForm<StockFormData>({
     defaultValues: initialStockFormValues,
   });
   const watchedData = useWatch({
@@ -159,6 +154,7 @@ const StockIngestionForm = ({
       const previewPayload = buildStockPayload(watchedData as StockFormData, mode);
       onPreviewChange(previewPayload);
     } catch (err) {
+      toClientError(err);
       onPreviewChange(buildStockPayload(initialStockFormValues, mode));
     }
   }, [watchedData, mode, importedPreviewPayload, onPreviewChange]);

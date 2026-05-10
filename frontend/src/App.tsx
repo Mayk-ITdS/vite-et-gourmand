@@ -1,28 +1,28 @@
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import { useEffect } from "react";
-
 import Home from "./pages/Home";
 import MentionsLegales from "./pages/MentionsLegales";
 import ConditionsGenerales from "./pages/ConditionsGenerales";
 import AppLayout from "./layouts/AppLayout";
 import MenusGlobale from "./pages/MenusGlobale";
-import UserPanel from "./pages/UserPanel";
 import AuthorizationPage from "./pages/AuthPage";
 import MenuDetails from "./pages/MenuDetails";
 import OrderPage from "./pages/OrderPage";
 import AuthGuard from "./utils/AuthGuard";
 import AdminLayout from "./components/adminPanel/AdminLayout";
 import RoleGuard from "./utils/RoleGuard";
-import AdminDashboard from "./components/adminPanel/AdminDashboard";
+import AdminDashboard from "./components/adminPanel/AdminDashboard/AdminDashboard";
 import { useAppSelector } from "./store/hooks";
 import { setAuthToken } from "./utils/api";
 import OrderConfirmation from "./pages/OrderConfirmation";
 import ContactPage from "./pages/ContactPage";
 import TeamPage from "./pages/TeamPage";
+import UserLayout from "./layouts/UserLayout";
+import AdminSupplyPage from "./components/adminPanel/AdminSupplyPage";
+import AdminGestionMenus from "./components/adminPanel/adminCRUDs/pages/AdminGestionMenus";
 
 function App() {
   const token = useAppSelector((state) => state.auth.token);
-
   useEffect(() => {
     if (token) {
       setAuthToken(token);
@@ -33,31 +33,76 @@ function App() {
       <Router>
         <Routes>
           <Route element={<AppLayout />}>
-            <Route path="/auth" element={<AuthorizationPage />} />
-            <Route path="/mentions" element={<MentionsLegales />} />
-            <Route path="/conditions" element={<ConditionsGenerales />} />
-            <Route path="/team" element={<TeamPage />} />
-            <Route path="/contact" element={<ContactPage />} />
-            <Route path="/menus" element={<MenusGlobale />} />
-            <Route path="/menus/:id" element={<MenuDetails />} />
-            <Route path="/" element={<Home />} />
+            <Route
+              path="/auth"
+              element={<AuthorizationPage />}
+            />
+            <Route
+              path="/mentions"
+              element={<MentionsLegales />}
+            />
+            <Route
+              path="/conditions"
+              element={<ConditionsGenerales />}
+            />
+            <Route
+              path="/team"
+              element={<TeamPage />}
+            />
+            <Route
+              path="/contact"
+              element={<ContactPage />}
+            />
+            <Route
+              path="/menus"
+              element={<MenusGlobale />}
+            />
+            <Route
+              path="/menus/:id"
+              element={<MenuDetails />}
+            />
+            <Route
+              path="/"
+              element={<Home />}
+            />
             <Route element={<AuthGuard />}>
-              <Route path="/orders" element={<OrderPage />} />
+              <Route
+                path="/orders"
+                element={<OrderPage />}
+              />
               <Route
                 path="/commande/confirmee"
                 element={<OrderConfirmation />}
               />
-              <Route path="/espaceprive" element={<UserPanel />} />
-              <Route path="/contact" />
+              <Route element={<RoleGuard allowedRoles={["user"]} />}>
+                <Route
+                  path="/espaceprive"
+                  element={<UserLayout />}
+                />
+                <Route path="/contact" />
+              </Route>
             </Route>
           </Route>
-
           <Route element={<RoleGuard allowedRoles={["admin"]} />}>
-            <Route path="/admin" element={<AdminLayout />}>
-              <Route index element={<AdminDashboard />} />
+            <Route
+              path="/admin"
+              element={<AdminLayout />}
+            >
+              <Route
+                index
+                element={<AdminDashboard />}
+              />
               {/* <Route path="menus" element={<AdminMenus />} />
               <Route path="orders" element={<AdminOrders />} />
               <Route path="users" element={<AdminUsers />} /> */}
+              <Route
+                path="/admin/supply"
+                element={<AdminSupplyPage />}
+              />
+              <Route
+                path="/admin/menus"
+                element={<AdminGestionMenus />}
+              />
             </Route>
           </Route>
 

@@ -36,8 +36,14 @@ export const connectMongo = async () => {
   }
   clientMongo = new MongoClient(uri);
   await clientMongo.connect();
-  dbMongo = clientMongo.db("vites");
+  dbMongo = clientMongo.db("vite_et_gourmand");
   console.log("Mongo Connected");
+};
+export const closeMongo = async () => {
+  if (clientMongo) {
+    await clientMongo.close();
+    console.log("Mongo connection closed");
+  }
 };
 export const getDBMongo = () => {
   if (!dbMongo) throw new ApiError(500, "db connection failed", false);

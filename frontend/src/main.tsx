@@ -10,12 +10,10 @@ import App from "./App";
 import { store } from "./store/store";
 import { darkTheme } from "./themes/themes";
 
-
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <ThemeProvider theme={darkTheme}>
       <CssBaseline />
-
       <Provider store={store}>
         <App />
       </Provider>
