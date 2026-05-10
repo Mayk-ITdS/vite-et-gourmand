@@ -1,7 +1,7 @@
 import type { TeamMember } from "@/types/team";
-import pierre from "@/assets/pierre-leclerc.png";
-import marianne from "@/assets/marriane-durand.png";
-import jean from "@/assets/jean-michel-dubois.png";
+import pierre from "@/assets/pierre-leclerc.webp";
+import marianne from "@/assets/marriane-durand.webp";
+import jean from "@/assets/jean-michel-dubois.webp";
 export const teamData: TeamMember[] = [
   {
     name: "Pierre Leclerc",
