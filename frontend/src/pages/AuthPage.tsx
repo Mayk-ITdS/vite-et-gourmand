@@ -1,14 +1,10 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
-import {
-  loginUser,
-  registerUser,
-  type RegisterPayload,
-} from "@/store/menus/authSlice";
-import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import { loginUser, registerUser, type RegisterPayload } from "@/store/menus/authSlice";
+import { useAppDispatch } from "@/store/hooks";
 import { toClientError } from "@/store/funcs/toClientError";
 import { setAuthToken } from "@/utils/api";
 
@@ -86,8 +82,8 @@ const AuthorizationPage = () => {
               </h1>
 
               <p className="max-w-xl text-white/85">
-                Commandes, suivi en temps réel, facturation et avis client —
-                tout est centralisé dans votre espace personnel.
+                Commandes, suivi en temps réel, facturation et avis client — tout est
+                centralisé dans votre espace personnel.
               </p>
             </div>
             <div className="rounded-2xl bg-white/10 backdrop-blur-md p-6 md:p-8">
@@ -109,7 +105,10 @@ const AuthorizationPage = () => {
                 ))}
               </div>
 
-              <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
+              <form
+                className="space-y-4"
+                onSubmit={handleSubmit(onSubmit)}
+              >
                 {mode === "register" && (
                   <>
                     <div className="grid md:grid-cols-2 gap-4">
@@ -122,9 +121,7 @@ const AuthorizationPage = () => {
                           placeholder="Prénom"
                         />
                         {errors.firstName && (
-                          <p className={errorClass}>
-                            {errors.firstName.message}
-                          </p>
+                          <p className={errorClass}>{errors.firstName.message}</p>
                         )}
                       </div>
 
@@ -135,9 +132,7 @@ const AuthorizationPage = () => {
                           placeholder="Nom"
                         />
                         {errors.lastName && (
-                          <p className={errorClass}>
-                            {errors.lastName.message}
-                          </p>
+                          <p className={errorClass}>{errors.lastName.message}</p>
                         )}
                       </div>
                     </div>
@@ -179,9 +174,7 @@ const AuthorizationPage = () => {
                           placeholder="N°"
                         />
                         {errors.houseNumber && (
-                          <p className={errorClass}>
-                            {errors.houseNumber.message}
-                          </p>
+                          <p className={errorClass}>{errors.houseNumber.message}</p>
                         )}
                       </div>
 
@@ -209,9 +202,7 @@ const AuthorizationPage = () => {
                         className={inputClass}
                         placeholder="Ville"
                       />
-                      {errors.city && (
-                        <p className={errorClass}>{errors.city.message}</p>
-                      )}
+                      {errors.city && <p className={errorClass}>{errors.city.message}</p>}
                     </div>
 
                     <div>
@@ -238,9 +229,7 @@ const AuthorizationPage = () => {
                     className={inputClass}
                     placeholder="Email"
                   />
-                  {errors.email && (
-                    <p className={errorClass}>{errors.email.message}</p>
-                  )}
+                  {errors.email && <p className={errorClass}>{errors.email.message}</p>}
                 </div>
                 <div>
                   <input
