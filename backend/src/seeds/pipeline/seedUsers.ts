@@ -6,7 +6,7 @@ export const seedUsers = async (client: PoolClient): Promise<number> => {
   let inserted = 0;
   try {
     const roleRes = await client.query(
-      `SELECT role_id FROM roles WHERE role_name = 'user' LIMIT 1`
+      `SELECT role_id FROM roles WHERE role_name = 'user' LIMIT 1`,
     );
 
     if (!roleRes.rowCount) {
@@ -146,17 +146,47 @@ export const seedUsers = async (client: PoolClient): Promise<number> => {
           country
         )
         VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10)
-        RETURNING user_id
+        
+        ON CONFLICT (user_email)
+        DO UPDATE SET
+        user_first_name = EXCLUDED.user_first_name,
+        user_last_name = EXCLUDED.user_last_name,
+        mobile_number = EXCLUDED.mobile_number,
+        city = EXCLUDED.city,
+        street = EXCLUDED.street,
+        house_number = EXCLUDED.house_number,
+        zip_code = EXCLUDED.zip_code,
+        country = EXCLUDED.country
+        RETURNING user_id;
         `,
-        [u.first, u.last, u.email, hash, u.phone, u.city, u.street, u.house, u.zip, u.country]
+        [
+          u.first,
+          u.last,
+          u.email,
+          hash,
+          u.phone,
+          u.city,
+          u.street,
+          u.house,
+          u.zip,
+          u.country,
+        ],
       );
 
       const userId = userRes.rows[0].user_id;
 
-      await client.query(`INSERT INTO user_roles (user_id, role_id) VALUES ($1,$2)`, [
-        userId,
-        roleId,
-      ]);
+      await client.query(
+        `INSERT INTO user_roles (
+        user_id, 
+        role_id
+        ) VALUES (
+        $1,$2
+        ) ON CONFLICT (
+         user_id,role_id
+         ) 
+         DO NOTHING`,
+        [userId, roleId],
+      );
     }
     return inserted ?? 0;
   } catch (err) {
