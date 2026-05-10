@@ -1,4 +1,4 @@
-import tommaso from "../assets/tommaso-ubezio-dish.jpg";
+import tommaso from "../assets/tommaso-ubezio-dish.webp";
 
 const demoFoodImages = [
   "https://loremflickr.com/1200/800/food?lock=1",

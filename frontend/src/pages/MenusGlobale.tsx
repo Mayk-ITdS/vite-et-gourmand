@@ -7,7 +7,7 @@ import { sections } from "@/lib/mockData";
 import type { FiltersState } from "@/types/menus";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { fetchMenus } from "@/store/menus/menusSlice";
-import restaurant from "@/assets/valentin-kremer-S8BhJ0HB-WQ-unsplash.jpg";
+import restaurant from "@/assets/valentin-kremer-S8BhJ0HB-WQ-unsplash.webp";
 import { cn } from "@/lib/utils";
 import { selectFilteredMenus } from "@/store/menus/selectors";
 
@@ -49,9 +49,7 @@ const MenuGlobale = () => {
   }, [showFilters]);
 
   const data = useAppSelector((state) => state.menus.list.data);
-  const filteredMenus = useAppSelector((state) =>
-    selectFilteredMenus(state, filters),
-  );
+  const filteredMenus = useAppSelector((state) => selectFilteredMenus(state, filters));
 
   if (status === "loading") return <p>Chargement…</p>;
   if (status === "failed") return <p>Erreur : {error}</p>;
@@ -182,9 +180,7 @@ const MenuGlobale = () => {
                 )}
               >
                 <Card className="h-full bg-black/25 backdrop-blur-s flex justify-between border text-white border-white/30 rounded-xl">
-                  <CardTitle className="mx-auto my-6">
-                    {menu.menu_name}
-                  </CardTitle>
+                  <CardTitle className="mx-auto my-6">{menu.menu_name}</CardTitle>
 
                   <CardContent className="transform translate-y-[0%]">
                     <div className="flex flex-col w-full gap-4 items-center justify-center rounded-md bg-black/50 py-2 px-3">
@@ -196,7 +192,10 @@ const MenuGlobale = () => {
                         }}
                         content="Order"
                       >
-                        <Button component={Link} to={`/menus/${menu.menu_id}`}>
+                        <Button
+                          component={Link}
+                          to={`/menus/${menu.menu_id}`}
+                        >
                           ORDER
                         </Button>
                       </Button>

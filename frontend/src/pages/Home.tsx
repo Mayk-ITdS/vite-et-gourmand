@@ -1,9 +1,9 @@
 import { Link } from "react-router-dom";
 
 import { Button } from "@/components/ui/button";
-import salmon from "@/assets/salmon1.jpg";
-import veganDish from "@/assets/vegan1.jpg";
-import romanticEvening from "@/assets/romantic1.jpg";
+import salmon from "@/assets/salmon1.webp";
+import veganDish from "@/assets/vegan1.webp";
+import romanticEvening from "@/assets/romantic1.webp";
 import corpoEvent from "@/assets/corpo1.avif";
 import Equipe from "@/components/ui/Equipe";
 import { teamData } from "@/lib/teamData";
@@ -14,7 +14,6 @@ import HowItWorksSection from "@/components/HowItWorksSection";
 import { cn } from "@/lib/utils";
 
 import { glassCard } from "./MentionsLegales";
-
 
 const Home = () => {
   return (
@@ -34,15 +33,12 @@ const Home = () => {
               key={src}
               src={src}
               className="h-full w-full object-cover"
-              alt=""
+              alt="Photo Culineaire"
             />
           ))}
         </div>
         <div
-          className={cn(
-            "absolute inset-0 bg-black/45 backdrop-blur-[1px]",
-            glassCard,
-          )}
+          className={cn("absolute inset-0 bg-black/45 backdrop-blur-[1px]", glassCard)}
         />
         <div className="relative z-10 h-full flex items-end pb-24 md:pb-32">
           <div className="mx-auto max-w-7xl px-8">
@@ -58,14 +54,13 @@ const Home = () => {
               </h1>
 
               <p className="text-2xl text-white/80">
-                Dîners privés, soirées entre proches, événements d’entreprise ou
-                occasions singulières — chaque prestation est conçue sur mesure,
-                du menu à l’orchestration.
+                Dîners privés, soirées entre proches, événements d’entreprise ou occasions
+                singulières — chaque prestation est conçue sur mesure, du menu à
+                l’orchestration.
               </p>
 
               <p className="text-xl text-white/60">
-                Gastronomie de saison • Accords mets & vins • Coordination
-                complète
+                Gastronomie de saison • Accords mets & vins • Coordination complète
               </p>
 
               <div className="flex flex-col sm:flex-row gap-4 pt-6">
@@ -100,10 +95,9 @@ const Home = () => {
             </h2>
 
             <p className="text-lg text-muted-foreground text-center leading-relaxed">
-              Chaque événement repose sur une orchestration précise entre
-              cuisine,
-              <br /> service et coordination logistique - pour une exécution
-              fluide, sans approximation.
+              Chaque événement repose sur une orchestration précise entre cuisine,
+              <br /> service et coordination logistique - pour une exécution fluide, sans
+              approximation.
             </p>
           </header>
           <div className="flex flex-col md:flex-row py-6 w-full gap-10">
@@ -125,12 +119,8 @@ const Home = () => {
                 key={item.title}
                 className="rounded-2xl w-full text-center items-center justify-center md:h-auto min-h-10 space-y-6 flex w-[40%] flex-col border border-white/20 bg-white/5 backdrop-blur-xl p-8"
               >
-                <h3 className="text-xl text-center font-medium">
-                  {item.title}
-                </h3>
-                <p className="mt-2 text-lg text-muted-foreground">
-                  {item.desc}
-                </p>
+                <h3 className="text-xl text-center font-medium">{item.title}</h3>
+                <p className="mt-2 text-lg text-muted-foreground">{item.desc}</p>
               </div>
             ))}
           </div>
@@ -150,10 +140,17 @@ const Home = () => {
         </p>
 
         <div className="flex flex-wrap justify-center gap-6">
-          <Button size="lg" className="text-xl px-10">
+          <Button
+            size="lg"
+            className="text-xl px-10"
+          >
             Voir les menus
           </Button>
-          <Button size="lg" variant="secondary" className="text-xl px-10">
+          <Button
+            size="lg"
+            variant="secondary"
+            className="text-xl px-10"
+          >
             Demander un devis
           </Button>
         </div>
