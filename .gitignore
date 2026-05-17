@@ -34,3 +34,17 @@ Thumbs.db
 .vscode/*
 !.vscode/extensions.json
 !.vscode/settings.json
+
+# LaTeX generated files
+*.aux
+*.log
+*.fls
+*.fdb_latexmk
+*.toc
+*.out
+*.synctex.gz
+*.bbl
+*.blg
+*.fdb_latexmk
+*.listing
+main_dossier.*
