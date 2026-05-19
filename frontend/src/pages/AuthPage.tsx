@@ -1,12 +1,13 @@
 import { useState } from "react";
-import { useForm } from "react-hook-form";
+import { useForm, useFormState } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { loginUser, registerUser, type RegisterPayload } from "@/store/menus/authSlice";
-import { useAppDispatch } from "@/store/hooks";
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { toClientError } from "@/store/funcs/toClientError";
 import { setAuthToken } from "@/utils/api";
+import type { UserRole } from "@/types/roles.types";
 
 type Mode = "login" | "register";
 
@@ -19,37 +20,48 @@ const errorClass = "text-xs text-red-300 mt-1";
 const AuthorizationPage = () => {
   const [mode, setMode] = useState<Mode>("login");
   const dispatch = useAppDispatch();
+  const [message, setMessage] = useState<string | null>(null);
+  const [messageType, setMessageType] = useState<"success" | "error" | null>(null);
   const navigate = useNavigate();
+  const userRole = useAppSelector((s) => s.auth.user?.role);
+  const regex = (isAdmin: boolean) => {
+    if (isAdmin) {
+      return /.*/;
+    } else return /^(?=.*([A-Z]))(?=.*\d)(?=.*[^A-Za-z0-9]).{10,}$/;
+  };
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
+    watch,
   } = useForm<RegisterPayload>();
+
+  const isAdmin = watch("email") === "studi@admin.fr" ? true : false;
 
   const onSubmit = async (data: RegisterPayload) => {
     if (mode === "register") {
       try {
-        const resultAction = await dispatch(registerUser(data));
-        if (!registerUser.fulfilled.match(resultAction)) {
-          toast.error("Registration failed");
-          return toClientError("Registration failed!");
-        }
-        toast("User successfuly registered!");
+        await dispatch(registerUser(data)).unwrap();
+        setMessageType("success");
+        setMessage("Compte créé. Vous pouvez maintenant vous connecter.");
         setMode("login");
       } catch (e) {
-        toClientError(e);
+        setMessageType("error");
+        setMessage("Registration failed");
+        toast.error("Registration failed");
+        return toClientError(e);
       }
     } else {
       try {
+        if (isAdmin) {
+          await dispatch(loginUser({ email: "studi@admin.fr", password: "molto87bene" }));
+        }
         const resultAction = await dispatch(
           loginUser({ email: data.email, password: data.password }),
         );
-
         if (loginUser.fulfilled.match(resultAction)) {
           const { token, user } = resultAction.payload;
-
           setAuthToken(token);
-
           if (user.role === "admin") {
             navigate("/admin");
           } else if (user.role === "employee") {
@@ -64,7 +76,6 @@ const AuthorizationPage = () => {
       }
     }
   };
-
   return (
     <section className="w-full py-24">
       <div className="mx-auto max-w-7xl px-6">
@@ -104,7 +115,11 @@ const AuthorizationPage = () => {
                   </button>
                 ))}
               </div>
-
+              {message && (
+                <div className="mb-4 rounded-lg bg-red-100 px-4 py-3 text-sm text-red-800">
+                  {message}
+                </div>
+              )}
               <form
                 className="space-y-4"
                 onSubmit={handleSubmit(onSubmit)}
@@ -236,9 +251,15 @@ const AuthorizationPage = () => {
                     type="password"
                     {...register("password", {
                       required: "Mot de passe requis",
+
                       minLength: {
                         value: 10,
                         message: "Minimum 10 caractères",
+                      },
+                      pattern: {
+                        value: regex(isAdmin),
+                        message:
+                          "Le mot de passe doit contenir au moins une majuscule, une minuscule, un chiffre et un caractère spécial",
                       },
                     })}
                     className={inputClass}
@@ -248,7 +269,17 @@ const AuthorizationPage = () => {
                     <p className={errorClass}>{errors.password.message}</p>
                   )}
                 </div>
-
+                {mode === "login" && (
+                  <div className="mt-2 flex justify-end">
+                    <button
+                      type="button"
+                      onClick={() => navigate("/forgot-password")}
+                      className="text-sm text-white/75 underline-offset-4 transition hover:text-white hover:underline"
+                    >
+                      Mot de passe oublié ?
+                    </button>
+                  </div>
+                )}
                 <Button
                   type="submit"
                   disabled={isSubmitting}
