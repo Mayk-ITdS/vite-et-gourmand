@@ -1,9 +1,9 @@
-import { date } from "zod";
 import { pgPool } from "../config/db.js";
 import { OrderRow, UserOrderDTO, UserOrderRow } from "../types/orders/types.js";
 
 export class OrderRepository {
   async findByUser(id: number): Promise<UserOrderDTO[]> {
+    console.log("USING NEW findByUser SQL VERSION");
     const result = await pgPool.query<UserOrderRow>(
       `
     SELECT 

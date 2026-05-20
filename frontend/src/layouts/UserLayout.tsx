@@ -2,7 +2,7 @@ import { Outlet } from "react-router-dom";
 import Box from "@mui/material/Box";
 import { useEffect } from "react";
 
-import UserSidebarProfile from "@/components/userPanel/Siedbar/UserSidebarProfile";
+import UserSidebarProfile from "@/components/espaceprive/UserSidebarProfile";
 import SidebarNavItem from "@/components/userPanel/SideBarNavItem";
 import { useAppDispatch } from "@/store/hooks";
 import { fetchMyProfile } from "@/store/slices/userProfileSlice";

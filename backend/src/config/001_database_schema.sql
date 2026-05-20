@@ -83,7 +83,7 @@ AS $$
   BEGIN
     INSERT INTO administration (admin_name, admin_email, admin_password, role_id)
     VALUES (adm_name, email, crypt(pass, gen_salt('bf', 10)), 3);
-    RETURN 'admin creation successfull';
+    RETURN 'admin creation successful';
   END;
 $$;
 
