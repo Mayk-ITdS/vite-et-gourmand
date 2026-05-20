@@ -43,7 +43,6 @@ export default defineConfig([
     },
 
     rules: {
-      // 🔴 Unused imports – bardzo ważne w Redux projektach
       "unused-imports/no-unused-imports": "error",
       "unused-imports/no-unused-vars": [
         "warn",
@@ -55,12 +54,10 @@ export default defineConfig([
         },
       ],
 
-      // 🟡 TypeScript
       "@typescript-eslint/no-explicit-any": "warn",
       "@typescript-eslint/no-floating-promises": "warn",
       "react-hooks/set-state-in-effect": "warn",
 
-      // 🔵 Import hygiene
       "import/no-unresolved": "error",
       "import/order": [
         "warn",
@@ -70,11 +67,9 @@ export default defineConfig([
         },
       ],
 
-      // 🟢 React
       "react-hooks/rules-of-hooks": "error",
       "react-hooks/exhaustive-deps": "warn",
 
-      // 🟠 Clean code
       "no-console": ["warn", { allow: ["warn", "error"] }],
       "no-debugger": "error",
     },

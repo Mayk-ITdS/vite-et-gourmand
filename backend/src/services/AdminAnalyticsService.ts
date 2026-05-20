@@ -113,12 +113,10 @@ class AdminAnalyticsService {
       if (a.year !== b.year) {
         return a.year - b.year;
       }
-
       return a.month - b.month;
     });
     const totalOrders = statuses.reduce((sum, m) => sum + (Number(m.count) || 0), 0);
     const averageRevenue = totalOrders > 0 ? totalRevenue / totalOrders : 0;
-
     const topMenuId = menus.length > 0 ? menus[0].menuId : null;
     console.info("I zwracamy dane");
     return {
