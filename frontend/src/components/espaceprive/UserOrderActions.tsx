@@ -3,6 +3,7 @@ import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 
 import UserReviewDialog from "./UserReviewDialog";
+import type { UserOrderDTO } from "@/store/orders/userOrdersSlice";
 
 type Props = {
   order: any;
@@ -15,7 +16,7 @@ type Props = {
   }) => Promise<void> | void;
 };
 
-const getOrderId = (order: any) => order.order_id ?? order.reservation_id ?? order.id;
+const getOrderId = (order: UserOrderDTO) => order.resId;
 
 const getOrderStatus = (order: any) =>
   String(order.status ?? order.current_status ?? order.reservation_status ?? "")

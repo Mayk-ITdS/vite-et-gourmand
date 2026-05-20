@@ -18,9 +18,9 @@ const UserDashboard = () => {
     dispatch(fetchMyOrders());
   }, [dispatch]);
 
-  const activeOrders = orders.filter((ord) => {
-    ord;
-  });
+  const activeOrders = orders.filter(
+    (ord) => !["cancelled", "completed"].includes(ord.history[0].status),
+  );
 
   return (
     <Paper

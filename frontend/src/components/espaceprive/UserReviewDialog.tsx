@@ -1,77 +1,92 @@
+import { useState } from "react";
+import Dialog from "@mui/material/Dialog";
+import DialogTitle from "@mui/material/DialogTitle";
+import DialogContent from "@mui/material/DialogContent";
+import DialogActions from "@mui/material/DialogActions";
+import Button from "@mui/material/Button";
+import TextField from "@mui/material/TextField";
+import Rating from "@mui/material/Rating";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 
-type StatusHistoryItem = {
-  status: string;
-  open: boolean;
-  changed_at?: string;
-  created_at?: string;
-  date?: string;
-};
-
 type Props = {
-  history?: StatusHistoryItem[];
+  orderId: number | string;
   open: boolean;
+  onClose: () => void;
+  onSubmitReview: (data: {
+    orderId: number | string;
+    rating: number;
+    comment: string;
+  }) => Promise<void> | void;
 };
 
-const UserOrderTimeline = ({ history = [], open }: Props) => {
-  if (!history.length) {
-    return (
-      <Box
-        sx={{
-          border: "1px dashed rgba(255,255,255,0.14)",
-          borderRadius: 2,
-          p: 2,
-          color: "rgba(255,255,255,0.6)",
-        }}
-      >
-        Aucun suivi disponible pour le moment.
-      </Box>
-    );
-  }
+const UserReviewDialog = ({ orderId, open, onClose, onSubmitReview }: Props) => {
+  const [rating, setRating] = useState<number | null>(5);
+  const [comment, setComment] = useState("");
+
+  const handleSubmit = async () => {
+    if (!rating) return;
+
+    await onSubmitReview({
+      orderId,
+      rating,
+      comment,
+    });
+
+    setComment("");
+    setRating(5);
+    onClose();
+  };
 
   return (
-    <Box sx={{ display: "grid", gap: 2 }}>
-      {history.map((item, index) => {
-        const date = item.changed_at ?? item.created_at ?? item.date;
+    <Dialog
+      open={open}
+      onClose={onClose}
+      fullWidth
+      maxWidth="sm"
+    >
+      <DialogTitle>Donner un avis</DialogTitle>
 
-        return (
-          <Box
-            key={`${item.status}-${index}`}
-            sx={{
-              display: "grid",
-              gridTemplateColumns: "24px 1fr",
-              gap: 2,
-              alignItems: "start",
-            }}
-          >
-            <Box
-              sx={{
-                width: 14,
-                height: 14,
-                borderRadius: "999px",
-                mt: 0.5,
-                bgcolor: index === 0 ? "#fbbf24" : "rgba(255,255,255,0.35)",
-              }}
+      <DialogContent>
+        <Box sx={{ display: "grid", gap: 2, pt: 1 }}>
+          <Box>
+            <Typography
+              variant="body2"
+              sx={{ mb: 1 }}
+            >
+              Votre note
+            </Typography>
+
+            <Rating
+              value={rating}
+              onChange={(_, value) => setRating(value)}
             />
-
-            <Box>
-              <Typography fontWeight={600}>{item.status}</Typography>
-
-              {date && (
-                <Typography
-                  variant="body2"
-                  sx={{ color: "rgba(255,255,255,0.6)" }}
-                >
-                  {new Date(date).toLocaleString("fr-FR")}
-                </Typography>
-              )}
-            </Box>
           </Box>
-        );
-      })}
-    </Box>
+
+          <TextField
+            label="Votre commentaire"
+            multiline
+            minRows={4}
+            value={comment}
+            onChange={(event) => setComment(event.target.value)}
+            fullWidth
+          />
+        </Box>
+      </DialogContent>
+
+      <DialogActions>
+        <Button onClick={onClose}>Annuler</Button>
+
+        <Button
+          variant="contained"
+          onClick={handleSubmit}
+          disabled={!rating}
+        >
+          Envoyer
+        </Button>
+      </DialogActions>
+    </Dialog>
   );
 };
 
-export default UserOrderTimeline;
+export default UserReviewDialog;
