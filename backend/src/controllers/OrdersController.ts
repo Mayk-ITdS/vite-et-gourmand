@@ -1,6 +1,6 @@
-import { request, Request, Response } from "express";
+import { Response } from "express";
 import { OrdersService } from "../services/OrdersService.js";
-import { ApiError, UserRequest } from "../types/users.js";
+import { UserRequest } from "../types/users.js";
 import { CreateOrderDTO } from "../dtos/orders.dtos.js";
 
 export class OrdersController {
