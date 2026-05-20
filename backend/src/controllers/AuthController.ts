@@ -18,6 +18,9 @@ class AuthController {
 
   me = async (req: UserRequest, res: Response) => {
     const user = await this.authService.me(req.user!.user_id);
+    if (!req.user) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
     return res.json(user);
   };
 }

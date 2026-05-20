@@ -36,9 +36,13 @@ export class AuthService {
       if (!user) throw new ApiError(500, "Failed to create a user", false);
       const userWithRole = await this.userRepo.findById(Number(user.user_id));
 
-      const token = jwt.sign({ sub: userWithRole.id, role: userWithRole.role }, ENV.JWT.SECRET, {
-        expiresIn: "1h",
-      });
+      const token = jwt.sign(
+        { sub: userWithRole.id, role: userWithRole.role },
+        ENV.JWT.SECRET,
+        {
+          expiresIn: "1h",
+        },
+      );
 
       return {
         token,
@@ -86,7 +90,7 @@ export class AuthService {
           role,
         },
         ENV.JWT.SECRET,
-        { expiresIn: "1h" }
+        { expiresIn: "1h" },
       );
       console.log("oto token prosze: ", token);
       if (!token) throw new ApiError(401, "No token", false);
