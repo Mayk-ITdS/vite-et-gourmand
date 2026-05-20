@@ -10,6 +10,15 @@ export const suiviStatusValues = [
 ] as const;
 export type SuiviStatusValue = (typeof suiviStatusValues)[number];
 
+export interface Prestation {
+  city: string;
+  streetName: string;
+  streetNumber: number;
+  zipCode: string;
+  date: string;
+  time: string;
+  distanceKm: number;
+}
 type OrderDraft = {
   order: {
     menu_id: number[] | number;
@@ -28,13 +37,7 @@ type OrderDraft = {
     phone: string;
   };
 
-  prestation: {
-    address: string;
-    city: string;
-    date: string;
-    time: string;
-    distanceKm: number;
-  };
+  prestation: Prestation;
   pricing: {
     base: number;
     discount: number;

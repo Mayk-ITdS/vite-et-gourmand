@@ -16,6 +16,12 @@ const UserSidebarProfile = () => {
 
   if (!user) return null;
 
+  const firstName = profile?.firstName ?? user.firstName ?? "";
+  const lastName = profile?.lastName ?? user.lastName ?? "";
+  const email = profile?.email ?? user.email ?? "";
+  const city = profile?.city ?? "";
+  const country = profile?.country ?? "";
+
   return (
     <Box
       sx={{
@@ -26,24 +32,51 @@ const UserSidebarProfile = () => {
         backdropFilter: "blur(8px)",
       }}
     >
-      <Box display="flex" alignItems="center" gap={2}>
-        <Avatar sx={{ bgcolor: "#6E0F1A" }}>{user.firstName?.[0]}</Avatar>
+      <Box
+        display="flex"
+        alignItems="center"
+        gap={2}
+      >
+        <Avatar sx={{ bgcolor: "#6E0F1A" }}>
+          {firstName?.[0]?.toUpperCase() ?? "U"}
+        </Avatar>
 
-        <Box>
-          <Typography>
-            {profile?.firstName} {profile?.lastName}
+        <Box sx={{ minWidth: 0 }}>
+          <Typography fontWeight={600}>
+            {firstName} {lastName}
           </Typography>
-          <Typography>{profile?.email}</Typography>
-          <Typography>
-            {profile?.city}, {profile?.country}
+
+          <Typography
+            variant="body2"
+            sx={{ color: "rgba(255,255,255,0.65)" }}
+          >
+            {email}
           </Typography>
+
+          {(city || country) && (
+            <Typography
+              variant="body2"
+              sx={{ color: "rgba(255,255,255,0.55)" }}
+            >
+              {[city, country].filter(Boolean).join(", ")}
+            </Typography>
+          )}
         </Box>
       </Box>
 
-      <Button size="small" onClick={() => setOpenEdit(true)}>
-        Edit profile
+      <Button
+        size="small"
+        onClick={() => setOpenEdit(true)}
+        sx={{ mt: 2 }}
+      >
+        Modifier le profil
       </Button>
-      <EditProfileDialog open={openEdit} onClose={() => setOpenEdit(false)} profile={profile} />
+
+      <EditProfileDialog
+        open={openEdit}
+        onClose={() => setOpenEdit(false)}
+        profile={profile}
+      />
     </Box>
   );
 };

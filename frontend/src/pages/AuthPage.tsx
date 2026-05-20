@@ -24,10 +24,8 @@ const AuthorizationPage = () => {
   const [messageType, setMessageType] = useState<"success" | "error" | null>(null);
   const navigate = useNavigate();
   const userRole = useAppSelector((s) => s.auth.user?.role);
-  const regex = (isAdmin: boolean) => {
-    if (isAdmin) {
-      return /.*/;
-    } else return /^(?=.*([A-Z]))(?=.*\d)(?=.*[^A-Za-z0-9]).{10,}$/;
+  const regex = () => {
+    return /^(?=.*([A-Z]))(?=.*\d)(?=.*[^A-Za-z0-9]).{10,}$/;
   };
   const {
     register,
@@ -36,7 +34,7 @@ const AuthorizationPage = () => {
     watch,
   } = useForm<RegisterPayload>();
 
-  const isAdmin = watch("email") === "studi@admin.fr" ? true : false;
+  const isAdmin = watch("email");
 
   const onSubmit = async (data: RegisterPayload) => {
     if (mode === "register") {
@@ -53,9 +51,6 @@ const AuthorizationPage = () => {
       }
     } else {
       try {
-        if (isAdmin) {
-          await dispatch(loginUser({ email: "studi@admin.fr", password: "molto87bene" }));
-        }
         const resultAction = await dispatch(
           loginUser({ email: data.email, password: data.password }),
         );
@@ -251,16 +246,16 @@ const AuthorizationPage = () => {
                     type="password"
                     {...register("password", {
                       required: "Mot de passe requis",
-
-                      minLength: {
-                        value: 10,
-                        message: "Minimum 10 caractères",
-                      },
-                      pattern: {
-                        value: regex(isAdmin),
-                        message:
-                          "Le mot de passe doit contenir au moins une majuscule, une minuscule, un chiffre et un caractère spécial",
-                      },
+                      ...(mode === "register" && {
+                        pattern: {
+                          value: regex(),
+                          message: "Mot de masse incorrect",
+                        },
+                        minLength: {
+                          value: 10,
+                          message: "Minimum 10 caractères",
+                        },
+                      }),
                     })}
                     className={inputClass}
                     placeholder="Mot de passe sécurisé"

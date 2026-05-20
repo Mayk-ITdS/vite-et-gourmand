@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Button } from "@mui/material";
+import { backdropClasses, Button } from "@mui/material";
 import { Link } from "react-router-dom";
 
 import { Card, CardContent, CardTitle } from "@/components/ui/card";
@@ -10,6 +10,7 @@ import { fetchMenus } from "@/store/menus/menusSlice";
 import restaurant from "@/assets/valentin-kremer-S8BhJ0HB-WQ-unsplash.webp";
 import { cn } from "@/lib/utils";
 import { selectFilteredMenus } from "@/store/menus/selectors";
+import { Euro } from "lucide-react";
 
 const MenuGlobale = () => {
   const [showFilters, setShowFilters] = useState(false);
@@ -26,9 +27,7 @@ const MenuGlobale = () => {
   const dispatch = useAppDispatch();
   const status = useAppSelector((state) => state.menus.details.status);
   const error = useAppSelector((state) => state.menus.details.error);
-  useEffect(() => {
-    console.log("FILTERS:", filters);
-  }, [filters]);
+  useEffect(() => {}, [filters]);
 
   useEffect(() => {
     if (status === "idle") {
@@ -80,8 +79,8 @@ const MenuGlobale = () => {
         )}
 
         <div
-          style={{ backgroundImage: `url(${restaurant})` }}
           className="flex h-full w-full bg-cover bg-center"
+          style={{ backgroundImage: `${restaurant}` }}
         >
           {showFilters && (
             <div
@@ -179,7 +178,7 @@ const MenuGlobale = () => {
                   "transform hover:scale-105 transition-transform duration-300 cursor-pointer",
                 )}
               >
-                <Card className="h-full bg-black/25 backdrop-blur-s flex justify-between border text-white border-white/30 rounded-xl">
+                <Card className="h-full bg-black/25 flex justify-between border text-white border-white/30 rounded-xl">
                   <CardTitle className="mx-auto my-6">{menu.menu_name}</CardTitle>
 
                   <CardContent className="transform translate-y-[0%]">
@@ -189,6 +188,7 @@ const MenuGlobale = () => {
                           border: "1px solid blueviolet",
                           borderRadius: "8px",
                           paddingX: "2rem",
+                          backgroundColor: "black",
                         }}
                         content="Order"
                       >
@@ -203,8 +203,14 @@ const MenuGlobale = () => {
                         {menu.description}
                       </p>
                       <div className="w-full flex flex-row justify-between">
-                        <p>from {menu.min_persons} persons</p>
-                        <p>prix: {menu.prix_unitaire}</p>
+                        <p className="flex">min {menu.min_persons} person. </p>
+                        <p className="flex">
+                          {menu.prix_unitaire}{" "}
+                          <Euro
+                            className="m-auto"
+                            size={14}
+                          />
+                        </p>
                       </div>
                     </div>
                   </CardContent>

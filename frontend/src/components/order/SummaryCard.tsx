@@ -13,7 +13,7 @@ export default function StepSummary() {
   const navigate = useNavigate();
   const pricing = useAppSelector(selectOrderPricing);
   const { client, prestation, order, selectedMenu, status } = useAppSelector(
-    (state) => state.orders
+    (state) => state.orders,
   );
   if (!selectedMenu) {
     return "Menu n`a pas etait choisi";
@@ -41,11 +41,12 @@ export default function StepSummary() {
         </div>
         <div>
           <h3 className="text-sm text-white/60 mb-2">Événement</h3>
-          {prestation.address && (
-            <p>
-              {prestation.address}, {prestation.city}
-            </p>
-          )}
+          {prestation &&
+            Object.entries(prestation).map(([k, v]) => (
+              <p key={k}>
+                {k}: {v}
+              </p>
+            ))}
           {prestation.date && (
             <p className="text-sm text-white/70">
               {`${prestation.date} à`} {prestation.time}
@@ -60,13 +61,26 @@ export default function StepSummary() {
           </p>
         </div>
         <div className="border-t border-white/10 pt-4">
-          <PriceRow label="Prix menu (HT)" value={pricing.ht} />
-          <PriceRow label="TVA (10%)" value={pricing.tva} />
-          <PriceRow label="Livraison" value={pricing.delivery} />
+          <PriceRow
+            label="Prix menu (HT)"
+            value={pricing.ht}
+          />
+          <PriceRow
+            label="TVA (10%)"
+            value={pricing.tva}
+          />
+          <PriceRow
+            label="Livraison"
+            value={pricing.delivery}
+          />
 
           <div className="my-3 border-t border-white/10" />
 
-          <PriceRow label="TOTAL TTC" value={pricing.ttc} highlight />
+          <PriceRow
+            label="TOTAL TTC"
+            value={pricing.ttc}
+            highlight
+          />
         </div>
         <Button
           onClick={handleSubmitOrder}
