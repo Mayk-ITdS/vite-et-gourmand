@@ -9,9 +9,9 @@ import orderRoutes from "./routes/orderRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
 import adminRoutes from "./routes/adminRoutes.js";
 import reviewsRoutes from "./routes/reviewsRoutes.js";
+import { createAdmin } from "./config/createAdmin.js";
 
 const app = express();
-
 app.use(express.json());
 app.use("/api/admin", adminRoutes);
 app.use("/api/users", userRoutes);
@@ -20,7 +20,7 @@ app.use("/health", healthRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/orders/", orderRoutes);
 app.use("/api/reviews", reviewsRoutes);
-console.log("reviewsRoutes =", reviewsRoutes);
+
 app.use(globalErrorHandler);
 console.log("BACKEND INSTANCE STARTED", new Date().toISOString());
 const startover = async () => {
@@ -31,6 +31,7 @@ const startover = async () => {
     app.listen(ENV.SERVER.PORT, "0.0.0.0", () => {
       console.log(`Server listening on ${ENV.SERVER.PORT}`);
     });
+    createAdmin();
   } catch (e) {
     console.error(e);
     process.exit(1);
