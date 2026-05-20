@@ -1,15 +1,9 @@
+import type { OrderHistoryItemDTO } from "@/store/orders/orderTypes";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 
-type StatusHistoryItem = {
-  status: string;
-  changedAt?: string;
-  changedBy?: number;
-  // date?: string;
-};
-
 type Props = {
-  history?: StatusHistoryItem[];
+  history: OrderHistoryItemDTO[];
 };
 
 const UserOrderTimeline = ({ history = [] }: Props) => {

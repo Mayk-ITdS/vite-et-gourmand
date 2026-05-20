@@ -14,7 +14,7 @@ import UserOrderActions from "@/components/espaceprive/UserOrderActions";
 // import { cancelMyOrder } from "@/store/orders/userOrdersSlice";
 // import { createReview } from "@/store/reviews/reviewsSlice";
 
-const UserOrderDetailsPage = () => {
+const UserOrderPage = () => {
   const { orderId } = useParams();
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
@@ -30,7 +30,7 @@ const UserOrderDetailsPage = () => {
 
   const order = useMemo(() => {
     return orders.find((item: any) => {
-      const id = item.order_id ?? item.reservation_id ?? item.id;
+      const id = item.resId;
       return String(id) === String(orderId);
     });
   }, [orders, orderId]);
@@ -83,7 +83,6 @@ const UserOrderDetailsPage = () => {
   }
 
   const currentStatus = status;
-  const history = status;
 
   return (
     <Paper
@@ -234,4 +233,4 @@ const formatCurrency = (value: unknown) => {
   return `${Number(value).toFixed(2)} €`;
 };
 
-export default UserOrderDetailsPage;
+export default UserOrderPage;
