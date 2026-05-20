@@ -15,6 +15,9 @@ export const ENV = {
     USER: must("PG_USER"),
     PASSWORD: must("PG_PASSWORD"),
     DB: must("PG_DB"),
+    ADMIN_NAME: must("ADMIN_NAME"),
+    ADMIN_EMAIL: must("ADMIN_EMAIL"),
+    ADMIN_PASS: must("ADMIN_PASS"),
   },
   JWT: {
     SECRET: must("JWT_SECRET"),

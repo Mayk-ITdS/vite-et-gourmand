@@ -9,6 +9,7 @@ export const pgPool = new Pool({
   password: ENV.PG.PASSWORD,
   database: ENV.PG.DB,
 });
+
 console.log("PG_HOST", ENV.PG.HOST);
 console.log("PG_PORT", ENV.PG.PORT);
 console.log(ENV.PG.DB);
