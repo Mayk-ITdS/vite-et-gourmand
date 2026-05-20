@@ -1,39 +1,44 @@
 import { CreateOrderDTO, CreateReservationDTO } from "../dtos/orders.dtos.js";
 import { OrderRepository } from "../repositories/orders.repository.js";
-import { ApiError } from "../types/users.js";
+import { ApiError, User } from "../types/users.js";
 import { calculatePricing } from "./pricing.service.js";
-import { MenuFromDB } from "../types/menus/pricing.types.js";
 import AdminAnalyticsService from "./AdminAnalyticsService.js";
 
 export class OrdersService {
   constructor(
     private orderRepo = new OrderRepository(),
-    private analytics = AdminAnalyticsService
+    private analytics = AdminAnalyticsService,
   ) {}
   getAllOrders = async (id: number) => {
     try {
-      return await this.orderRepo.findByUser(id);
+      console.log("It`s typeof id:", typeof id, "id:", id);
+      return await this.orderRepo.findByUser(Number(id));
     } catch (err) {
-      throw new ApiError(404, "Invalid credential", false);
+      throw new ApiError(404, String(err), false);
     }
   };
 
   async createReservation(userId: number, dto: CreateOrderDTO) {
-    const menusFromDb = await this.orderRepo.findMenusByIds(dto.menus.map((m) => m.menuId));
+    const menusFromDb = await this.orderRepo.findMenusByIds(
+      dto.menus.map((m) => m.menuId),
+    );
     const pricing = calculatePricing(dto.menus, menusFromDb);
 
     const prestation = {
-      address: dto.prestation.address,
       city: dto.prestation.city,
+      streetName: dto.prestation.streetName,
+      streetNumber: dto.prestation.streetNumber,
+      zipCode: dto.prestation.zipCode,
       date: dto.prestation.date,
       time: dto.prestation.time,
+      distanceKm: dto.prestation.distanceKm,
     };
 
     const result = await this.orderRepo.createReservationTransaction(
       userId,
       prestation,
       dto.menus,
-      pricing
+      pricing,
     );
     console.log("PRICING MENUS:", pricing.menus);
     console.log("ANALYTICS INSTANCE:", this.analytics);
