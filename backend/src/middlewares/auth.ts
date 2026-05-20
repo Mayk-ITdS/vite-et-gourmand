@@ -7,7 +7,12 @@ type AuthJwtPayload = {
   role: "user" | "admin" | "employee";
 };
 function isAuthPayload(payload: unknown): payload is AuthJwtPayload {
-  return typeof payload === "object" && payload !== null && "sub" in payload && "role" in payload;
+  return (
+    typeof payload === "object" &&
+    payload !== null &&
+    "sub" in payload &&
+    "role" in payload
+  );
 }
 const authMiddleware = async (req: UserRequest, res: Response, next: NextFunction) => {
   const token = req.header("Authorization")?.replace("Bearer ", "");
@@ -18,7 +23,7 @@ const authMiddleware = async (req: UserRequest, res: Response, next: NextFunctio
     const decoded = jwt.verify(token, ENV.JWT.SECRET) as unknown;
 
     if (!isAuthPayload(decoded)) {
-      return res.status(401).json({ message: "Involid token" });
+      return res.status(401).json({ message: "Invalid token" });
     }
     const payload = decoded as AuthJwtPayload;
     req.user = {
