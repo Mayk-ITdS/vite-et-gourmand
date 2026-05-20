@@ -3,11 +3,6 @@ import api from "@/utils/api";
 import { toClientError } from "../funcs/toClientError";
 import type { ClientError } from "@/types/errors";
 
-type UserOrdersState = {
-  list: UserOrderDTO[];
-  status: "idle" | "loading" | "succeeded" | "error";
-  error: string | null;
-};
 const initialState: UserOrdersState = {
   list: [],
   status: "idle",
@@ -30,16 +25,20 @@ export type UserOrderDTO = {
     changedBy: number;
   }[];
 };
-
+type UserOrdersState = {
+  list: UserOrderDTO[];
+  status: "idle" | "loading" | "succeeded" | "error";
+  error: string | null;
+};
 export const fetchMyOrders = createAsyncThunk<
   UserOrderDTO[],
   void,
   { rejectValue: ClientError }
 >("orders/fetchMyOrders", async (_, { rejectWithValue }) => {
   try {
-    const res = await api.get<UserOrderDTO[]>("/orders/me");
+    const res = await api.get("/orders/me");
     console.log("RESPONSE:", res.data);
-    return res.data;
+    return res.data.data;
   } catch (err) {
     return rejectWithValue(toClientError(err));
   }

@@ -20,8 +20,12 @@ export type CreateOrderDTO = {
     time: string;
   };
 };
-export type ReservationStatus = "pending" | "confirmed" | "cancelled" | "completed";
-
+export type OrderStatus = "pending" | "confirmed" | "cancelled" | "completed";
+export type OrderHistoryItemDTO = {
+  status: OrderStatus;
+  changedAt: string;
+  changedBy: number | null;
+};
 export type UserOrderRow = {
   res_id: number;
   no_persons: number;
@@ -30,7 +34,7 @@ export type UserOrderRow = {
   equipement_returned: boolean;
   event_date: string;
   total_price: string;
-  status: ReservationStatus;
+  status: OrderStatus;
   changed_at: string;
   changed_by: number;
   menu_id: number | string;
@@ -49,11 +53,7 @@ export type UserOrderDTO = {
   menuId: number;
   unitPriceSnapshot: number;
   theme: string | null;
-  history: {
-    status: ReservationStatus;
-    changedAt: string | null;
-    changedBy: number | null;
-  };
+  history: OrderHistoryItemDTO[];
 };
 
 export type UserOrdersResponseDTO = {

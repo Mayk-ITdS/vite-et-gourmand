@@ -5,37 +5,53 @@ import { OrderRow, UserOrderDTO, UserOrderRow } from "../types/orders/types.js";
 export class OrderRepository {
   async findByUser(id: number): Promise<UserOrderDTO[]> {
     const result = await pgPool.query<UserOrderRow>(
-      `SELECT 
-                          r.res_id,
-                          r.no_persons,
-                          r.event_name,
-                          r.equipement_loaned,
-                          r.equipement_returned,
-                          r.event_date,
-                          r.total_price,
-                          osh.status,
-                          osh.changed_at,
-                          osh.changed_by,
-                          rm.menu_id,
-                          rm.unit_price_snapshot,
-                          (
-                           Select t.theme_name from menu_themes mt
-                           join themes t ON t.theme_id = mt.theme_id
-                           where mt.menu_id = rm.menu_id
-                           ) as theme
-                            FROM reservations r left join lateral 
-                            (
-                            Select osh.status, osh.changed_at,osh.changed_by
-                            from order_status_history osh
-                            where r.res_id = osh.res_id 
-                            order by 
-                            osh.changed_at DESC
-                            ) osh on 
-                             true
-                            left join reservation_menus rm on 
-                            r.res_id = rm.res_id 
-                            WHERE user_id = $1
-                            Order by r.event_date DESC, r.res_id DESC`,
+      `
+    SELECT 
+      r.res_id,
+      r.no_persons,
+      r.event_name,
+      r.equipement_loaned,
+      r.equipement_returned,
+      r.event_date,
+      r.total_price,
+
+      osh.status,
+      osh.changed_at,
+      osh.changed_by,
+
+      rm.menu_id,
+      rm.unit_price_snapshot,
+
+      COALESCE(
+        (
+          SELECT string_agg(t.theme_name, ', ' ORDER BY t.theme_name)
+          FROM menu_themes mt
+          JOIN themes t ON t.theme_id = mt.theme_id
+          WHERE mt.menu_id = rm.menu_id
+        ),
+        ''
+      ) AS theme
+
+    FROM reservations r
+
+    LEFT JOIN LATERAL (
+      SELECT 
+        osh.status,
+        osh.changed_at,
+        osh.changed_by
+      FROM order_status_history osh
+      WHERE osh.res_id = r.res_id
+      ORDER BY osh.changed_at DESC
+      LIMIT 1
+    ) osh ON true
+
+    LEFT JOIN reservation_menus rm 
+      ON r.res_id = rm.res_id
+
+    WHERE r.user_id = $1
+
+    ORDER BY r.event_date DESC, r.res_id DESC
+    `,
       [id],
     );
 
@@ -47,14 +63,23 @@ export class OrderRepository {
       equipmentReturned: row.equipement_returned,
       eventDate: row.event_date,
       totalPrice: Number(row.total_price),
+
       menuId: Number(row.menu_id),
       unitPriceSnapshot: Number(row.unit_price_snapshot),
       theme: row.theme,
-      history: {
-        status: row.status,
-        changedAt: row.changed_at,
-        changedBy: Number(row.changed_by),
-      },
+
+      history: row.status
+        ? [
+            {
+              status: row.status,
+              changedAt: row.changed_at,
+              changedBy:
+                row.changed_by === null || row.changed_by === undefined
+                  ? null
+                  : Number(row.changed_by),
+            },
+          ]
+        : [],
     }));
   }
   async findMenusByIds(ids: number[]) {
@@ -200,7 +225,8 @@ export class OrderRepository {
       INSERT INTO order_status_history (
         res_id,
         status,
-        changed_at
+        changed_at,
+        changed_by
       )
       VALUES ($1, 'pending', NOW())
       `,

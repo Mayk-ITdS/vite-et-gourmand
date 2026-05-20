@@ -5,11 +5,15 @@ import TableContainer from "@mui/material/TableContainer";
 import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
 import { Table, TableFooter, TableHead } from "@mui/material";
+import type { UserOrderDTO } from "@/store/orders/userOrdersSlice";
+import UserOrderActions from "@/components/espaceprive/UserOrderActions";
 const columns = ["", "Order", "Price", "Status", "Date", "Actions"];
+
 type OrdersTableProps = {
-  orders: any[];
+  orders: UserOrderDTO[];
   loading: boolean;
 };
+
 const OrdersTable = ({ orders }: OrdersTableProps) => {
   return (
     <TableContainer>
@@ -26,16 +30,35 @@ const OrdersTable = ({ orders }: OrdersTableProps) => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {Array.from(orders).map((order) => (
-            <TableRow key={order.res_id}>
+          {orders.map((order) => (
+            <TableRow key={order.resId}>
               <TableCell padding="checkbox">
                 <Checkbox />
               </TableCell>
-              <TableCell>Order #{order.res_id}</TableCell>
-              <TableCell align="right">{order.total_price}€</TableCell>
-              <TableCell>{order.res_status}</TableCell>
-              <TableCell>{order.date_res_for}</TableCell>
-              <TableCell>…</TableCell>
+              <TableCell>Order #{order.resId}</TableCell>
+              <TableCell align="right">{order.totalPrice}€</TableCell>
+              <TableCell>{order.history[0].status}</TableCell>
+              <TableCell>{new Date(order.eventDate).toLocaleDateString()}</TableCell>
+              <TableCell>
+                <UserOrderActions
+                  order={order}
+                  onCancelOrder={function (
+                    orderId: number | string,
+                  ): Promise<void> | void {
+                    throw new Error("Function not implemented.");
+                  }}
+                  onEditOrder={function (orderId: number | string): void {
+                    throw new Error("Function not implemented.");
+                  }}
+                  onSubmitReview={function (data: {
+                    orderId: number | string;
+                    rating: number;
+                    comment: string;
+                  }): Promise<void> | void {
+                    throw new Error("Function not implemented.");
+                  }}
+                />
+              </TableCell>
             </TableRow>
           ))}
           <TableRow>

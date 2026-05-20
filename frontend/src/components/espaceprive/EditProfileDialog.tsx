@@ -8,7 +8,6 @@ import {
   Box,
 } from "@mui/material";
 import { useEffect, useState } from "react";
-
 import { useAppDispatch } from "@/store/hooks";
 import { updateProfile } from "@/store/slices/userProfileSlice";
 import { type Profile } from "@/types/UserProps";
@@ -77,7 +76,6 @@ const EditProfileDialog = ({ open, onClose, profile }: Props) => {
       maxWidth="sm"
     >
       <DialogTitle>Modifier le profil</DialogTitle>
-
       <DialogContent>
         <Box
           display="grid"
@@ -89,31 +87,26 @@ const EditProfileDialog = ({ open, onClose, profile }: Props) => {
             value={form.firstName}
             onChange={(e) => handleChange("firstName", e.target.value)}
           />
-
           <TextField
             label="Nom"
             value={form.lastName}
             onChange={(e) => handleChange("lastName", e.target.value)}
           />
-
           <TextField
             label="Téléphone"
             value={form.phone}
             onChange={(e) => handleChange("phone", e.target.value)}
           />
-
           <TextField
             label="Ville"
             value={form.city}
             onChange={(e) => handleChange("city", e.target.value)}
           />
-
           <TextField
             label="Pays"
             value={form.country}
             onChange={(e) => handleChange("country", e.target.value)}
           />
-
           {error && (
             <Box
               sx={{
@@ -130,7 +123,6 @@ const EditProfileDialog = ({ open, onClose, profile }: Props) => {
           )}
         </Box>
       </DialogContent>
-
       <DialogActions>
         <Button
           onClick={onClose}
@@ -138,7 +130,6 @@ const EditProfileDialog = ({ open, onClose, profile }: Props) => {
         >
           Annuler
         </Button>
-
         <Button
           variant="contained"
           onClick={handleSubmit}
@@ -150,5 +141,4 @@ const EditProfileDialog = ({ open, onClose, profile }: Props) => {
     </Dialog>
   );
 };
-
 export default EditProfileDialog;
