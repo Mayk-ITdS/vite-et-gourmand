@@ -25,18 +25,23 @@ export default function StepEventDetails() {
   const onSubmit = (data: EventForm) => {
     dispatch(
       setPrestation({
-        address: `${(data.street, data.houseNumber)}`,
         city: data.city,
+        streetName: data.street,
+        streetNumber: data.houseNumber,
+        zipCode: data.zipCode,
         date: data.date,
         time: data.time,
         distanceKm: 0,
-      })
+      }),
     );
     dispatch(setStep(2));
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="grid md:grid-cols-2 gap-6">
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      className="grid md:grid-cols-2 gap-6"
+    >
       <TextField
         label="Event Date"
         type="date"
@@ -53,7 +58,11 @@ export default function StepEventDetails() {
         {...register("time", { required: true })}
       />
 
-      <TextField label="Street" fullWidth {...register("street", { required: true })} />
+      <TextField
+        label="Street"
+        fullWidth
+        {...register("street", { required: true })}
+      />
 
       <TextField
         label="House Number"
@@ -62,9 +71,17 @@ export default function StepEventDetails() {
         {...register("houseNumber", { valueAsNumber: true, required: true })}
       />
 
-      <TextField label="Zip Code" fullWidth {...register("zipCode", { required: true })} />
+      <TextField
+        label="Zip Code"
+        fullWidth
+        {...register("zipCode", { required: true })}
+      />
 
-      <TextField label="City" fullWidth {...register("city", { required: true })} />
+      <TextField
+        label="City"
+        fullWidth
+        {...register("city", { required: true })}
+      />
 
       <Button
         type="submit"

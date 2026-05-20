@@ -17,7 +17,7 @@ export const selectFilteredMenus = (state: RootState, filters: FiltersState) => 
 
       filters.regime.length === 0 ||
         (Array.isArray(d.diet_type) ? d.diet_type : [d.diet_type]).some((r) =>
-          filters.regime.includes(r)
+          filters.regime.includes(r),
         ),
 
       !filters.priceMin || filters.priceMin <= d.prix_unitaire,
@@ -34,7 +34,7 @@ export const selectMenuById = createSelector(
   [selectMenuList, (_: RootState, menuId: number) => menuId],
   (menus, menuId) => {
     return menus.find((m) => Number(m.menu_id) === Number(menuId));
-  }
+  },
 );
 
 export const selectMenuDetails = (state: RootState) => state.menus.details.data;

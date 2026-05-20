@@ -20,6 +20,12 @@ import TeamPage from "./pages/TeamPage";
 import UserLayout from "./layouts/UserLayout";
 import AdminSupplyPage from "./components/adminPanel/AdminSupplyPage";
 import AdminGestionMenus from "./components/adminPanel/adminCRUDs/pages/AdminGestionMenus";
+import UserSettingsPage from "./components/espaceprive/UserSettingsPage";
+import UserOrderDetailsPage from "./components/espaceprive/UserOrderDEtailsPage";
+import UserOrdersPage from "./components/espaceprive/UserOrdersPage";
+import UserDashboard from "./components/espaceprive/UserDashboard";
+import ForgotPasswordPage from "./components/adminPanel/authResetPass/ForgotPasswordPage";
+import ResetPasswordPage from "./components/adminPanel/authResetPass/ResetPasswordPage";
 
 function App() {
   const token = useAppSelector((state) => state.auth.token);
@@ -74,12 +80,36 @@ function App() {
                 path="/commande/confirmee"
                 element={<OrderConfirmation />}
               />
+              <Route
+                path="/forgot-password"
+                element={<ForgotPasswordPage />}
+              />
+              <Route
+                path="/reset-password"
+                element={<ResetPasswordPage />}
+              />
               <Route element={<RoleGuard allowedRoles={["user"]} />}>
                 <Route
                   path="/espaceprive"
                   element={<UserLayout />}
-                />
-                <Route path="/contact" />
+                >
+                  <Route
+                    index
+                    element={<UserDashboard />}
+                  />
+                  <Route
+                    path="orders"
+                    element={<UserOrdersPage />}
+                  />
+                  <Route
+                    path="orders/:orderId"
+                    element={<UserOrderDetailsPage />}
+                  />
+                  <Route
+                    path="settings"
+                    element={<UserSettingsPage />}
+                  />
+                </Route>
               </Route>
             </Route>
           </Route>
