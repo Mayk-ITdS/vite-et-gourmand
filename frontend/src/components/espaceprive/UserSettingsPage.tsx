@@ -3,9 +3,8 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import { useState } from "react";
-
 import { useAppSelector } from "@/store/hooks";
-import EditProfileDialog from "@/components/userPanel/Siedbar/EditProfileDialog";
+import EditProfileDialog from "@/components/espaceprive/EditProfileDialog";
 
 const UserSettingsPage = () => {
   const profile = useAppSelector((state) => state.profile.data);

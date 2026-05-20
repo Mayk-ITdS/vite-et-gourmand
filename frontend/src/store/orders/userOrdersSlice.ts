@@ -2,34 +2,20 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import api from "@/utils/api";
 import { toClientError } from "../funcs/toClientError";
 import type { ClientError } from "@/types/errors";
+import type { UserOrderDTO } from "./orderTypes";
+
+type UserOrdersState = {
+  list: UserOrderDTO[];
+  status: "idle" | "loading" | "succeeded" | "error";
+  error: string | null;
+};
 
 const initialState: UserOrdersState = {
   list: [],
   status: "idle",
   error: null,
 };
-export type UserOrderDTO = {
-  resId: number;
-  noPersons: number;
-  eventName: string;
-  equipmentLoaned: boolean;
-  equipmentReturned: boolean;
-  eventDate: string;
-  totalPrice: number;
-  menuId: number;
-  unitPriceSnapshot: number;
-  theme: string | null;
-  history: {
-    status: "pending" | "confirmed" | "cancelled" | "completed";
-    changedAt: string;
-    changedBy: number;
-  }[];
-};
-type UserOrdersState = {
-  list: UserOrderDTO[];
-  status: "idle" | "loading" | "succeeded" | "error";
-  error: string | null;
-};
+
 export const fetchMyOrders = createAsyncThunk<
   UserOrderDTO[],
   void,
@@ -37,7 +23,6 @@ export const fetchMyOrders = createAsyncThunk<
 >("orders/fetchMyOrders", async (_, { rejectWithValue }) => {
   try {
     const res = await api.get("/orders/me");
-    console.log("RESPONSE:", res.data);
     return res.data.data;
   } catch (err) {
     return rejectWithValue(toClientError(err));

@@ -13,9 +13,8 @@ export default function TeamPage() {
             NOTRE ÉQUIPE
           </h1>
           <p className="mt-4 text-gray-300 max-w-2xl mx-auto">
-            Des chefs passionnés, une exigence gastronomique et une attention
-            absolue aux détails. Chaque prestation est portée par une équipe
-            dédiée à l’excellence.
+            Des chefs passionnés, une exigence gastronomique et une attention absolue aux
+            détails. Chaque prestation est portée par une équipe dédiée à l’excellence.
           </p>
         </div>
       </SectionSurface>
@@ -33,8 +32,8 @@ export default function TeamPage() {
                 </span>
                 <h3 className="text-xl font-semibold">Pierre Leduc</h3>
                 <p className="text-sm text-white/70">
-                  Spécialiste des expériences gastronomiques privées et des
-                  événements haut de gamme.
+                  Spécialiste des expériences gastronomiques privées et des événements
+                  haut de gamme.
                 </p>
               </div>
             </div>
@@ -49,8 +48,7 @@ export default function TeamPage() {
                 </span>
                 <h3 className="text-xl font-semibold">Marianne Durand</h3>
                 <p className="text-sm text-white/70">
-                  Créations raffinées, desserts signatures et harmonie des
-                  saveurs.
+                  Créations raffinées, desserts signatures et harmonie des saveurs.
                 </p>
               </div>
             </div>
@@ -66,8 +64,8 @@ export default function TeamPage() {
                 </span>
                 <h3 className="text-xl font-semibold">Jean-Michel Dubois</h3>
                 <p className="text-sm text-white/70">
-                  Coordination logistique et excellence du service pour des
-                  événements impeccables.
+                  Coordination logistique et excellence du service pour des événements
+                  impeccables.
                 </p>
               </div>
             </div>
