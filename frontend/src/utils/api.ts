@@ -19,9 +19,14 @@ export const setAuthToken = (token: string | null) => {
 };
 
 api.interceptors.request.use((config) => {
+  config.headers.Authorization = `Bearer ${authToken}`;
+  console.log("AXIOS TOKEN:", authToken);
+  console.log("AXIOS URL:", config.url);
   if (authToken) {
     config.headers.Authorization = `Bearer ${authToken}`;
   }
+
+  console.log("AXIOS HEADERS:", config.headers);
   return config;
 });
 

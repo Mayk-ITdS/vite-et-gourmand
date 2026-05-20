@@ -1,8 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-
 import type { ClientError } from "@/types/errors";
 import api, { setAuthToken } from "@/utils/api";
-
 import { toClientError } from "../funcs/toClientError";
 
 /* =======================
@@ -20,7 +18,16 @@ type RegisterPayload = {
   zipCode: string;
   country: string;
 };
-
+interface RegisterResponse {
+  message: string;
+  user?: {
+    id: number;
+    firstName: string;
+    lastName: string;
+    email: string;
+    role: "user" | "admin" | "employee";
+  };
+}
 type LoginPayload = {
   email: string;
   password: string;
@@ -45,7 +52,7 @@ type AuthState = {
     email: string;
     role: "user" | "admin" | "employee";
   } | null;
-  status: "idle" | "loading" | "authenticated" | "error";
+  status: "idle" | "loading" | "authenticated" | "registered" | "error";
   error: ClientError | null;
 };
 
@@ -63,51 +70,55 @@ const initialState: AuthState = {
    THUNKS
 ======================= */
 
-const loginUser = createAsyncThunk<AuthResponse, LoginPayload, { rejectValue: ClientError }>(
-  "auth/login",
-  async (payload, { rejectWithValue }) => {
-    try {
-      const res = await api.request<AuthResponse>({
-        url: "/auth/login",
-        method: "POST",
-        data: payload,
-      });
+const loginUser = createAsyncThunk<
+  AuthResponse,
+  LoginPayload,
+  { rejectValue: ClientError }
+>("auth/login", async (payload, { rejectWithValue }) => {
+  try {
+    const res = await api.request<AuthResponse>({
+      url: "/auth/login",
+      method: "POST",
+      data: payload,
+    });
 
-      return res.data;
-    } catch (e) {
-      return rejectWithValue(toClientError(e));
-    }
+    return res.data;
+  } catch (e) {
+    return rejectWithValue(toClientError(e));
   }
-);
+});
 
-const registerUser = createAsyncThunk<AuthState, RegisterPayload, { rejectValue: ClientError }>(
-  "auth/register",
-  async (payload, { rejectWithValue }) => {
-    try {
-      const res = await api.request<AuthState>({
-        url: "/auth/register",
-        method: "POST",
-        data: payload,
-      });
-
-      return res.data;
-    } catch (err) {
-      return rejectWithValue(toClientError(err));
-    }
+const registerUser = createAsyncThunk<
+  RegisterResponse,
+  RegisterPayload,
+  { rejectValue: ClientError }
+>("auth/register", async (payload, { rejectWithValue }) => {
+  try {
+    const res = await api.request<RegisterResponse>({
+      url: "/auth/register",
+      method: "POST",
+      data: payload,
+    });
+    return res.data;
+  } catch (err) {
+    return rejectWithValue(toClientError(err));
   }
-);
+});
 
 /* =======================
    SLICE
 ======================= */
+
 const authSlice = createSlice({
   name: "authSlice",
   initialState: initialState,
   reducers: {
+    loginAdmin(state) {},
     logout(state) {
       state.user = null;
       state.token = null;
       state.status = "idle";
+      setAuthToken(null);
     },
   },
   extraReducers: (builder) => {
@@ -116,11 +127,11 @@ const authSlice = createSlice({
         state.status = "loading";
         state.error = null;
       })
-      .addCase(registerUser.fulfilled, (state, action) => {
-        state.status = "authenticated";
-        state.token = action.payload.token;
-
-        state.user = action.payload.user;
+      .addCase(registerUser.fulfilled, (state) => {
+        state.status = "registered";
+        state.error = null;
+        state.token = null;
+        state.user = null;
       })
       .addCase(registerUser.rejected, (state, action) => {
         state.status = "error";
@@ -139,9 +150,17 @@ const authSlice = createSlice({
       .addCase(loginUser.rejected, (state, action) => {
         state.status = "error";
         state.error = action.payload ?? null;
+        setAuthToken(null);
       });
   },
 });
 const { logout } = authSlice.actions;
 const authReducer = authSlice.reducer;
-export { logout, authReducer, registerUser, loginUser, type LoginPayload, type RegisterPayload };
+export {
+  logout,
+  authReducer,
+  registerUser,
+  loginUser,
+  type LoginPayload,
+  type RegisterPayload,
+};

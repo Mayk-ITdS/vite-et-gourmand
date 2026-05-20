@@ -15,11 +15,11 @@ export default function AvisCarousel({ opinions }: Opinions) {
     },
     [
       Autoplay({
-        delay: 10000,
+        delay: 3000,
         stopOnInteraction: true,
         stopOnMouseEnter: true,
       }),
-    ]
+    ],
   );
 
   const scrollPrev = useCallback(() => {
@@ -65,7 +65,10 @@ export default function AvisCarousel({ opinions }: Opinions) {
       >
         <ChevronRight />
       </button>
-      <div ref={emblaRef} className="overflow-hidden">
+      <div
+        ref={emblaRef}
+        className="overflow-hidden"
+      >
         <div className="flex gap-3">
           {opinions.map((opinion, index) => (
             <div

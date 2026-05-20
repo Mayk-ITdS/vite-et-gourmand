@@ -7,31 +7,18 @@ import type { MenuWithGallery } from "@/types/menus";
 import { toClientError } from "../funcs/toClientError";
 import type { RootState } from "../store";
 
-import type { OrderDraft } from "./orderTypes";
+import type { OrderDraft, Prestation } from "./orderTypes";
 
 type CreateOrderDTO = {
   menus: {
     menuId: number;
     quantity: number;
   }[];
-  prestation: {
-    address: string;
-    city: string;
-    date: string;
-    time: string;
-  };
+  prestation: Prestation;
 };
 
-interface Prestation {
-  address: string;
-  city: string;
-  date: string;
-  time: string;
-  distanceKm: number;
-}
 export interface OrderState extends OrderDraft {
   selectedMenu: MenuWithGallery | "";
-  prestation: Prestation;
   status: "idle" | "loading" | "succeeded" | "failed";
   error: ClientError | null;
   step: number;
@@ -54,8 +41,10 @@ const initialState: OrderState = {
     phone: "",
   },
   prestation: {
-    address: "",
     city: "",
+    streetName: "",
+    streetNumber: 0,
+    zipCode: "",
     date: "",
     time: "",
     distanceKm: 0,
@@ -74,40 +63,44 @@ const initialState: OrderState = {
   selectedMenu: "",
 };
 
-export const postOrders = createAsyncThunk<OrderDraft, void, { rejectValue: ClientError }>(
-  "orders/post",
-  async (_, { getState, rejectWithValue }) => {
-    try {
-      const state = getState() as RootState;
-      console.log(state);
-      const orderState = state.orders;
+export const postOrders = createAsyncThunk<
+  OrderDraft,
+  void,
+  { rejectValue: ClientError }
+>("orders/post", async (_, { getState, rejectWithValue }) => {
+  try {
+    const state = getState() as RootState;
+    console.log(state);
+    const orderState = state.orders;
 
-      const payload: CreateOrderDTO = {
-        menus: [
-          {
-            menuId: Number(orderState.order.menu_id),
-            quantity: orderState.order.persons,
-          },
-        ],
-        prestation: {
-          address: orderState.prestation.address,
-          city: orderState.prestation.city,
-          date: orderState.prestation.date,
-          time: orderState.prestation.time,
+    const payload: CreateOrderDTO = {
+      menus: [
+        {
+          menuId: Number(orderState.order.menu_id),
+          quantity: orderState.order.persons,
         },
-      };
-      console.log("SENDING DTO:", payload);
-      const res = await api.request({
-        url: "/orders/me",
-        method: "POST",
-        data: payload,
-      });
-      return res.data;
-    } catch (err) {
-      return rejectWithValue(toClientError(err));
-    }
+      ],
+      prestation: {
+        city: orderState.prestation.city,
+        streetName: orderState.prestation.streetName,
+        streetNumber: orderState.prestation.streetNumber,
+        zipCode: orderState.prestation.zipCode,
+        date: orderState.prestation.date,
+        time: orderState.prestation.time,
+        distanceKm: 0,
+      },
+    };
+    console.log("SENDING DTO:", payload);
+    const res = await api.request({
+      url: "/orders/me",
+      method: "POST",
+      data: payload,
+    });
+    return res.data;
+  } catch (err) {
+    return rejectWithValue(toClientError(err));
   }
-);
+});
 
 const orderSlice = createSlice({
   name: "order/slice",
@@ -155,7 +148,7 @@ const orderSlice = createSlice({
       state.pricing.base = base;
       state.pricing.discount = discount;
       state.pricing.ht = base - discount;
-      state.pricing.tva = state.pricing.ht * 0.1;
+      state.pricing.tva = state.pricing.ht * 0.2;
       state.pricing.ttc = state.pricing.ht + state.pricing.tva + state.pricing.delivery;
     },
     setPrestation(state, action: PayloadAction<Prestation>) {
