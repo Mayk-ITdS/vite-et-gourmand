@@ -21,8 +21,8 @@ import UserLayout from "./layouts/UserLayout";
 import AdminSupplyPage from "./components/adminPanel/AdminSupplyPage";
 import AdminGestionMenus from "./components/adminPanel/adminCRUDs/pages/AdminGestionMenus";
 import UserSettingsPage from "./components/espaceprive/UserSettingsPage";
-import UserOrderDetailsPage from "./components/espaceprive/UserOrderDEtailsPage";
-import UserOrdersPage from "./components/espaceprive/UserOrdersPage";
+import UserOrderDetailsPage from "./components/espaceprive/UserOrderPage";
+import UserOrderPage from "./components/espaceprive/UserOrderPage";
 import UserDashboard from "./components/espaceprive/UserDashboard";
 import ForgotPasswordPage from "./components/adminPanel/authResetPass/ForgotPasswordPage";
 import ResetPasswordPage from "./components/adminPanel/authResetPass/ResetPasswordPage";
@@ -99,7 +99,7 @@ function App() {
                   />
                   <Route
                     path="orders"
-                    element={<UserOrdersPage />}
+                    element={<UserOrderPage />}
                   />
                   <Route
                     path="orders/:orderId"
