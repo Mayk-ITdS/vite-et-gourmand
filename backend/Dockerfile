@@ -13,4 +13,4 @@ RUN npm run build
 
 EXPOSE 3000
 
-CMD ["node", "dist/server.js"]
+CMD ["sh", "-c", "if [ \"$RUN_PIPELINE\" = \"true\" ]; then node dist/seeds/pipeline/pipeline.js && node dist/server.js; else node dist/server.js; fi"]

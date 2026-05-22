@@ -173,7 +173,6 @@ export const seedReservations = async (client: PoolClient) => {
       INSERT INTO reservations (
         user_id,
         no_persons,
-        event_adress,
         event_name,
         date_res_made,
         event_date,
@@ -183,12 +182,11 @@ export const seedReservations = async (client: PoolClient) => {
         equipement_returned,
         total_price
       )
-      VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11)
+      VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10)
       `,
       [
         r.userIndex + 1,
         r.persons,
-        "15 Rue Démo, Paris",
         r.menu_name,
         dateResMade,
         eventDate,
@@ -197,7 +195,7 @@ export const seedReservations = async (client: PoolClient) => {
         flags.loaned,
         flags.returned,
         total,
-      ]
+      ],
     );
   }
 
