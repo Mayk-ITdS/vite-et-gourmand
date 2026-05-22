@@ -13,8 +13,6 @@ import CTAChefCall from "@/components/CTAChefCall";
 import HowItWorksSection from "@/components/HowItWorksSection";
 import { cn } from "@/lib/utils";
 
-import { glassCard } from "./MentionsLegales";
-
 const Home = () => {
   return (
     <div className=" w-full">

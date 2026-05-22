@@ -1,4 +1,3 @@
-import { StockDTO } from "../dtos/ingest.dto.js";
 import buildStockPayload from "../funcs/buildStockPayload.js";
 
 interface IngestProductsQuery {
