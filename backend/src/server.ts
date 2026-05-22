@@ -18,7 +18,7 @@ app.use("/api/users", userRoutes);
 app.use("/api/menus", menuRoutes);
 app.use("/health", healthRoutes);
 app.use("/api/auth", authRoutes);
-app.use("/api/orders/", orderRoutes);
+app.use("/api/orders", orderRoutes);
 app.use("/api/reviews", reviewsRoutes);
 
 app.use(globalErrorHandler);
