@@ -287,7 +287,7 @@ export class OrderRepository {
         changed_at,
         changed_by
       )
-      VALUES ($1, 'pending', NOW())
+      VALUES ($1, 'pending', NOW(),"unknown")
       `,
         [reservationId],
       );
