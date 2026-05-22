@@ -26,6 +26,8 @@ import UserOrderPage from "./components/espaceprive/UserOrderPage";
 import UserDashboard from "./components/espaceprive/UserDashboard";
 import ForgotPasswordPage from "./components/adminPanel/authResetPass/ForgotPasswordPage";
 import ResetPasswordPage from "./components/adminPanel/authResetPass/ResetPasswordPage";
+import AdminGestionUsers from "./components/adminPanel/adminCRUDs/pages/AdminGestionUsers";
+import AdminOrdersManager from "./components/adminPanel/adminCRUDs/pages/AdminOrdersManager";
 
 function App() {
   const token = useAppSelector((state) => state.auth.token);
@@ -132,6 +134,14 @@ function App() {
               <Route
                 path="/admin/menus"
                 element={<AdminGestionMenus />}
+              />
+              <Route
+                path="/admin/users"
+                element={<AdminGestionUsers />}
+              />
+              <Route
+                path="/admin/reservations"
+                element={<AdminOrdersManager />}
               />
             </Route>
           </Route>
