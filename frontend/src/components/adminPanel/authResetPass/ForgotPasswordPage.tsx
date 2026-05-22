@@ -28,7 +28,7 @@ const ForgotPasswordPage = () => {
         "Si un compte existe avec cet email, un lien de réinitialisation a été envoyé.",
       );
     } catch (e) {
-      toast.error("Une erreur est survenue.");
+      toast.error(String(e));
     }
   };
 

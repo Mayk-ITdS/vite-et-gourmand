@@ -34,7 +34,7 @@ const ReviewDialog = ({ open, orderId, onClose }: ReviewDialogProps) => {
           orderId,
           pseudo,
           content,
-          score: score ?? 5,
+          rating: score ?? 5,
           avatar: null,
         },
       }),
@@ -91,7 +91,10 @@ const ReviewDialog = ({ open, orderId, onClose }: ReviewDialogProps) => {
 
       <DialogActions>
         <Button onClick={onClose}>Annuler</Button>
-        <Button variant="contained" onClick={handleSubmit}>
+        <Button
+          variant="contained"
+          onClick={handleSubmit}
+        >
           Envoyer
         </Button>
       </DialogActions>

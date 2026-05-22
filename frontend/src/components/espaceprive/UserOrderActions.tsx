@@ -24,10 +24,8 @@ const UserOrderActions = ({
   onSubmitReview,
 }: OrderActionsProps) => {
   const [openReview, setOpenReview] = useState(false);
-
   const orderId = order.resId;
   const status = order.history[0].status;
-
   const canModify = !["accepted", "confirmed", "accepté"].includes(status);
   const canCancel = !["accepted", "confirmed", "accepté"].includes(status);
   const canReview = ["completed", "terminée"].includes(status);

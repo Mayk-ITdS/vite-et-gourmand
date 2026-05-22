@@ -1,13 +1,12 @@
 import { useState } from "react";
-import { useForm, useFormState } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { loginUser, registerUser, type RegisterPayload } from "@/store/menus/authSlice";
-import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import { useAppDispatch } from "@/store/hooks";
 import { toClientError } from "@/store/funcs/toClientError";
 import { setAuthToken } from "@/utils/api";
-import type { UserRole } from "@/types/roles.types";
 
 type Mode = "login" | "register";
 
@@ -21,9 +20,9 @@ const AuthorizationPage = () => {
   const [mode, setMode] = useState<Mode>("login");
   const dispatch = useAppDispatch();
   const [message, setMessage] = useState<string | null>(null);
-  const [messageType, setMessageType] = useState<"success" | "error" | null>(null);
+  // const [messageType, setMessageType] = useState<"success" | "error" | null>(null);
   const navigate = useNavigate();
-  const userRole = useAppSelector((s) => s.auth.user?.role);
+
   const regex = () => {
     return /^(?=.*([A-Z]))(?=.*\d)(?=.*[^A-Za-z0-9]).{10,}$/;
   };
@@ -31,20 +30,17 @@ const AuthorizationPage = () => {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
-    watch,
   } = useForm<RegisterPayload>();
-
-  const isAdmin = watch("email");
 
   const onSubmit = async (data: RegisterPayload) => {
     if (mode === "register") {
       try {
         await dispatch(registerUser(data)).unwrap();
-        setMessageType("success");
+        // setMessageType("success");
         setMessage("Compte créé. Vous pouvez maintenant vous connecter.");
         setMode("login");
       } catch (e) {
-        setMessageType("error");
+        // setMessageType("error");
         setMessage("Registration failed");
         toast.error("Registration failed");
         return toClientError(e);

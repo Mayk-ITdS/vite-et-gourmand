@@ -36,7 +36,8 @@ const UserReviewDialog = ({
       pseudo,
       avatar,
     });
-
+    setAvatar("");
+    setPseudo("");
     setContent("");
     setRating(5);
     onClose();

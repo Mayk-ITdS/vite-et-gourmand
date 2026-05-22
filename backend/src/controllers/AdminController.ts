@@ -47,7 +47,7 @@ class AdminController {
       console.log(data);
       return res.status(200).json(data);
     } catch (err) {
-      throw new ApiError(404, String(err), false);
+      throw new ApiError(500, String(err), false);
     }
   };
   getMenus = async (req: UserRequest, res: Response) => {

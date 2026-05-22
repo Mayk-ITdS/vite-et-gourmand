@@ -45,7 +45,7 @@ const ResetPasswordPage = () => {
       toast.success("Mot de passe réinitialisé avec succès.");
       navigate("/auth");
     } catch (e) {
-      toast.error("Le lien est invalide ou expiré.");
+      toast.error(String(e));
     }
   };
 

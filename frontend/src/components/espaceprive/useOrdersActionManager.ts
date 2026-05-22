@@ -20,6 +20,7 @@ export const useOrdersActionManager = () => {
         createReview({
           resId: data.orderId,
           payload: {
+            orderId: data.orderId,
             pseudo: data.pseudo,
             rating: data.rating,
             content: data.content,
