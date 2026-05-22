@@ -113,7 +113,7 @@ const authSlice = createSlice({
   name: "authSlice",
   initialState: initialState,
   reducers: {
-    loginAdmin(state) {},
+    // loginAdmin(state) {},
     logout(state) {
       state.user = null;
       state.token = null;

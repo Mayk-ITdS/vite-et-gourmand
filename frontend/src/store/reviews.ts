@@ -5,6 +5,7 @@ import { toClientError } from "./funcs/toClientError";
 import type { ReviewUser } from "@/types/avis";
 // import type { RootState } from "./store";
 export interface CreateReviewPayloadDTO {
+  orderId: number;
   pseudo: string;
   content: string;
   rating: number;

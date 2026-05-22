@@ -47,9 +47,7 @@ const OrdersTable = ({ orders, onSubmitReview }: OrdersTableProps) => {
                 <UserOrderActions
                   order={order}
                   onCancelOrder={handleCancelOrder}
-                  onEditOrder={function (orderId: number | string): void {
-                    throw new Error("Function not implemented.");
-                  }}
+                  onEditOrder={() => {}}
                   onSubmitReview={onSubmitReview}
                 />
               </TableCell>
