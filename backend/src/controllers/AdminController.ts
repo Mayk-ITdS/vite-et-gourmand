@@ -8,6 +8,7 @@ import { createCipheriv, privateEncrypt } from "node:crypto";
 import { MenuService } from "../services/MenuService.js";
 import { UserPatchRequest } from "../types/requests/menu.patch.js";
 import { MenuCreateRequest, MenuDeleteRequest } from "../types/menus/menus.js";
+import { UserService } from "../services/UserService.js";
 
 class AdminController {
   constructor(
@@ -15,6 +16,7 @@ class AdminController {
     private orderService = new OrdersService(),
     private analyticsService = AdminAnalyticsService,
     private menuService = new MenuService(),
+    private usersService = new UserService(),
   ) {}
 
   login = async (req: Request<{}, {}, LoginDTO>, res: Response) => {
@@ -25,10 +27,28 @@ class AdminController {
       return res.status(403).json({ message: "Unauthorized" });
     }
   };
+  getAdminOrders = async (req: UserRequest, res: Response) => {
+    if (!req.user) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+    const userId = req.user.user_id;
+    const data = await this.orderService.getFullOrdersData();
+
+    return res.status(200).json({ data });
+  };
 
   getDashboard = async (_req: Request, res: Response) => {
     const data = await this.analyticsService.getFullDashboard();
     return res.json(data);
+  };
+  getUsers = async (req: UserRequest, res: Response) => {
+    try {
+      const data = await this.usersService.getAllUsers();
+      console.log(data);
+      return res.status(200).json(data);
+    } catch (err) {
+      throw new ApiError(404, String(err), false);
+    }
   };
   getMenus = async (req: UserRequest, res: Response) => {
     try {

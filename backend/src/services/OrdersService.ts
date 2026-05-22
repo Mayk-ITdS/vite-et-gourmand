@@ -3,6 +3,7 @@ import { OrderRepository } from "../repositories/orders.repository.js";
 import { ApiError, User } from "../types/users.js";
 import { calculatePricing } from "./pricing.service.js";
 import AdminAnalyticsService from "./AdminAnalyticsService.js";
+import { pgPool } from "../config/db.js";
 
 export class OrdersService {
   constructor(
@@ -11,13 +12,26 @@ export class OrdersService {
   ) {}
   getAllOrders = async (id: number) => {
     try {
-      console.log("It`s typeof id:", typeof id, "id:", id);
       return await this.orderRepo.findByUser(Number(id));
     } catch (err) {
       throw new ApiError(404, String(err), false);
     }
   };
-
+  getFullOrdersData = async () => {
+    try {
+      return await this.orderRepo.fullOrdersScan();
+    } catch (err) {
+      throw new ApiError(404, String(err), false);
+    }
+  };
+  cancelOrder = async (id: number, userId: number) => {
+    try {
+      const result = await this.orderRepo.cancelUserOrderById(id, userId);
+      return result;
+    } catch (e) {
+      throw new ApiError(404, String(e), false);
+    }
+  };
   async createReservation(userId: number, dto: CreateOrderDTO) {
     const menusFromDb = await this.orderRepo.findMenusByIds(
       dto.menus.map((m) => m.menuId),

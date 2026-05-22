@@ -7,7 +7,7 @@ console.log("REVIEWS REPO FILE LOADED");
 export class ReviewsService {
   constructor(
     private reviewsRepo = new ReviewsRepository(),
-    private orderRepo = new OrderRepository()
+    private orderRepo = new OrderRepository(),
   ) {}
 
   findOneByOrderId = async (id: number) => {
@@ -42,7 +42,6 @@ export class ReviewsService {
     if (existing) {
       throw new ApiError(400, "Review already exists for this order");
     }
-    await this.reviewsRepo.createReview(orderId, data.score, data.content);
     const reviewToSave: ReviewDocument = {
       orderId,
       pseudo: data.pseudo,
@@ -52,6 +51,7 @@ export class ReviewsService {
       createdAt: new Date(),
       isApproved: false,
     };
+    await this.reviewsRepo.createReview(reviewToSave);
 
     const result = await this.reviewsRepo.insertOne(reviewToSave);
     return result;

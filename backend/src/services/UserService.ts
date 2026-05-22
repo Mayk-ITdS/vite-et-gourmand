@@ -3,7 +3,10 @@ import { ApiError } from "../types/users.js";
 
 export class UserService {
   private userRepository = new UserRepository();
-
+  getAllUsers = async () => {
+    const users = await this.userRepository.getAllTheUsers();
+    return users;
+  };
   async getProfile(userId: number) {
     const user = await this.userRepository.findProfileById(userId);
 

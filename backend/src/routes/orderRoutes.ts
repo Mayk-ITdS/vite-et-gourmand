@@ -8,7 +8,19 @@ router.get(
   "/me",
   authMiddleware,
   requireRole(["admin", "user"]),
-  new OrdersController().getMyOrders
+  new OrdersController().getMyOrders,
 );
-router.post("/me", authMiddleware, requireRole(["user"]), new OrdersController().saveNewOrders);
+router.post(
+  "/me",
+  authMiddleware,
+  requireRole(["user"]),
+  new OrdersController().saveNewOrders,
+);
+
+router.patch(
+  "/me/:id/cancel",
+  authMiddleware,
+  requireRole(["user"]),
+  new OrdersController().cancelOrderById,
+);
 export default router;
