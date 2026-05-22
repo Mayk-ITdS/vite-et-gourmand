@@ -37,9 +37,7 @@ const Home = () => {
             />
           ))}
         </div>
-        <div
-          className={cn("absolute inset-0 bg-black/45 backdrop-blur-[1px]", glassCard)}
-        />
+        <div className={cn("absolute inset-0 bg-black/45 backdrop-blur-[1px]")} />
         <div className="relative z-10 h-full flex items-end pb-24 md:pb-32">
           <div className="mx-auto max-w-7xl px-8">
             <div className="max-w-6xl space-y-8">

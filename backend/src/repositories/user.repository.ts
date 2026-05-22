@@ -128,8 +128,18 @@ class UserRepository {
     return result.rows[0] ?? null;
   }
   getAllTheUsers = async () => {
-    const result = await pgPool.query("SELECT * from users");
-    console.log("Result :", result);
+    const result = await pgPool.query(`
+    SELECT
+      user_id,
+      user_first_name,
+      user_last_name,
+      user_email,
+      city,
+      is_active
+    FROM users
+    ORDER BY user_id ASC
+  `);
+
     return result.rows;
   };
 }
