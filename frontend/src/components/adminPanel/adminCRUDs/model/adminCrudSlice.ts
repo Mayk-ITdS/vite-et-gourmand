@@ -34,7 +34,8 @@ const adminCrudSlice = createSlice({
         const payload = action.payload as { key: string; message: string };
 
         state.loadingByResource[payload.key] = false;
-        state.errorByResource[payload.key] = payload.message;
+        state.errorByResource[payload.key] =
+          action.payload?.message ?? "Erreur de chargement";
       });
   },
 });
