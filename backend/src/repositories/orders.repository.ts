@@ -2,6 +2,65 @@ import { pgPool } from "../config/db.js";
 import { OrderRow, UserOrderDTO, UserOrderRow } from "../types/orders/types.js";
 
 export class OrderRepository {
+  cancelUserOrderById = async (id: number, userId: number) => {
+    const sql = `INSERT INTO order_status_history(res_id,status,changed_by,changed_at)
+                 SELECT r.res_id, 'cancelled', $2, NOW()
+                 FROM reservations r where r.res_id = $1 
+                 AND r.user_id = $2 
+                 RETURNING *;`;
+    const result = await pgPool.query(sql, [id, userId]);
+    return result.rows[0] ?? null;
+  };
+  async fullOrdersScan() {
+    const result = await pgPool.query<UserOrderRow>(
+      `
+    SELECT 
+      r.res_id,
+      r.no_persons,
+      r.event_name,
+      r.equipement_loaned,
+      r.equipement_returned,
+      r.event_date,
+      r.total_price,
+
+      osh.status,
+      osh.changed_at,
+      osh.changed_by,
+
+      rm.menu_id,
+      rm.unit_price_snapshot,
+
+      COALESCE(
+        (
+          SELECT string_agg(t.theme_name, ', ' ORDER BY t.theme_name)
+          FROM menu_themes mt
+          JOIN themes t ON t.theme_id = mt.theme_id
+          WHERE mt.menu_id = rm.menu_id
+        ),
+        ''
+      ) AS theme
+
+    FROM reservations r
+
+    LEFT JOIN LATERAL (
+      SELECT 
+        osh.status,
+        osh.changed_at,
+        osh.changed_by
+      FROM order_status_history osh
+      WHERE osh.res_id = r.res_id
+      ORDER BY osh.changed_at DESC
+      LIMIT 1
+    ) osh ON true
+
+    LEFT JOIN reservation_menus rm 
+      ON r.res_id = rm.res_id
+    ORDER BY r.event_date DESC, r.res_id DESC
+    `,
+    );
+
+    return result.rows;
+  }
   async findByUser(id: number): Promise<UserOrderDTO[]> {
     console.log("USING NEW findByUser SQL VERSION");
     const result = await pgPool.query<UserOrderRow>(

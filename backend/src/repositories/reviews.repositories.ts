@@ -1,4 +1,5 @@
 import { getDBMongo, pgPool } from "../config/db.js";
+import { ReviewDocument } from "../dtos/reviews.dto.js";
 import AdminAnalyticsService from "../services/AdminAnalyticsService.js";
 import { ObjectId } from "mongodb";
 
@@ -10,7 +11,7 @@ export class ReviewsRepository {
   }
   analytics = AdminAnalyticsService;
 
-  async createReview(resId: number, rating: number, comment: string) {
+  async createReview(data: ReviewDocument) {
     console.log("PG CREATE REVIEW CALLED");
     const client = await pgPool.connect();
 
@@ -20,9 +21,16 @@ export class ReviewsRepository {
       await client.query("BEGIN");
 
       await client.query(
-        `INSERT INTO reviews (res_id, rating, comment)
-       VALUES ($1, $2, $3)`,
-        [resId, rating, comment]
+        `INSERT INTO reviews (res_id,pseudo, rating, comment, created_at, isApproved)
+          VALUES ($1, $2, $3, $4, $5, $6)`,
+        [
+          data.orderId,
+          data.pseudo,
+          data.score,
+          data.content,
+          data.createdAt,
+          data.isApproved,
+        ],
       );
 
       const result = await client.query(
@@ -36,7 +44,7 @@ export class ReviewsRepository {
       JOIN reservation_menus rm ON rm.res_id = r.res_id
       WHERE r.res_id = $1
       `,
-        [resId]
+        [data.orderId],
       );
 
       rows = result.rows;
@@ -73,13 +81,16 @@ export class ReviewsRepository {
     return await this.collection.find().toArray();
   }
   async findPending() {
-    return await this.collection.find({ isApproved: false }).sort({ createdAt: -1 }).toArray();
+    return await this.collection
+      .find({ isApproved: false })
+      .sort({ createdAt: -1 })
+      .toArray();
   }
 
   async approve(id: string) {
     return await this.collection.updateOne(
       { _id: new ObjectId(id) },
-      { $set: { isApproved: true } }
+      { $set: { isApproved: true } },
     );
   }
 

@@ -127,5 +127,10 @@ class UserRepository {
 
     return result.rows[0] ?? null;
   }
+  getAllTheUsers = async () => {
+    const result = await pgPool.query("SELECT * from users");
+    console.log("Result :", result);
+    return result.rows;
+  };
 }
 export { UserRepository };
