@@ -1,9 +1,10 @@
 import { Router } from "express";
 import authMiddleware from "../middlewares/auth.js";
-import { requireRole } from "../middlewares/requireRole.js";
+
 import AdminController from "../controllers/AdminController.js";
 import { authorize } from "../middlewares/authorize.js";
-import { MenuController } from "../controllers/MenuController.js";
+
+import { OrdersController } from "../controllers/OrdersController.js";
 console.log("ADMIN ROUTES LOADED");
 const router = Router();
 router.get(
@@ -18,12 +19,22 @@ router.get(
   authorize(["admin", "employee"]),
   AdminController.getDashboard,
 );
-
+router.get(
+  "/orders",
+  authMiddleware,
+  authorize(["admin", "employee"]),
+  AdminController.getAdminOrders,
+);
 router.get("/menus", authMiddleware, authorize(["admin"]), AdminController.getMenus);
 // router.post('menus',authMiddleware, authorize(['admin']), AdminController)
 router.patch("/menus", authMiddleware, authorize(["admin"]), AdminController.patchMenu);
-router.delete("/menus", authMiddleware, authorize(["admin"]), AdminController.deleteMenu);
-
+router.delete(
+  "/menus/:id",
+  authMiddleware,
+  authorize(["admin"]),
+  AdminController.deleteMenu,
+);
+router.get("/users", authMiddleware, authorize(["admin"]), AdminController.getUsers);
 router.post(
   "/stock/ingest",
   authMiddleware,

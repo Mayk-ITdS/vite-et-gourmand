@@ -7,7 +7,7 @@ class ReviewsController {
   createOne = async (req: Request, res: Response) => {
     try {
       const orderId = Number(req.params.id);
-
+      console.log("From createOne review orderId: ", orderId);
       const payload: ReviewDTO = {
         ...req.body,
         orderId,
