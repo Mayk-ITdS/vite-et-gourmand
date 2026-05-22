@@ -5,15 +5,16 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 
-import OrdersTable from "@/components/ui/widgets/OrdersTable";
+import OrdersTable from "@/components/espaceprive/OrdersTable";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { fetchMyOrders } from "@/store/orders/userOrdersSlice";
+import { useOrdersActionManager } from "./useOrdersActionManager";
 
 const UserDashboard = () => {
   const dispatch = useAppDispatch();
   const orders = useAppSelector((state) => state.userOrders.list);
   const status = useAppSelector((state) => state.userOrders.status);
-
+  const { handleSubmitReview } = useOrdersActionManager();
   useEffect(() => {
     dispatch(fetchMyOrders());
   }, [dispatch]);
@@ -103,6 +104,7 @@ const UserDashboard = () => {
           <OrdersTable
             orders={orders}
             loading={status === "loading"}
+            onSubmitReview={handleSubmitReview}
           />
         </Box>
       </Box>

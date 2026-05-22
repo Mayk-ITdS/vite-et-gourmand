@@ -8,32 +8,36 @@ import TextField from "@mui/material/TextField";
 import Rating from "@mui/material/Rating";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
+import type { OrderActionsProps } from "./UserOrderActions";
 
-type Props = {
-  orderId: number | string;
+type UserReviewDialogProps = Pick<OrderActionsProps, "onSubmitReview"> & {
+  orderId: number;
   open: boolean;
   onClose: () => void;
-  onSubmitReview: (data: {
-    orderId: number | string;
-    rating: number;
-    comment: string;
-  }) => Promise<void> | void;
 };
 
-const UserReviewDialog = ({ orderId, open, onClose, onSubmitReview }: Props) => {
+const UserReviewDialog = ({
+  orderId,
+  open,
+  onClose,
+  onSubmitReview,
+}: UserReviewDialogProps) => {
   const [rating, setRating] = useState<number | null>(5);
-  const [comment, setComment] = useState("");
-
+  const [content, setContent] = useState("");
+  const [pseudo, setPseudo] = useState("");
+  const [avatar, setAvatar] = useState("");
   const handleSubmit = async () => {
     if (!rating) return;
 
     await onSubmitReview({
       orderId,
       rating,
-      comment,
+      content,
+      pseudo,
+      avatar,
     });
 
-    setComment("");
+    setContent("");
     setRating(5);
     onClose();
   };
@@ -67,8 +71,8 @@ const UserReviewDialog = ({ orderId, open, onClose, onSubmitReview }: Props) => 
             label="Votre commentaire"
             multiline
             minRows={4}
-            value={comment}
-            onChange={(event) => setComment(event.target.value)}
+            value={content}
+            onChange={(event) => setContent(event.target.value)}
             fullWidth
           />
         </Box>

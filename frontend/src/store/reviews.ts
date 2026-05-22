@@ -4,12 +4,11 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { toClientError } from "./funcs/toClientError";
 import type { ReviewUser } from "@/types/avis";
 // import type { RootState } from "./store";
-export interface CreateReviewPayload {
-  orderId: number;
+export interface CreateReviewPayloadDTO {
   pseudo: string;
   content: string;
-  score: number;
-  avatar?: string | null;
+  rating: number;
+  avatar: string | null;
 }
 const fetchReviews = createAsyncThunk<ReviewUser[], void, { rejectValue: ClientError }>(
   "fetch/reviews",
@@ -21,11 +20,11 @@ const fetchReviews = createAsyncThunk<ReviewUser[], void, { rejectValue: ClientE
     } catch (err) {
       return rejectWithValue(toClientError(err));
     }
-  }
+  },
 );
 export const createReview = createAsyncThunk<
   void,
-  { resId: number; payload: CreateReviewPayload },
+  { resId: number; payload: CreateReviewPayloadDTO },
   { rejectValue: ClientError }
 >("reviews/create", async ({ resId, payload }, { rejectWithValue }) => {
   try {

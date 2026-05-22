@@ -102,7 +102,7 @@ type Section = {
   label: string;
   render: (
     state: FiltersState,
-    setState: React.Dispatch<React.SetStateAction<FiltersState>>
+    setState: React.Dispatch<React.SetStateAction<FiltersState>>,
   ) => React.ReactNode;
 };
 

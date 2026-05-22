@@ -1,0 +1,187 @@
+.
+├── README.md
+├── backend
+│   ├── Dockerfile
+│   ├── full_diff.patch
+│   ├── package-lock.json
+│   ├── package.json
+│   ├── src
+│   │   ├── bigDataMenus.ts
+│   │   ├── config
+│   │   │   ├── 001_database_schema.sql
+│   │   │   ├── createAdmin.ts
+│   │   │   ├── db.ts
+│   │   │   ├── env.ts
+│   │   │   └── seedMenusTest.ts
+│   │   ├── controllers
+│   │   │   ├── AdminController.ts
+│   │   │   ├── AuthController.ts
+│   │   │   ├── MenuController.ts
+│   │   │   ├── OrdersController.ts
+│   │   │   ├── ReviewsController.ts
+│   │   │   ├── UserController.ts
+│   │   │   └── stockController.ts
+│   │   ├── dtos
+│   │   │   ├── auth.dto.ts
+│   │   │   ├── ingest.dto.ts
+│   │   │   ├── orders.dtos.ts
+│   │   │   ├── reviews.dto.ts
+│   │   │   └── user.base.dto.ts
+│   │   ├── funcs
+│   │   │   └── buildStockPayload.ts
+│   │   ├── middlewares
+│   │   │   ├── auth.ts
+│   │   │   ├── authorize.ts
+│   │   │   ├── error.middleware.ts
+│   │   │   └── requireRole.ts
+│   │   ├── repositories
+│   │   │   ├── StockRepository.ts
+│   │   │   ├── admin.repository.ts
+│   │   │   ├── menus.repository.ts
+│   │   │   ├── orders.repository.ts
+│   │   │   ├── reviews.repositories.ts
+│   │   │   └── user.repository.ts
+│   │   ├── routes
+│   │   │   ├── adminRoutes.ts
+│   │   │   ├── authRoutes.ts
+│   │   │   ├── healthRoutes.ts
+│   │   │   ├── menuRoutes.ts
+│   │   │   ├── orderRoutes.ts
+│   │   │   ├── reviewsRoutes.ts
+│   │   │   └── userRoutes.ts
+│   │   ├── seeds
+│   │   │   ├── data
+│   │   │   ├── helpers.ts
+│   │   │   ├── mongo
+│   │   │   └── pipeline
+│   │   ├── server.ts
+│   │   ├── services
+│   │   │   ├── AdminAnalyticsService.ts
+│   │   │   ├── AuthService.ts
+│   │   │   ├── MenuService.ts
+│   │   │   ├── OrdersService.ts
+│   │   │   ├── ReviewsService.ts
+│   │   │   ├── UserService.ts
+│   │   │   └── pricing.service.ts
+│   │   └── types
+│   │       ├── menus
+│   │       ├── orders
+│   │       ├── requests
+│   │       ├── stock.ts
+│   │       ├── tttt.ts
+│   │       └── users.ts
+│   └── tsconfig.json
+├── compose.yaml
+├── docs
+│   ├── Documentation Technique.pdf
+│   ├── Déploiement de l.pdf
+│   ├── MLD de la BDD et diagrammes.pdf
+│   ├── MLD de la base.pdf
+│   ├── Maquettes.pdf
+│   ├── VITE.pdf
+│   ├── charte-graphique.md
+│   └── manuel-d`utilisation.pdf
+├── frontend
+│   ├── Dockerfile
+│   ├── components.json
+│   ├── eslint.config.js
+│   ├── index.html
+│   ├── nginx.conf
+│   ├── npm-debug.log
+│   ├── package-lock.json
+│   ├── package.json
+│   ├── src
+│   │   ├── App.tsx
+│   │   ├── assets
+│   │   │   ├── corpo1.avif
+│   │   │   ├── homepage.webp
+│   │   │   ├── jean-michel-dubois.webp
+│   │   │   ├── marriane-durand.webp
+│   │   │   ├── menus-g.webp
+│   │   │   ├── pierre-leclerc.webp
+│   │   │   ├── romantic1.webp
+│   │   │   ├── salmon1.webp
+│   │   │   ├── salmon2.webp
+│   │   │   ├── tommaso-ubezio-dish.webp
+│   │   │   ├── valentin-kremer-S8BhJ0HB-WQ-unsplash.webp
+│   │   │   └── vegan1.webp
+│   │   ├── components
+│   │   │   ├── AvisCard.tsx
+│   │   │   ├── AvisCarousel.tsx
+│   │   │   ├── CTAChefCall.tsx
+│   │   │   ├── HowItWorksSection.tsx
+│   │   │   ├── adminPanel
+│   │   │   ├── espaceprive
+│   │   │   ├── order
+│   │   │   ├── ui
+│   │   │   └── userPanel
+│   │   ├── index.css
+│   │   ├── layouts
+│   │   │   ├── AppLayout.tsx
+│   │   │   ├── SectionSurface.tsx
+│   │   │   └── UserLayout.tsx
+│   │   ├── lib
+│   │   │   ├── demoImages.ts
+│   │   │   ├── dumbLineData.ts
+│   │   │   ├── mockData.tsx
+│   │   │   ├── teamData.ts
+│   │   │   └── utils.ts
+│   │   ├── main.tsx
+│   │   ├── pages
+│   │   │   ├── AuthPage.tsx
+│   │   │   ├── ConditionsGenerales.tsx
+│   │   │   ├── ContactPage.tsx
+│   │   │   ├── Home.tsx
+│   │   │   ├── MentionsLegales.tsx
+│   │   │   ├── MenuDetails.tsx
+│   │   │   ├── MenusGlobale.tsx
+│   │   │   ├── OrderConfirmation.tsx
+│   │   │   ├── OrderPage.tsx
+│   │   │   └── TeamPage.tsx
+│   │   ├── store
+│   │   │   ├── cart
+│   │   │   ├── funcs
+│   │   │   ├── hooks.ts
+│   │   │   ├── menus
+│   │   │   ├── orders
+│   │   │   ├── reviews.ts
+│   │   │   ├── slices
+│   │   │   └── store.ts
+│   │   ├── themes
+│   │   │   └── themes.ts
+│   │   ├── types
+│   │   │   ├── UserProps.ts
+│   │   │   ├── adminAnalTypes.ts
+│   │   │   ├── avis.ts
+│   │   │   ├── errors.ts
+│   │   │   ├── menus.ts
+│   │   │   ├── mui.d.ts
+│   │   │   ├── requestOptions.ts
+│   │   │   ├── roles.types.ts
+│   │   │   └── team.ts
+│   │   └── utils
+│   │       ├── AuthGuard.tsx
+│   │       ├── RoleGuard.tsx
+│   │       ├── api.ts
+│   │       └── funcs.ts
+│   ├── tailwind.config.js
+│   ├── tsconfig.app.json
+│   ├── tsconfig.json
+│   ├── tsconfig.node.json
+│   └── vite.config.ts
+├── main_dossier.aux
+├── main_dossier.fdb_latexmk
+├── main_dossier.fls
+├── main_dossier.listing
+├── main_dossier.log
+├── main_dossier.out
+├── main_dossier.pdf
+├── main_dossier.synctex.gz
+├── main_dossier.tex
+├── main_dossier.toc
+├── main_dossier.xdv
+├── package-lock.json
+├── package.json
+└── project_tree.txt
+
+41 directories, 144 files
