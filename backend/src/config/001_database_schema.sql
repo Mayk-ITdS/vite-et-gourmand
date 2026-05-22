@@ -196,7 +196,7 @@ primary key (res_id, menu_id)
 
 CREATE TABLE IF NOT EXISTS reservation_addresses (
     address_id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-    res_id BIGINT NOT NULL,,
+    res_id BIGINT NOT NULL,
     city VARCHAR(80) NOT NULL,
     zip_code VARCHAR(10) NOT NULL,
     street_name VARCHAR(120) NOT NULL,
@@ -208,7 +208,7 @@ CREATE TABLE IF NOT EXISTS reservation_addresses (
         REFERENCES reservations(res_id)
         ON DELETE CASCADE,
     CONSTRAINT uq_reservation_addresses_res_id
-        UNIQUE (res_id),
+        UNIQUE (res_id)
 ); 
 
 CREATE TABLE order_status_history (
