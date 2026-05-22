@@ -2,7 +2,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import api from "@/utils/api";
 import { toClientError } from "../funcs/toClientError";
 import type { ClientError } from "@/types/errors";
-import type { UserOrderDTO } from "./orderTypes";
+import type { CancelOrderResponse, UserOrderDTO } from "./orderTypes";
 
 type UserOrdersState = {
   list: UserOrderDTO[];
@@ -28,6 +28,20 @@ export const fetchMyOrders = createAsyncThunk<
     return rejectWithValue(toClientError(err));
   }
 });
+
+export const cancelOrder = createAsyncThunk<
+  CancelOrderResponse,
+  number,
+  { rejectValue: ClientError }
+>("orders/cancel", async (orderId, { rejectWithValue }) => {
+  try {
+    const result = await api.patch(`/orders/me/${orderId}/cancel`);
+    return result.data;
+  } catch (e) {
+    rejectWithValue(toClientError(e));
+  }
+});
+
 const ordersSlice = createSlice({
   name: "orders/slice",
   initialState: initialState,
@@ -47,4 +61,4 @@ const ordersSlice = createSlice({
   },
 });
 const userOrdersReducer = ordersSlice.reducer;
-export { userOrdersReducer };
+export { userOrdersReducer, type UserOrderDTO };

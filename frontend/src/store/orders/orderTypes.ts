@@ -90,4 +90,11 @@ type OrderDraft = {
   error: ClientError | null;
   step: number;
 };
-export { type OrderDraft };
+
+type CancelOrderResponse = {
+  res_id: number;
+  status: "cancelled";
+  changed_by: number;
+  changed_at: string;
+};
+export { type OrderDraft, type CancelOrderResponse };

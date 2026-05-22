@@ -6,15 +6,19 @@ import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
 import { Table, TableFooter, TableHead } from "@mui/material";
 import type { UserOrderDTO } from "@/store/orders/userOrdersSlice";
-import UserOrderActions from "@/components/espaceprive/UserOrderActions";
+import UserOrderActions, {
+  type OrderActionsProps,
+} from "@/components/espaceprive/UserOrderActions";
+import { useOrdersActionManager } from "./useOrdersActionManager";
 const columns = ["", "Order", "Price", "Status", "Date", "Actions"];
 
-type OrdersTableProps = {
+type OrdersTableProps = Pick<OrderActionsProps, "onSubmitReview"> & {
   orders: UserOrderDTO[];
   loading: boolean;
 };
 
-const OrdersTable = ({ orders }: OrdersTableProps) => {
+const OrdersTable = ({ orders, onSubmitReview }: OrdersTableProps) => {
+  const { handleCancelOrder } = useOrdersActionManager();
   return (
     <TableContainer>
       <Table
@@ -42,21 +46,11 @@ const OrdersTable = ({ orders }: OrdersTableProps) => {
               <TableCell>
                 <UserOrderActions
                   order={order}
-                  onCancelOrder={function (
-                    orderId: number | string,
-                  ): Promise<void> | void {
-                    throw new Error("Function not implemented.");
-                  }}
+                  onCancelOrder={handleCancelOrder}
                   onEditOrder={function (orderId: number | string): void {
                     throw new Error("Function not implemented.");
                   }}
-                  onSubmitReview={function (data: {
-                    orderId: number | string;
-                    rating: number;
-                    comment: string;
-                  }): Promise<void> | void {
-                    throw new Error("Function not implemented.");
-                  }}
+                  onSubmitReview={onSubmitReview}
                 />
               </TableCell>
             </TableRow>

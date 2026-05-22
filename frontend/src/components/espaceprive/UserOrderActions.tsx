@@ -1,38 +1,32 @@
 import { useState } from "react";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
-
 import UserReviewDialog from "./UserReviewDialog";
 import type { UserOrderDTO } from "@/store/orders/userOrdersSlice";
 
-type Props = {
-  order: any;
+export interface OrderActionsProps {
+  order: UserOrderDTO;
   onCancelOrder: (orderId: number | string) => Promise<void> | void;
   onEditOrder: (orderId: number | string) => void;
   onSubmitReview: (data: {
-    orderId: number | string;
+    orderId: number;
     rating: number;
-    comment: string;
+    content: string;
+    pseudo: string;
+    avatar: string | null;
   }) => Promise<void> | void;
-};
-
-const getOrderId = (order: UserOrderDTO) => order.resId;
-
-const getOrderStatus = (order: any) =>
-  String(order.status ?? order.current_status ?? order.reservation_status ?? "")
-    .toLowerCase()
-    .trim();
+}
 
 const UserOrderActions = ({
   order,
   onCancelOrder,
   onEditOrder,
   onSubmitReview,
-}: Props) => {
+}: OrderActionsProps) => {
   const [openReview, setOpenReview] = useState(false);
 
-  const orderId = getOrderId(order);
-  const status = getOrderStatus(order);
+  const orderId = order.resId;
+  const status = order.history[0].status;
 
   const canModify = !["accepted", "confirmed", "accepté"].includes(status);
   const canCancel = !["accepted", "confirmed", "accepté"].includes(status);
