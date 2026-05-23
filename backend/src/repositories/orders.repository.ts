@@ -22,14 +22,11 @@ export class OrderRepository {
       r.equipement_returned,
       r.event_date,
       r.total_price,
-
       osh.status,
       osh.changed_at,
       osh.changed_by,
-
       rm.menu_id,
       rm.unit_price_snapshot,
-
       COALESCE(
         (
           SELECT string_agg(t.theme_name, ', ' ORDER BY t.theme_name)
@@ -41,7 +38,6 @@ export class OrderRepository {
       ) AS theme
 
     FROM reservations r
-
     LEFT JOIN LATERAL (
       SELECT 
         osh.status,
