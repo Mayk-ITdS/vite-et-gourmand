@@ -42,7 +42,7 @@ export const ordersResource = {
     { key: "event_date", label: "Date", type: "date" },
     { key: "no_persons", label: "Personnes", type: "number" },
     { key: "total_price", label: "Total", type: "currency" },
-    { key: "status", label: "Statut" },
+    { key: "status", label: "Status" },
   ],
 
   fields: [
