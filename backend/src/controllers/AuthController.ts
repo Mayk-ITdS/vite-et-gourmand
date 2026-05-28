@@ -1,5 +1,10 @@
 import { Request, Response } from "express";
-import { RegisterDTO, LoginDTO } from "../dtos/auth.dto.js";
+import {
+  ForgotPasswordDTO,
+  LoginDTO,
+  RegisterDTO,
+  ResetPasswordDTO,
+} from "../dtos/auth.dto.js";
 import { AuthService } from "../services/AuthService.js";
 import { UserRequest } from "../types/users.js";
 
@@ -13,6 +18,16 @@ class AuthController {
 
   login = async (req: Request<{}, {}, LoginDTO>, res: Response) => {
     const result = await this.authService.login(req.body);
+    return res.json(result);
+  };
+
+  forgotPassword = async (req: Request<{}, {}, ForgotPasswordDTO>, res: Response) => {
+    const result = await this.authService.forgotPassword(req.body);
+    return res.json(result);
+  };
+
+  resetPassword = async (req: Request<{}, {}, ResetPasswordDTO>, res: Response) => {
+    const result = await this.authService.resetPassword(req.body);
     return res.json(result);
   };
 

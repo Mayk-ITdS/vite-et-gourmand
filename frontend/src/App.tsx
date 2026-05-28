@@ -1,5 +1,11 @@
-import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
-import { useEffect } from "react";
+import {
+  Route,
+  BrowserRouter as Router,
+  Routes,
+  useLocation,
+  useNavigate,
+} from "react-router-dom";
+import { useEffect, useEffectEvent } from "react";
 import Home from "./pages/Home";
 import MentionsLegales from "./pages/MentionsLegales";
 import ConditionsGenerales from "./pages/ConditionsGenerales";
@@ -12,8 +18,8 @@ import AuthGuard from "./utils/AuthGuard";
 import AdminLayout from "./components/adminPanel/AdminLayout";
 import RoleGuard from "./utils/RoleGuard";
 import AdminDashboard from "./components/adminPanel/AdminDashboard/AdminDashboard";
-import { useAppSelector } from "./store/hooks";
-import { setAuthToken } from "./utils/api";
+import { useAppDispatch, useAppSelector } from "./store/hooks";
+import { AUTH_EXPIRED_EVENT, setAuthToken } from "./utils/api";
 import OrderConfirmation from "./pages/OrderConfirmation";
 import ContactPage from "./pages/ContactPage";
 import TeamPage from "./pages/TeamPage";
@@ -28,17 +34,67 @@ import ForgotPasswordPage from "./components/adminPanel/authResetPass/ForgotPass
 import ResetPasswordPage from "./components/adminPanel/authResetPass/ResetPasswordPage";
 import AdminGestionUsers from "./components/adminPanel/adminCRUDs/pages/AdminGestionUsers";
 import AdminOrdersManager from "./components/adminPanel/adminCRUDs/pages/AdminOrdersManager";
+import { logout } from "./store/menus/authSlice";
+import { getTokenRemainingMs } from "./utils/authToken";
+
+function AuthSessionWatcher() {
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const token = useAppSelector((state) => state.auth.token);
+
+  const expireSession = useEffectEvent(() => {
+    dispatch(logout());
+
+    if (location.pathname !== "/auth") {
+      navigate("/auth", { replace: true });
+    }
+  });
+
+  useEffect(() => {
+    setAuthToken(token ?? null);
+  }, [token]);
+
+  useEffect(() => {
+    const handleUnauthorized = () => {
+      expireSession();
+    };
+
+    window.addEventListener(AUTH_EXPIRED_EVENT, handleUnauthorized);
+
+    return () => {
+      window.removeEventListener(AUTH_EXPIRED_EVENT, handleUnauthorized);
+    };
+  }, [expireSession]);
+
+  useEffect(() => {
+    if (!token) {
+      return;
+    }
+
+    const remainingMs = getTokenRemainingMs(token);
+    if (remainingMs <= 0) {
+      expireSession();
+      return;
+    }
+
+    const timeoutId = window.setTimeout(() => {
+      expireSession();
+    }, remainingMs);
+
+    return () => {
+      window.clearTimeout(timeoutId);
+    };
+  }, [expireSession, token]);
+
+  return null;
+}
 
 function App() {
-  const token = useAppSelector((state) => state.auth.token);
-  useEffect(() => {
-    if (token) {
-      setAuthToken(token);
-    }
-  }, [token]);
   return (
     <>
       <Router>
+        <AuthSessionWatcher />
         <Routes>
           <Route element={<AppLayout />}>
             <Route
@@ -62,6 +118,14 @@ function App() {
               element={<ContactPage />}
             />
             <Route
+              path="/forgot-password"
+              element={<ForgotPasswordPage />}
+            />
+            <Route
+              path="/reset-password"
+              element={<ResetPasswordPage />}
+            />
+            <Route
               path="/menus"
               element={<MenusGlobale />}
             />
@@ -81,14 +145,6 @@ function App() {
               <Route
                 path="/commande/confirmee"
                 element={<OrderConfirmation />}
-              />
-              <Route
-                path="/forgot-password"
-                element={<ForgotPasswordPage />}
-              />
-              <Route
-                path="/reset-password"
-                element={<ResetPasswordPage />}
               />
               <Route element={<RoleGuard allowedRoles={["user"]} />}>
                 <Route
@@ -140,7 +196,7 @@ function App() {
                 element={<AdminGestionUsers />}
               />
               <Route
-                path="/admin/reservations"
+                path="/admin/orders"
                 element={<AdminOrdersManager />}
               />
             </Route>

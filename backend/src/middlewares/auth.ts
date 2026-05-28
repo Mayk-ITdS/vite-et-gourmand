@@ -1,11 +1,8 @@
 import { Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
 import { ENV } from "../config/env.js";
-import { UserRequest } from "../types/users.js";
-type AuthJwtPayload = {
-  sub: number;
-  role: "user" | "admin" | "employee";
-};
+import { AuthJwtPayload, UserRequest } from "../types/users.js";
+
 function isAuthPayload(payload: unknown): payload is AuthJwtPayload {
   return (
     typeof payload === "object" &&
