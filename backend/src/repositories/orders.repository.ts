@@ -1,5 +1,6 @@
 import { pgPool } from "../config/db.js";
 import { OrderRow, UserOrderDTO, UserOrderRow } from "../types/orders/types.js";
+import { ApiError } from "../types/errors.js";
 
 export class OrderRepository {
   cancelUserOrderById = async (id: number, userId: number) => {
@@ -22,22 +23,24 @@ export class OrderRepository {
       r.equipement_returned,
       r.event_date,
       r.total_price,
+
       osh.status,
       osh.changed_at,
       osh.changed_by,
-      rm.menu_id,
-      rm.unit_price_snapshot,
+
       COALESCE(
-        (
-          SELECT string_agg(t.theme_name, ', ' ORDER BY t.theme_name)
-          FROM menu_themes mt
-          JOIN themes t ON t.theme_id = mt.theme_id
-          WHERE mt.menu_id = rm.menu_id
-        ),
-        ''
-      ) AS theme
+        jsonb_agg(
+          DISTINCT jsonb_build_object(
+            'menu_id', rm.menu_id,
+            'unit_price', rm.unit_price_snapshot,
+            'themes', COALESCE(themes.themes, '[]'::jsonb)
+          )
+        ) FILTER (WHERE rm.menu_id IS NOT NULL),
+        '[]'::jsonb
+      ) AS menus
 
     FROM reservations r
+
     LEFT JOIN LATERAL (
       SELECT 
         osh.status,
@@ -51,6 +54,26 @@ export class OrderRepository {
 
     LEFT JOIN reservation_menus rm 
       ON r.res_id = rm.res_id
+
+    LEFT JOIN LATERAL (
+      SELECT jsonb_agg(t.theme_name ORDER BY t.theme_name) AS themes
+      FROM menu_themes mt
+      JOIN themes t ON t.theme_id = mt.theme_id
+      WHERE mt.menu_id = rm.menu_id
+    ) themes ON true
+
+    GROUP BY
+      r.res_id,
+      r.no_persons,
+      r.event_name,
+      r.equipement_loaned,
+      r.equipement_returned,
+      r.event_date,
+      r.total_price,
+      osh.status,
+      osh.changed_at,
+      osh.changed_by
+
     ORDER BY r.event_date DESC, r.res_id DESC
     `,
     );
@@ -137,6 +160,19 @@ export class OrderRepository {
         : [],
     }));
   }
+  deleteOrderById = async (orderId: number) => {
+    try {
+      const sql = `DELETE FROM reservations where res_id = $1 RETURNING res_id`;
+      const result = await pgPool.query(sql, [orderId]);
+      if (!result.rowCount) {
+        throw new ApiError(404, "Id doesn`t exist", false);
+      }
+      console.log("deleted order: ", result);
+      return result.rows[0];
+    } catch (e) {
+      throw new ApiError(404, String(e), false);
+    }
+  };
   async findMenusByIds(ids: number[]) {
     const sql = `SELECT menu_id, prix_unitaire, min_persons
                 FROM menus
@@ -283,9 +319,9 @@ export class OrderRepository {
         changed_at,
         changed_by
       )
-      VALUES ($1, 'pending', NOW(),"unknown")
+      VALUES ($1, 'pending', NOW(),$2)
       `,
-        [reservationId],
+        [reservationId, userId],
       );
 
       await client.query("COMMIT");

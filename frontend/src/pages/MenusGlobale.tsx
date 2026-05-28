@@ -91,15 +91,16 @@ const MenuGlobale = () => {
           <aside
             className={cn(
               "fixed inset-y-0 left-0 w-full z-50 transform transition-transform duration-300",
-              showFilters && "h-screen py-24 md:py-0 overflow-y-auto",
+              showFilters && "h-[100dvh] overflow-y-auto py-20 no-scrollbar",
               showFilters
-                ? "translate-x-0 h-screen overflow-y-auto"
+                ? "translate-x-0 h-[100dvh] overflow-y-auto no-scrollbar"
                 : "-translate-x-full",
 
               "md:relative md:translate-x-0 md:w-[380px]",
               "md:sticky md:top-24 md:self-start",
               "md:h-[calc(100vh-8rem)]",
-              "md:overflow-y-auto",
+              "md:overflow-y-auto md:no-scrollbar",
+              "overscroll-contain",
 
               "bg-gradient-to-b from-[#0c0c14] to-[#141420]",
               "border-r border-white/10",

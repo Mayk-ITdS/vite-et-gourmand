@@ -1,11 +1,11 @@
 import { pgPool } from "../config/db.js";
-import { ApiError, AuthUser, DbUser, DbUserInsert } from "../types/users.js";
-type InsertUserResult = {
-  result: {
-    user_id: number;
-    role: string;
-  };
-};
+import {
+  ApiError,
+  AuthUser,
+  DbUser,
+  DbUserInsert,
+  InsertUserResult,
+} from "../types/users.js";
 
 class UserRepository {
   async createUser(
@@ -142,5 +142,19 @@ class UserRepository {
 
     return result.rows;
   };
+
+  async updatePasswordHash(userId: number, passwordHash: string) {
+    const result = await pgPool.query<{ user_id: number }>(
+      `
+      UPDATE users
+      SET password_hash = $1
+      WHERE user_id = $2
+      RETURNING user_id
+      `,
+      [passwordHash, userId],
+    );
+
+    return result.rows[0] ?? null;
+  }
 }
 export { UserRepository };

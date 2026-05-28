@@ -4,7 +4,7 @@ import { ApiError } from "../types/users.js";
 
 class MenuRepository {
   deleteOne = async (id: number) => {
-    const sql = `DELETE FROM menus where menu_id == $1 RETURNING menu_id `;
+    const sql = `DELETE FROM menus where menu_id = $1 RETURNING menu_id `;
     const result = await pgPool.query(sql, [id]);
     if (result.rowCount === 0) {
       throw new ApiError(404, "Menu introuvable");

@@ -94,6 +94,7 @@ const buildStockPayload = (data: StockDTO, mode: StockMode) => {
     },
   ];
 };
+
 export default buildStockPayload;
 export {
   type DietType,

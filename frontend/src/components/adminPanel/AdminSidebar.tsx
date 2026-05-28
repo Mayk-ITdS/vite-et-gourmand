@@ -1,4 +1,4 @@
-import { NavLink } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 
 type SidebarItem = {
   label: string;
@@ -16,15 +16,12 @@ type SidebarSection = {
 const sections: SidebarSection[] = [
   {
     title: "Dashboard",
-    items: [
-      { label: "Overview", path: "/admin" },
-      { label: "Analytics", path: "/admin/analytics" },
-    ],
+    items: [{ label: "Overview", path: "/admin" }],
   },
   {
     title: "Opérations",
     items: [
-      { label: "Réservations", path: "/admin/reservations" },
+      { label: "Réservations", path: "/admin/orders" },
       { label: "Menus", path: "/admin/menus" },
       {
         label: "Stocks & Livraisons",
@@ -34,18 +31,7 @@ const sections: SidebarSection[] = [
   },
   {
     title: "Administration",
-    items: [
-      { label: "Utilisateurs", path: "/admin/users" },
-      { label: "Employés", path: "/admin/employees" },
-      { label: "Rôles & permissions", path: "/admin/roles" },
-    ],
-  },
-  {
-    title: "Système",
-    items: [
-      { label: "Paramètres", path: "/admin/settings" },
-      { label: "Logs", path: "/admin/logs" },
-    ],
+    items: [{ label: "Utilisateurs", path: "/admin/users" }],
   },
 ];
 
@@ -56,7 +42,9 @@ const AdminSidebar = () => {
         <p className="text-xs uppercase tracking-[0.3em] text-yellow-400/80">
           Admin Panel
         </p>
-        <h2 className="mt-2 text-xl font-semibold text-white">Vite & Gourmand</h2>
+        <h2 className="mt-2 text-xl font-semibold text-white">
+          <Link to={"/"}> Vite & Gourmand</Link>
+        </h2>
         <p className="mt-1 text-sm text-white/50">Gestion du système</p>
       </div>
 

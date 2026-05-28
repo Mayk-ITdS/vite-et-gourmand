@@ -1,8 +1,10 @@
-type ProductType = "raw" | "semi" | "finished";
-type DietType = "Vegetarien" | "Vegan" | "Classique";
-type Unit = "kg" | "g" | "l" | "ml" | "szt";
-
-type StockMode = "lineage" | "synthesis";
+import type {
+  DeliveryMode,
+  DietType,
+  IngredientUnit,
+  ProductType,
+  ProductUnit,
+} from "../supplyTypes";
 
 export const initialStockFormValues: StockFormData = {
   product_name: "",
@@ -31,7 +33,7 @@ interface IngredientFormData {
   ingredient_diet_type: DietType;
   ingredient_calories: number;
   ingredient_quantity: number;
-  ingredient_unit: Unit;
+  ingredient_unit: IngredientUnit;
 }
 
 interface StockFormData {
@@ -44,12 +46,12 @@ interface StockFormData {
   producer_name: string;
   arrival_date: string;
   expiration_date: string;
-  unit: Unit;
+  unit: ProductUnit;
 
   ingredients: IngredientFormData[];
 }
 
-const buildStockPayload = (data: StockFormData, mode: StockMode) => {
+const buildStockPayload = (data: StockFormData, mode: DeliveryMode) => {
   if (mode === "lineage") {
     return {
       raw_deliveries: [
@@ -99,11 +101,4 @@ const buildStockPayload = (data: StockFormData, mode: StockMode) => {
   };
 };
 export default buildStockPayload;
-export {
-  type DietType,
-  type ProductType,
-  type Unit,
-  type StockMode,
-  type IngredientFormData,
-  type StockFormData,
-};
+export { type IngredientFormData, type StockFormData };

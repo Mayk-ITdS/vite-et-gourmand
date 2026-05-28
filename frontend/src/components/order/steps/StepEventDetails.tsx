@@ -16,10 +16,17 @@ type EventForm = {
 
 export default function StepEventDetails() {
   const dispatch = useAppDispatch();
-  const order = useAppSelector((state: any) => state.orders);
+  const prestation = useAppSelector((state) => state.orders.prestation);
 
   const { register, handleSubmit } = useForm<EventForm>({
-    defaultValues: order.event || {},
+    defaultValues: {
+      street: prestation.streetName || "",
+      houseNumber: prestation.streetNumber || 0,
+      zipCode: prestation.zipCode || "",
+      city: prestation.city || "",
+      date: prestation.date || "",
+      time: prestation.time || "",
+    },
   });
 
   const onSubmit = (data: EventForm) => {
@@ -83,20 +90,29 @@ export default function StepEventDetails() {
         {...register("city", { required: true })}
       />
 
-      <Button
-        type="submit"
-        className="
-          col-span-2 mt-6
-          bg-white/10
-          backdrop-blur-md
-          border border-white/20
-          text-white
-          hover:bg-white/20
-          transition-all duration-300
-        "
-      >
-        Continuer
-      </Button>
+      <div className="col-span-2 mt-6 flex flex-col-reverse gap-3 sm:flex-row sm:justify-between">
+        <Button
+          type="button"
+          onClick={() => dispatch(setStep(0))}
+          className="border border-white/20 bg-transparent text-white hover:bg-white/10"
+        >
+          Retour
+        </Button>
+
+        <Button
+          type="submit"
+          className="
+            bg-white/10
+            backdrop-blur-md
+            border border-white/20
+            text-white
+            hover:bg-white/20
+            transition-all duration-300
+          "
+        >
+          Continuer
+        </Button>
+      </div>
     </form>
   );
 }

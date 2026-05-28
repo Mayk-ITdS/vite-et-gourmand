@@ -15,12 +15,3 @@ export type CreateOrderDTO = {
   }[];
   prestation: Prestation;
 };
-export type CreateReservationDTO = {
-  eventAddress: string;
-  eventDate: string;
-  eventTime: string;
-  menus: {
-    menuId: number;
-    quantity: number;
-  }[];
-};

@@ -5,19 +5,24 @@ import { Button } from "@mui/material";
 
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { setStep, startOrderFromMenu } from "@/store/orders/orderSlice";
-import { selectMenuById } from "@/store/menus/selectors";
+import { selectMenuDetails } from "@/store/menus/selectors";
 import { clearMenuDetails, fetchMenuById } from "@/store/menus/menusSlice";
 
 const MenuDetails = () => {
   const { id } = useParams<{ id: string }>();
   const dispatch = useAppDispatch();
-  const menu = useAppSelector((state) => selectMenuById(state, Number(id)));
+  const menu = useAppSelector(selectMenuDetails);
   const menuId = Number(id);
   const [currentImage, setCurrentImage] = useState(0);
   const navigate = useNavigate();
   const detailsStatus = useAppSelector((state) => state.menus.details.status);
+  const preorderLeadTime =
+    typeof menu?.order_lead_time === "string" ? menu.order_lead_time.split(":")[0] : null;
+  const stockLabel =
+    menu?.quantity_in_stock == null
+      ? "Sur demande"
+      : `${menu.quantity_in_stock} commandes`;
 
-  useAppSelector((state) => state.menus.list.data);
   useEffect(() => {
     if (menuId) {
       dispatch(fetchMenuById(menuId));
@@ -31,9 +36,7 @@ const MenuDetails = () => {
   useEffect(() => {
     if (!menu?.images?.length) return;
     const interval = setInterval(() => {
-      setCurrentImage((prev) =>
-        prev === menu.images.length - 1 ? 0 : prev + 1,
-      );
+      setCurrentImage((prev) => (prev === menu.images.length - 1 ? 0 : prev + 1));
     }, 4500);
     return () => clearInterval(interval);
   }, [menu?.images]);
@@ -72,7 +75,7 @@ const MenuDetails = () => {
         </div>
       </section>
       <div className="mt-8 flex justify-center gap-4">
-        {menu.images.map((img: string, idx: number) => (
+        {(menu.images ?? []).map((img: string, idx: number) => (
           <img
             key={idx}
             src={img}
@@ -110,16 +113,12 @@ const MenuDetails = () => {
       <div className="max-w-6xl mx-auto py-16 px-6 space-y-12">
         <div className="grid md:grid-cols-3 gap-10 border-b border-[#d4af37]/30 pb-10">
           <div>
-            <p className="text-sm uppercase tracking-widest text-[#d4af37]">
-              Thème
-            </p>
+            <p className="text-sm uppercase tracking-widest text-[#d4af37]">Thème</p>
             <p className="text-xl mt-2">{menu.themes.join(", ")}</p>
           </div>
 
           <div>
-            <p className="text-sm uppercase tracking-widest text-[#d4af37]">
-              Régime
-            </p>
+            <p className="text-sm uppercase tracking-widest text-[#d4af37]">Régime</p>
             <p className="text-xl mt-2">{menu.diet_type}</p>
           </div>
 
@@ -141,7 +140,7 @@ const MenuDetails = () => {
 
           <div className="text-right">
             <p className="text-sm uppercase text-[#d4af37]">Stock disponible</p>
-            <p className="text-xl mt-2">{menu.quantity_in_stock} commandes</p>
+            <p className="text-xl mt-2">{stockLabel}</p>
           </div>
         </div>
         <section>
@@ -150,7 +149,10 @@ const MenuDetails = () => {
           </h2>
 
           {["starter", "main", "dessert"].map((type) => (
-            <div key={type} className="mb-8">
+            <div
+              key={type}
+              className="mb-8"
+            >
               <h3 className="text-xl mb-4 uppercase">{type}</h3>
 
               {menu.items
@@ -176,12 +178,9 @@ const MenuDetails = () => {
             Order the latest
           </h2>
           <p className="text-white/70">
-            Preorder{" "}
-            {Object.entries(menu.order_lead_time)
-              .splice(0, 1)
-              .toLocaleString()
-              .slice(6)}
-            h before
+            {preorderLeadTime
+              ? `Preorder ${preorderLeadTime}h before`
+              : "Précommande sur demande"}
           </p>
         </section>
       </div>

@@ -1,5 +1,6 @@
-import type { ReactNode } from "react";
+import { useState, type ReactNode } from "react";
 import type { AdminColumn, AdminRow } from "../adminCrud.types";
+import { ConfirmDialog } from "./ConfirmDialog";
 
 export type AdminDataTableProps = {
   columns: AdminColumn[];
@@ -105,6 +106,7 @@ const AdminDataTable = ({
   onEdit,
   onDelete,
 }: AdminDataTableProps) => {
+  const [pendingDeleted, setPendingDeleted] = useState<AdminRow | null>(null);
   if (loading) {
     return <p className="text-sm text-white/60">Chargement des données...</p>;
   }
@@ -191,16 +193,30 @@ const AdminDataTable = ({
                           Edit
                         </button>
                       )}
-
                       {onDelete && (
                         <button
                           type="button"
-                          onClick={() => onDelete(row)}
+                          onClick={() => setPendingDeleted(row)}
                           className="rounded-lg px-3 py-1 text-sm text-red-400 hover:bg-red-500/10"
                         >
                           Delete
                         </button>
                       )}
+                      <ConfirmDialog
+                        title={`Tu veux vraiment supprimer ${getStringValue(pendingDeleted)} ?`}
+                        description="Cette action est irréversible. Le menu sera supprimé de la liste."
+                        confirmLabel="Supprimer"
+                        cancelLabel="Annuler"
+                        confirmColor="error"
+                        onCancel={() => setPendingDeleted(null)}
+                        open={pendingDeleted !== null}
+                        onConfirm={() => {
+                          if (pendingDeleted) {
+                            onDelete?.(row);
+                            setPendingDeleted(null);
+                          }
+                        }}
+                      />
                     </div>
                   </td>
                 )}

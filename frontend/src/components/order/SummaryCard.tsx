@@ -1,6 +1,6 @@
 import { Button } from "@mui/material";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
-import { postOrders } from "@/store/orders/orderSlice";
+import { postOrders, setStep } from "@/store/orders/orderSlice";
 import { selectOrderPricing } from "@/store/orders/selectors";
 import { SectionSurface } from "@/layouts/SectionSurface";
 import PriceRow from "./PriceRow";
@@ -82,19 +82,29 @@ export default function StepSummary() {
             highlight
           />
         </div>
-        <Button
-          onClick={handleSubmitOrder}
-          disabled={status === "loading"}
-          className="
-            w-full mt-4
-            bg-yellow-500
-            hover:bg-yellow-400
-            text-black
-            font-semibold
-          "
-        >
-          {status === "loading" ? "Envoi..." : "Confirmer la commande"}
-        </Button>
+
+        <div className="flex flex-col-reverse gap-3 sm:flex-row sm:justify-between">
+          <Button
+            type="button"
+            onClick={() => dispatch(setStep(2))}
+            className="border border-white/20 bg-transparent text-white hover:bg-white/10"
+          >
+            Retour
+          </Button>
+
+          <Button
+            onClick={handleSubmitOrder}
+            disabled={status === "loading"}
+            className="
+              bg-yellow-500
+              hover:bg-yellow-400
+              text-black
+              font-semibold
+            "
+          >
+            {status === "loading" ? "Envoi..." : "Confirmer la commande"}
+          </Button>
+        </div>
       </div>
     </SectionSurface>
   );

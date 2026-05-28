@@ -73,7 +73,7 @@ const AdminCrudPage = ({ resource }: AdminCrudPageProps) => {
     setOpenForm(false);
   };
 
-  const handleUpdate = async (id: AdminId, data: AdminFormData) => {
+  const handleUpdate = async (id: number, data: AdminFormData) => {
     await dispatch(
       updateAdminResourceRow({
         resource: resourceRef,
@@ -87,7 +87,7 @@ const AdminCrudPage = ({ resource }: AdminCrudPageProps) => {
     setOpenForm(false);
   };
 
-  const handleDelete = async (id: AdminId) => {
+  const handleDelete = async (id: number) => {
     await dispatch(
       deleteAdminResourceRow({
         resource: resourceRef,
@@ -131,7 +131,7 @@ const AdminCrudPage = ({ resource }: AdminCrudPageProps) => {
           const id = getRowId(row, resource.idKey);
 
           if (id !== null) {
-            handleDelete(id);
+            handleDelete(Number(id));
           }
         }}
       />
@@ -152,7 +152,7 @@ const AdminCrudPage = ({ resource }: AdminCrudPageProps) => {
               return;
             }
 
-            return handleUpdate(id, data);
+            return handleUpdate(Number(id), data);
           }
 
           return handleCreate(data);
