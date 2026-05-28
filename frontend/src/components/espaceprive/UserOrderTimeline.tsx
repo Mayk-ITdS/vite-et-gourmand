@@ -1,6 +1,7 @@
-import type { OrderHistoryItemDTO } from "@/store/orders/orderTypes";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
+
+import type { OrderHistoryItemDTO } from "@/store/orders/orderTypes";
 
 type Props = {
   history: OrderHistoryItemDTO[];

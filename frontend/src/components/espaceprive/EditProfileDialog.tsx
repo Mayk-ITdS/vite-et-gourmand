@@ -8,6 +8,7 @@ import {
   Box,
 } from "@mui/material";
 import { useEffect, useState } from "react";
+
 import { useAppDispatch } from "@/store/hooks";
 import { updateProfile } from "@/store/slices/userProfileSlice";
 import { type Profile } from "@/types/UserProps";

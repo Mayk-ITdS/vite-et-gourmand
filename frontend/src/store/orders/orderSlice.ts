@@ -70,7 +70,6 @@ export const postOrders = createAsyncThunk<
 >("orders/post", async (_, { getState, rejectWithValue }) => {
   try {
     const state = getState() as RootState;
-    console.log(state);
     const orderState = state.orders;
 
     const payload: CreateOrderDTO = {
@@ -90,7 +89,6 @@ export const postOrders = createAsyncThunk<
         distanceKm: 0,
       },
     };
-    console.log("SENDING DTO:", payload);
     const res = await api.request({
       url: "/orders/me",
       method: "POST",

@@ -1,4 +1,5 @@
 import { useMemo } from "react";
+
 import type { MonthStat } from "@/types/adminAnalTypes";
 
 const currency = new Intl.NumberFormat("fr-FR", {

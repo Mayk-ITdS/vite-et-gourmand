@@ -1,12 +1,14 @@
 import { useForm, useWatch, type UseFormRegister } from "react-hook-form";
+import { useEffect, useState } from "react";
+
 import api from "@/utils/api";
+import { toClientError } from "@/store/funcs/toClientError";
+
 import type { DeliveryMode } from "./supplyTypes";
 import type { StockFormData } from "./types/buildStockPayload";
 import buildStockPayload, { initialStockFormValues } from "./types/buildStockPayload";
 import IngredientsArray, { type IngredientsArrayProps } from "./IngredientsArray";
-import { useEffect, useState } from "react";
 import IngestionFileForm from "./StockIngestionFileForm";
-import { toClientError } from "@/store/funcs/toClientError";
 
 interface StockIngestionFormProps {
   mode: DeliveryMode;
@@ -345,7 +347,11 @@ const StockIngestionForm = ({
     </form>
   );
 };
-const RawDeliveryFields = ({ register }: { register: UseFormRegister<any> }) => {
+const RawDeliveryFields = ({
+  register,
+}: {
+  register: UseFormRegister<StockFormData>;
+}) => {
   return (
     <div className="mt-6 space-y-6">
       <div className="rounded-2xl border bg-neutral-50 p-4">

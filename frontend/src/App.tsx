@@ -6,6 +6,7 @@ import {
   useNavigate,
 } from "react-router-dom";
 import { useEffect, useEffectEvent } from "react";
+
 import Home from "./pages/Home";
 import MentionsLegales from "./pages/MentionsLegales";
 import ConditionsGenerales from "./pages/ConditionsGenerales";
@@ -44,10 +45,10 @@ function AuthSessionWatcher() {
   const token = useAppSelector((state) => state.auth.token);
 
   const expireSession = useEffectEvent(() => {
-    dispatch(logout());
+    void dispatch(logout());
 
     if (location.pathname !== "/auth") {
-      navigate("/auth", { replace: true });
+      void navigate("/auth", { replace: true });
     }
   });
 
@@ -65,7 +66,7 @@ function AuthSessionWatcher() {
     return () => {
       window.removeEventListener(AUTH_EXPIRED_EVENT, handleUnauthorized);
     };
-  }, [expireSession]);
+  }, []);
 
   useEffect(() => {
     if (!token) {
@@ -85,7 +86,7 @@ function AuthSessionWatcher() {
     return () => {
       window.clearTimeout(timeoutId);
     };
-  }, [expireSession, token]);
+  }, [token]);
 
   return null;
 }

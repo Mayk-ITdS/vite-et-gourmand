@@ -1,13 +1,19 @@
 import { Link, NavLink } from "react-router-dom";
+import {
+  Boxes,
+  LayoutDashboard,
+  PackagePlus,
+  ShieldCheck,
+  UtensilsCrossed,
+  Users,
+} from "lucide-react";
 
 type SidebarItem = {
   label: string;
   path: string;
+  icon: React.ComponentType<{ className?: string }>;
 };
-// type DeeperItems={
-//   label:string;
-//   path:string;
-// }
+
 type SidebarSection = {
   title: string;
   items: SidebarItem[];
@@ -16,36 +22,51 @@ type SidebarSection = {
 const sections: SidebarSection[] = [
   {
     title: "Dashboard",
-    items: [{ label: "Overview", path: "/admin" }],
+    items: [{ label: "Overview", path: "/admin", icon: LayoutDashboard }],
   },
   {
     title: "Opérations",
     items: [
-      { label: "Réservations", path: "/admin/orders" },
-      { label: "Menus", path: "/admin/menus" },
+      { label: "Réservations", path: "/admin/orders", icon: ShieldCheck },
+      { label: "Menus", path: "/admin/menus", icon: UtensilsCrossed },
       {
         label: "Stocks & Livraisons",
         path: "/admin/supply",
+        icon: PackagePlus,
       },
     ],
   },
   {
     title: "Administration",
-    items: [{ label: "Utilisateurs", path: "/admin/users" }],
+    items: [{ label: "Utilisateurs", path: "/admin/users", icon: Users }],
   },
 ];
 
 const AdminSidebar = () => {
   return (
-    <aside className="w-72 h-screen shrink-0 border-r border-white/10 bg-slate-900/80 backdrop-blur-xl px-5 py-6">
-      <div className="mb-8">
-        <p className="text-xs uppercase tracking-[0.3em] text-yellow-400/80">
-          Admin Panel
+    <aside className="hidden h-screen w-[290px] shrink-0 border-r border-white/10 bg-[linear-gradient(180deg,rgba(13,17,24,0.96),rgba(8,11,18,0.92))] px-5 py-6 backdrop-blur-xl xl:block">
+      <div className="mb-8 rounded-[1.75rem] border border-white/10 bg-white/[0.035] p-5 shadow-[0_18px_45px_rgba(0,0,0,0.2)]">
+        <div className="flex items-center gap-3">
+          <span className="grid h-11 w-11 place-items-center rounded-2xl border border-white/10 bg-white/[0.05] text-[0.68rem] font-semibold uppercase tracking-[0.26em] text-white">
+            V&G
+          </span>
+          <div>
+            <p className="text-[0.62rem] uppercase tracking-[0.32em] text-white/32">
+              Control room
+            </p>
+            <h2 className="mt-1 text-base font-semibold uppercase tracking-[0.18em] text-white">
+              <Link to="/">Vite & Gourmand</Link>
+            </h2>
+          </div>
+        </div>
+
+        <div className="mt-5 inline-flex items-center gap-2 rounded-full border border-[#a43c57]/30 bg-[#8d314b]/18 px-3 py-1 text-[0.68rem] uppercase tracking-[0.28em] text-[#f1d6dc]">
+          <Boxes className="h-3.5 w-3.5" />
+          Admin space
+        </div>
+        <p className="mt-3 text-sm leading-6 text-white/48">
+          Gestion éditoriale, commandes et livraisons.
         </p>
-        <h2 className="mt-2 text-xl font-semibold text-white">
-          <Link to={"/"}> Vite & Gourmand</Link>
-        </h2>
-        <p className="mt-1 text-sm text-white/50">Gestion du système</p>
       </div>
 
       <nav className="space-y-7">
@@ -56,27 +77,36 @@ const AdminSidebar = () => {
             </p>
 
             <div className="space-y-1">
-              {section.items.map((item) => (
-                <NavLink
-                  key={item.path}
-                  to={item.path}
-                  end={item.path === "/admin"}
-                  className={({ isActive }) =>
-                    [
-                      "block rounded-xl px-4 py-2.5 text-sm transition",
-                      isActive
-                        ? "bg-yellow-500 text-black font-semibold"
-                        : "text-white/70 hover:bg-white/10 hover:text-white",
-                    ].join(" ")
-                  }
-                >
-                  {item.label}
-                </NavLink>
-              ))}
+              {section.items.map((item) => {
+                const Icon = item.icon;
+
+                return (
+                  <NavLink
+                    key={item.path}
+                    to={item.path}
+                    end={item.path === "/admin"}
+                    className={({ isActive }) =>
+                      [
+                        "flex items-center gap-3 rounded-[1.1rem] px-4 py-3 text-sm transition",
+                        isActive
+                          ? "bg-[linear-gradient(135deg,#a43c57,#742b3f)] text-white font-semibold shadow-[0_18px_40px_rgba(116,43,63,0.28)]"
+                          : "text-white/70 hover:bg-white/10 hover:text-white",
+                      ].join(" ")
+                    }
+                  >
+                    <Icon className="h-4 w-4" />
+                    {item.label}
+                  </NavLink>
+                );
+              })}
             </div>
           </div>
         ))}
       </nav>
+
+      <div className="mt-8 rounded-[1.5rem] border border-white/10 bg-white/[0.035] p-4 text-sm text-white/50">
+        Navigation hi-fi resserrée pour coller au maquettage admin sombre.
+      </div>
     </aside>
   );
 };

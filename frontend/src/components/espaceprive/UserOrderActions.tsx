@@ -1,8 +1,10 @@
 import { useState } from "react";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
-import UserReviewDialog from "./UserReviewDialog";
+
 import type { UserOrderDTO } from "@/store/orders/userOrdersSlice";
+
+import UserReviewDialog from "./UserReviewDialog";
 
 export interface OrderActionsProps {
   order: UserOrderDTO;

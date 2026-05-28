@@ -8,6 +8,7 @@ import Button from "@mui/material/Button";
 import OrdersTable from "@/components/espaceprive/OrdersTable";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { fetchMyOrders } from "@/store/orders/userOrdersSlice";
+
 import { useOrdersActionManager } from "./useOrdersActionManager";
 
 const UserDashboard = () => {
@@ -15,8 +16,9 @@ const UserDashboard = () => {
   const orders = useAppSelector((state) => state.userOrders.list);
   const status = useAppSelector((state) => state.userOrders.status);
   const { handleSubmitReview } = useOrdersActionManager();
+
   useEffect(() => {
-    dispatch(fetchMyOrders());
+    void dispatch(fetchMyOrders());
   }, [dispatch]);
 
   const activeOrders = orders.filter(
@@ -64,11 +66,13 @@ const UserDashboard = () => {
           <SummaryCard
             label="Avis possibles"
             value={
-              orders.filter((order: any) =>
-                ["completed", "terminée"].includes(
-                  String(order.status ?? order.current_status ?? "").toLowerCase(),
-                ),
-              ).length
+              orders.filter((order) => {
+                const latestStatus = order.history.at(-1)?.status ?? "";
+
+                return ["completed", "terminée"].includes(
+                  String(latestStatus).toLowerCase(),
+                );
+              }).length
             }
           />
         </Box>

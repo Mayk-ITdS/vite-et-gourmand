@@ -1,8 +1,9 @@
 import { useFieldArray } from "react-hook-form";
+import type { Control, UseFormRegister } from "react-hook-form";
+
 import { inputClass } from "./StockageIngestionForm";
 import { labelClass } from "./StockageIngestionForm";
 import type { StockFormData } from "./types/buildStockPayload";
-import type { Control, UseFormRegister } from "react-hook-form";
 import { numberInputClass } from "./StockageIngestionForm";
 
 export type IngredientsArrayProps = {
