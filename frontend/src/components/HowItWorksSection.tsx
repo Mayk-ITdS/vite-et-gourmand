@@ -29,7 +29,7 @@ const steps = [
     title: "Recevez une proposition détaillée",
     desc: "Une offre claire et structurée, avec options, planning et budget, accessible sur votre espace personnel ou par e-mail.",
     icon: FileText,
-    href: "/userpanel",
+    href: "/espaceprive",
     cta: "Consulter ma proposition",
   },
   {
@@ -37,7 +37,7 @@ const steps = [
     title: "Validez, nous orchestrons le jour J",
     desc: "Ajustez les derniers détails, confirmez la prestation, puis laissez-nous coordonner l’exécution et le service.",
     icon: CheckCircle,
-    href: "/userpanel",
+    href: "/espaceprive",
     cta: "Finaliser ma demande",
   },
 ];
@@ -51,8 +51,8 @@ const HowItWorksSection = () => {
             Comment ça marche
           </h2>
           <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto">
-            Un parcours fluide, humain et maîtrisé - de l’idée initiale à
-            l’exécution le jour J.
+            Un parcours fluide, humain et maîtrisé - de l’idée initiale à l’exécution le
+            jour J.
           </p>
         </header>
         <div className="xl:flex:wrap flex 2xl:flex-row flex-col justify-center gap-8">
@@ -82,12 +82,14 @@ const HowItWorksSection = () => {
                         flex items-center justify-center
                       "
                     >
-                      <Icon size={48} weight="duotone" className="text-white" />
+                      <Icon
+                        size={48}
+                        weight="duotone"
+                        className="text-white"
+                      />
                     </div>
                     <div className="space-y-6 flex-1">
-                      <h3 className="text-lg font-semibold tracking-tight">
-                        {s.title}
-                      </h3>
+                      <h3 className="text-lg font-semibold tracking-tight">{s.title}</h3>
                       <p className="text-md max-w-150 text-white/80 leading-relaxed">
                         {s.desc}
                       </p>

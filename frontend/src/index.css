@@ -10,6 +10,36 @@ body,
   margin: 0;
   padding: 0;
 }
+
+html {
+  scrollbar-color: rgba(140, 50, 55, 0.75) rgba(255, 255, 255, 0.06);
+  scrollbar-width: thin;
+}
+
+* {
+  scrollbar-color: rgba(140, 50, 55, 0.75) rgba(255, 255, 255, 0.06);
+  scrollbar-width: thin;
+}
+
+*::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+*::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+*::-webkit-scrollbar-thumb {
+  border: 2px solid rgba(9, 13, 28, 0.85);
+  border-radius: 9999px;
+  background: rgba(140, 50, 55, 0.78);
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background: rgba(179, 106, 111, 0.92);
+}
+
 .no-scrollbar {
   scrollbar-width: none;
   -ms-overflow-style: none;
@@ -118,4 +148,5 @@ body,
 }
 body {
   @apply text-foreground;
+  overflow-x: hidden;
 }

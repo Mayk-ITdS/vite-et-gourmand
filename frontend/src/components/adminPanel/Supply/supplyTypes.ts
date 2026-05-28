@@ -6,7 +6,7 @@ export type DeliveryMode = "lineage" | "synthesis";
 
 export type ProductUnit = "kg" | "g" | "l" | "ml" | "szt";
 
-export type IngredientUnit = "kg" | "g" | "l" | "ml" | "lp";
+export type IngredientUnit = ProductUnit;
 
 export interface RawDeliveryDraft {
   product_name: string;

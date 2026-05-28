@@ -2,6 +2,10 @@ import { SectionSurface } from "@/layouts/SectionSurface";
 import { Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
+import eventManager from "@/assets/jean-michel-dubois.webp";
+import pastryChef from "@/assets/marriane-durand.webp";
+import executiveChef from "@/assets/pierre-leclerc.webp";
+
 export default function TeamPage() {
   const navigate = useNavigate();
 
@@ -23,7 +27,8 @@ export default function TeamPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
             <div className="rounded-2xl overflow-hidden bg-[rgba(10,15,40,0.55)] backdrop-blur-lg border border-white/10 hover:scale-[1.02] transition-all duration-500">
               <img
-                src="/src/assets/corpo1.avif"
+                src={executiveChef}
+                alt="Pierre Leduc"
                 className="w-full h-80 object-cover"
               />
               <div className="p-6 space-y-3">
@@ -39,7 +44,8 @@ export default function TeamPage() {
             </div>
             <div className="rounded-2xl overflow-hidden bg-[rgba(10,15,40,0.55)] backdrop-blur-lg border border-white/10 hover:scale-[1.02] transition-all duration-500">
               <img
-                src="/src/assets/romantic1.jpg"
+                src={pastryChef}
+                alt="Marianne Durand"
                 className="w-full h-80 object-cover"
               />
               <div className="p-6 space-y-3">
@@ -55,7 +61,8 @@ export default function TeamPage() {
 
             <div className="rounded-2xl overflow-hidden bg-[rgba(10,15,40,0.55)] backdrop-blur-lg border border-white/10 hover:scale-[1.02] transition-all duration-500">
               <img
-                src="/src/assets/salmon1.jpg"
+                src={eventManager}
+                alt="Jean-Michel Dubois"
                 className="w-full h-80 object-cover"
               />
               <div className="p-6 space-y-3">

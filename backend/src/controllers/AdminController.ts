@@ -7,7 +7,7 @@ import { ApiError, UserRequest } from "../types/users.js";
 import { createCipheriv, privateEncrypt } from "node:crypto";
 import { MenuService } from "../services/MenuService.js";
 import { UserPatchRequest } from "../types/requests/menu.patch.js";
-import { MenuCreateRequest, MenuDeleteRequest } from "../types/menus/menus.js";
+import { IdParams, MenuCreateRequest, MenuDeleteRequest } from "../types/menus/menus.js";
 import { UserService } from "../services/UserService.js";
 
 class AdminController {
@@ -36,7 +36,15 @@ class AdminController {
 
     return res.status(200).json({ data });
   };
-
+  deleteMenu = async (req: MenuDeleteRequest, res: Response, next: NextFunction) => {
+    try {
+      const menuId = req.params.id;
+      const result = await this.menuService.deleteOneMenu(Number(menuId));
+      res.status(200).json(result);
+    } catch (error: any) {
+      next(error);
+    }
+  };
   getDashboard = async (_req: Request, res: Response) => {
     const data = await this.analyticsService.getFullDashboard();
     return res.json(data);
@@ -55,7 +63,9 @@ class AdminController {
       const data = await this.menuService.getAllMenus();
       console.log(data);
       return res.status(200).json(data);
-    } catch (err) {}
+    } catch (err) {
+      throw new ApiError(500, "Get menus function error", false);
+    }
   };
   createMenu = async (req: MenuCreateRequest, res: Response, next: NextFunction) => {
     try {
@@ -71,20 +81,20 @@ class AdminController {
       next(err);
     }
   };
-  deleteMenu = (req: MenuDeleteRequest, res: Response, next: NextFunction) => {
+  deleteOrder = async (req: Request<IdParams>, res: Response, next: NextFunction) => {
     try {
-      const menuId = req.params.id;
-      const result = this.menuService.deleteOneMenu(Number(menuId));
+      const orderId = req.params.id;
+      const result = await this.orderService.deleteOneOrder(Number(orderId));
+      res.status(200).json(result);
     } catch (error: any) {
       next(error);
-      throw new ApiError(400, String(error.message), false);
     }
   };
   createReservation = async (req: UserRequest, res: Response) => {
     try {
       const data = req.body;
       const userId = Number(req.user?.user_id);
-      const result = await this.orderService.createReservation(userId, req.body);
+      const result = await this.orderService.createReservation(userId, data);
 
       return res.status(201).json(result);
     } catch (err) {

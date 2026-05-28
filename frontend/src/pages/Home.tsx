@@ -126,7 +126,9 @@ const Home = () => {
       <HowItWorksSection />
       <Avis opinions={opinions} />
 
-      <CTAChefCall />
+      <div id="callback">
+        <CTAChefCall />
+      </div>
       <section className="container mx-auto max-w-5xl py-32 text-center space-y-8">
         <h2 className="text-xl md:text-2xl font-semibold">
           Prêt à organiser votre événement ?
@@ -139,15 +141,17 @@ const Home = () => {
           <Button
             size="lg"
             className="text-xl px-10"
+            asChild
           >
-            Voir les menus
+            <Link to="/menus">Voir les menus</Link>
           </Button>
           <Button
             size="lg"
             variant="secondary"
             className="text-xl px-10"
+            asChild
           >
-            Demander un devis
+            <Link to="/contact">Demander un devis</Link>
           </Button>
         </div>
       </section>

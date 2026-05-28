@@ -10,6 +10,18 @@ import MenuMobile from "./MenuMobile";
 const Navbar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const { token, user } = useAppSelector((state) => state.auth);
+  const accountLabel =
+    user?.role === "admin"
+      ? "Panel admin"
+      : user?.role === "employee"
+        ? "Espace employe"
+        : "Espace prive";
+  const accountHref =
+    user?.role === "admin"
+      ? "/admin"
+      : user?.role === "employee"
+        ? "/employee"
+        : "/espaceprive";
 
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
@@ -55,18 +67,18 @@ const Navbar: React.FC = () => {
         ) : (
           <div className="flex items-center gap-4">
             <Link
-              to={user?.role === "admin" ? "/admin" : "/espaceprive"}
+              to={accountHref}
               className="flex items-center gap-2 hover:opacity-80 transition"
             >
               <span className="text-xl">👤</span>
-              <span className="font-medium">{user?.email}</span>
+              <span className="font-medium">{accountLabel}</span>
             </Link>
 
             <button
               onClick={handleLogout}
               className="text-red-400 hover:text-red-300 transition"
             >
-              Logout
+              Deconnexion
             </button>
           </div>
         )}
