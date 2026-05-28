@@ -1,6 +1,22 @@
 import { Request } from "express";
-import { ApiError } from "./errors.js";
 
+class ApiError extends Error {
+  constructor(
+    public statusCode: number,
+    message: string,
+    public isOperational = true,
+  ) {
+    super(message);
+    Object.setPrototypeOf(this, ApiError.prototype);
+    /*
+    Manual prototype restoration:
+    Necessary when extending built-in classes in TS/ES5+ to
+    ensure 'instancof ApiError' is working correctly accross the app
+    meaning that the tracking of error is preserverd,
+    while without it, ES5 compilation would stop it`s prototype 'chain propagation'.
+    */
+  }
+}
 export type AuthUser = {
   id: number;
   firstName: string;
@@ -8,17 +24,17 @@ export type AuthUser = {
   email: string;
   role: "user" | "admin" | "employee";
 };
-export type AuthJwtPayload = {
+type AuthJwtPayload = {
   sub: number;
   role: "user" | "admin" | "employee";
 };
-export type InsertUserResult = {
+type InsertUserResult = {
   result: {
     user_id: number;
     role: string;
   };
 };
-export type DbUserInsert = {
+type DbUserInsert = {
   user_first_name: string;
   user_last_name: string;
   user_email: string;
@@ -30,7 +46,7 @@ export type DbUserInsert = {
   zip_code: string;
   country: string;
 };
-export type DbUser = {
+type DbUser = {
   user_id: number;
   user_first_name: string;
   user_last_name: string;
@@ -45,11 +61,11 @@ export type DbUser = {
   is_active: boolean;
 };
 
-export interface UserAuthContext {
+interface UserAuthContext {
   user_id: number;
   user_role: "user" | "admin" | "employee";
 }
-export interface User {
+interface User {
   user_id: number;
   user_role: string;
   user_name: string;
@@ -57,8 +73,15 @@ export interface User {
   email: string;
 }
 
-export interface UserRequest extends Request {
+interface UserRequest extends Request {
   user?: UserAuthContext;
 }
-
-export { ApiError };
+export {
+  ApiError,
+  type InsertUserResult,
+  type User,
+  type UserRequest,
+  type UserAuthContext,
+  type DbUser,
+  type DbUserInsert,
+};

@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
 import type { ClientError } from "@/types/errors";
+import type { AuthUser } from "@/types/UserProps";
 import api, { setAuthToken } from "@/utils/api";
 
 import { toClientError } from "../funcs/toClientError";
@@ -22,13 +23,7 @@ type RegisterPayload = {
 };
 interface RegisterResponse {
   message: string;
-  user?: {
-    id: number;
-    firstName: string;
-    lastName: string;
-    email: string;
-    role: "user" | "admin" | "employee";
-  };
+  user?: AuthUser;
 }
 type LoginPayload = {
   email: string;
@@ -36,24 +31,12 @@ type LoginPayload = {
 };
 type AuthResponse = {
   token: string;
-  user: {
-    id: number;
-    firstName: string;
-    lastName: string;
-    email: string;
-    role: "user" | "admin" | "employee";
-  };
+  user: AuthUser;
 };
 
 type AuthState = {
   token: string | null;
-  user: {
-    id: number;
-    firstName: string;
-    lastName: string;
-    email: string;
-    role: "user" | "admin" | "employee";
-  } | null;
+  user: AuthUser | null;
   status: "idle" | "loading" | "authenticated" | "registered" | "error";
   error: ClientError | null;
 };
