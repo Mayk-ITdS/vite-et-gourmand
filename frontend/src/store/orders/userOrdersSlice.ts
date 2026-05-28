@@ -1,7 +1,10 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+
 import api from "@/utils/api";
-import { toClientError } from "../funcs/toClientError";
 import type { ClientError } from "@/types/errors";
+
+import { toClientError } from "../funcs/toClientError";
+
 import type { CancelOrderResponse, UserOrderDTO } from "./orderTypes";
 
 type UserOrdersState = {

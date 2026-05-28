@@ -2,6 +2,7 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
 import api from "@/utils/api";
 import { type Profile } from "@/types/UserProps";
+
 import { toClientError } from "../funcs/toClientError";
 
 interface ProfileState {

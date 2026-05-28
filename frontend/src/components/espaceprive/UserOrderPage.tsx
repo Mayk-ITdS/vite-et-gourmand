@@ -12,6 +12,7 @@ import UserOrderStatusBadge from "@/components/espaceprive/UserOrderStatusBadge"
 import UserOrderTimeline from "@/components/espaceprive/UserOrderTimeline";
 import UserOrderActions from "@/components/espaceprive/UserOrderActions";
 import { createReview } from "@/store/reviews";
+
 import { useOrdersActionManager } from "./useOrdersActionManager";
 
 const UserOrderPage = () => {
@@ -22,21 +23,22 @@ const UserOrderPage = () => {
   const orders = useAppSelector((state) => state.userOrders.list);
   const status = useAppSelector((state) => state.userOrders.status);
   const { handleCancelOrder } = useOrdersActionManager();
+
   useEffect(() => {
     if (!orders.length) {
-      dispatch(fetchMyOrders());
+      void dispatch(fetchMyOrders());
     }
   }, [dispatch, orders.length]);
 
   const order = useMemo(() => {
-    return orders.find((item: any) => {
+    return orders.find((item) => {
       const id = item.resId;
       return String(id) === String(orderId);
     });
   }, [orders, orderId]);
 
   const handleEditOrder = (id: number | string) => {
-    navigate(`/espaceprive/orders/${id}/edit`);
+    void navigate(`/espaceprive/orders/${id}/edit`);
   };
 
   const handleSubmitReview = async (data: {
@@ -47,7 +49,6 @@ const UserOrderPage = () => {
     avatar: string | null;
   }) => {
     await dispatch(createReview({ resId: data.orderId, payload: data })).unwrap();
-    console.log("review", data);
   };
   if (status === "loading") {
     return (

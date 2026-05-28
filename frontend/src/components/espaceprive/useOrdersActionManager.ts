@@ -1,4 +1,5 @@
 import { useCallback } from "react";
+
 import { useAppDispatch } from "@/store/hooks";
 import { cancelOrder } from "@/store/orders/userOrdersSlice";
 import { createReview } from "@/store/reviews";
@@ -28,8 +29,6 @@ export const useOrdersActionManager = () => {
           },
         }),
       ).unwrap();
-
-      console.log("review", data);
     },
     [dispatch],
   );
@@ -37,7 +36,6 @@ export const useOrdersActionManager = () => {
   const handleCancelOrder = useCallback(
     async (id: number | string) => {
       await dispatch(cancelOrder(Number(id))).unwrap();
-      console.log("cancel order", id);
     },
     [dispatch],
   );

@@ -1,6 +1,8 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+
 import type { ClientError } from "@/types/errors";
 import api, { setAuthToken } from "@/utils/api";
+
 import { toClientError } from "../funcs/toClientError";
 
 /* =======================

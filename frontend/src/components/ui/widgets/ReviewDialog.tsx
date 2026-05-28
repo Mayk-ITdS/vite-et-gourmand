@@ -8,6 +8,7 @@ import {
   TextField,
 } from "@mui/material";
 import { useState } from "react";
+
 import { useAppDispatch } from "@/store/hooks";
 import { createReview } from "@/store/reviews";
 
@@ -27,7 +28,7 @@ const ReviewDialog = ({ open, orderId, onClose }: ReviewDialogProps) => {
   const handleSubmit = () => {
     if (!orderId) return;
 
-    dispatch(
+    void dispatch(
       createReview({
         resId: orderId,
         payload: {

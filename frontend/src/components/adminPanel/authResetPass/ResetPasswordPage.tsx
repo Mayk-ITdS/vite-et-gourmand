@@ -1,6 +1,7 @@
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import { toast } from "sonner";
+
 import api from "@/utils/api";
 import { Button } from "@/components/ui/button";
 
@@ -24,11 +25,14 @@ const ResetPasswordPage = () => {
   const {
     register,
     handleSubmit,
-    watch,
+    control,
     formState: { errors, isSubmitting },
   } = useForm<ResetPasswordForm>();
 
-  const newPassword = watch("newPassword");
+  const newPassword = useWatch({
+    control,
+    name: "newPassword",
+  });
 
   const onSubmit = async (data: ResetPasswordForm) => {
     if (!token) {
@@ -43,7 +47,7 @@ const ResetPasswordPage = () => {
       });
 
       toast.success("Mot de passe réinitialisé avec succès.");
-      navigate("/auth");
+      void navigate("/auth");
     } catch (e) {
       toast.error(String(e));
     }
