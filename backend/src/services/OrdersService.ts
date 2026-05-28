@@ -1,15 +1,15 @@
-import { CreateOrderDTO, CreateReservationDTO } from "../dtos/orders.dtos.js";
+import { CreateOrderDTO } from "../dtos/orders.dtos.js";
 import { OrderRepository } from "../repositories/orders.repository.js";
 import { ApiError, User } from "../types/users.js";
 import { calculatePricing } from "./pricing.service.js";
 import AdminAnalyticsService from "./AdminAnalyticsService.js";
-import { pgPool } from "../config/db.js";
 
 export class OrdersService {
   constructor(
     private orderRepo = new OrderRepository(),
     private analytics = AdminAnalyticsService,
   ) {}
+
   getAllOrders = async (id: number) => {
     try {
       return await this.orderRepo.findByUser(Number(id));
@@ -17,6 +17,7 @@ export class OrdersService {
       throw new ApiError(404, String(err), false);
     }
   };
+
   getFullOrdersData = async () => {
     try {
       return await this.orderRepo.fullOrdersScan();
@@ -24,6 +25,17 @@ export class OrdersService {
       throw new ApiError(404, String(err), false);
     }
   };
+
+  deleteOneOrder = async (orderId: number) => {
+    try {
+      const response = await this.orderRepo.deleteOrderById(orderId);
+      console.log("Response after delete : ", response);
+      return response;
+    } catch (e) {
+      throw new ApiError(404, "Id doesn`t exist", false);
+    }
+  };
+
   cancelOrder = async (id: number, userId: number) => {
     try {
       const result = await this.orderRepo.cancelUserOrderById(id, userId);
@@ -32,6 +44,7 @@ export class OrdersService {
       throw new ApiError(404, String(e), false);
     }
   };
+
   async createReservation(userId: number, dto: CreateOrderDTO) {
     const menusFromDb = await this.orderRepo.findMenusByIds(
       dto.menus.map((m) => m.menuId),

@@ -20,6 +20,13 @@ async function main() {
   let mongoAnalyticsInserted = 0;
   let reviewsInserted = 0;
   try {
+    const alreadySeeded = await client.query(`SELECT 1 FROM reservations LIMIT 1`);
+
+    if (alreadySeeded.rowCount) {
+      console.log("Seed skipped: reservations already exist.\n");
+      return;
+    }
+
     console.log("\n Starting seed transaction...\n");
 
     await client.query("BEGIN");

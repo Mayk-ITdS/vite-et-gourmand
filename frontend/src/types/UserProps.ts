@@ -1,4 +1,3 @@
-type UserPanelProps = "profile" | "orders" | "tracking" | "history" | "preferences" | "messages";
 interface Profile {
   id: number;
   firstName: string;
@@ -14,6 +13,6 @@ type AuthUser = {
   email: string;
   firstName: string;
   lastName: string;
-  role: string;
+  role: "user" | "employee" | "admin";
 };
-export { type UserPanelProps, type AuthUser, type Profile };
+export { type AuthUser, type Profile };

@@ -1,6 +1,6 @@
 import OrderContent from "@/components/order/OrderContent";
+import OrderPricingCard from "@/components/order/OrderPricingCard";
 import OrderStepper from "@/components/order/Stepper";
-import OrderSidebarSummary from "@/components/order/SummaryCard";
 import { SectionSurface } from "@/layouts/SectionSurface";
 
 export default function OrderPage() {
@@ -8,7 +8,9 @@ export default function OrderPage() {
     <div className="max-w-7xl mx-auto space-y-10">
       <SectionSurface>
         <div className="p-10 bg-[rgba(40,18,25,0.55)] backdrop-blur-xl">
-          <h1 className="text-3xl tracking-widest text-[#facc15] font-light">COMMANDE PRIVÉE</h1>
+          <h1 className="text-3xl tracking-widest text-[#facc15] font-light">
+            COMMANDE PRIVÉE
+          </h1>
           <p className="text-sm text-gray-300 mt-2">
             Configuration de votre prestation gastronomique
           </p>
@@ -27,7 +29,7 @@ export default function OrderPage() {
           </SectionSurface>
         </div>
         <div className="lg:col-span-1">
-          <OrderSidebarSummary />
+          <OrderPricingCard />
         </div>
       </div>
     </div>

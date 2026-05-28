@@ -99,7 +99,7 @@ export const updateAdminResourceRow = createAsyncThunk<
   { rejectValue: AdminCrudError }
 >("adminCrud/updateRow", async ({ resource, id, data }, { rejectWithValue }) => {
   try {
-    await api.patch(`${resource.endpoint}/${id}`, data);
+    await api.patch(`${resource.endpoint}/${Number(id)}`, data);
 
     return {
       key: resource.key,

@@ -8,18 +8,6 @@ export interface MonthStat {
   totalRevenue: number;
   ordersCount: number;
 }
-export type CreateOrderDTO = {
-  menus: {
-    menuId: number;
-    quantity: number;
-  }[];
-  prestation: {
-    address: string;
-    city: string;
-    date: string;
-    time: string;
-  };
-};
 export type OrderStatus = "pending" | "confirmed" | "cancelled" | "completed";
 export type OrderHistoryItemDTO = {
   status: OrderStatus;

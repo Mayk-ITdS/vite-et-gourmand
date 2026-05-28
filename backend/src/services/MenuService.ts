@@ -30,6 +30,7 @@ class MenuService {
     if (!Number.isInteger(id)) {
       throw new ApiError(400, "Identifiant menu invalide");
     }
+
     return this.menuRepo.deleteOne(id);
   };
   async getAllMenus() {
@@ -77,7 +78,7 @@ class MenuService {
                   ;
         `,
     );
-    console.log(res.rows);
+
     return res.rows;
   }
   async getOneMenuByID(id: number) {
