@@ -11,7 +11,7 @@ export default function UserLayout() {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    dispatch(fetchMyProfile());
+    void dispatch(fetchMyProfile());
   }, [dispatch]);
 
   return (

@@ -1,6 +1,7 @@
-import { useAppSelector } from "@/store/hooks";
 import { LineChart } from "@mui/x-charts/LineChart";
 import { useMemo } from "react";
+
+import { useAppSelector } from "@/store/hooks";
 
 const RevenueTrendChart = () => {
   const data = useAppSelector((state) => state.adminAnalytics.data);

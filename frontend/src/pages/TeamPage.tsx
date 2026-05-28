@@ -1,7 +1,7 @@
-import { SectionSurface } from "@/layouts/SectionSurface";
 import { Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 
+import { SectionSurface } from "@/layouts/SectionSurface";
 import eventManager from "@/assets/jean-michel-dubois.webp";
 import pastryChef from "@/assets/marriane-durand.webp";
 import executiveChef from "@/assets/pierre-leclerc.webp";

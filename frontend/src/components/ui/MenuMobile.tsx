@@ -15,7 +15,6 @@ import {
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { logout } from "@/store/menus/authSlice";
 import { persistor } from "@/store/store";
-
 import { cn } from "@/lib/utils";
 
 import { Button } from "./button";
@@ -99,10 +98,10 @@ const MenuMobile: React.FC<{
   ];
 
   const handleLogout = () => {
-    dispatch(logout());
+    void dispatch(logout());
     void persistor.purge();
     closeMenu();
-    navigate("/");
+    void navigate("/");
   };
 
   return (

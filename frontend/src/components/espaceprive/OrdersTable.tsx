@@ -5,10 +5,12 @@ import TableContainer from "@mui/material/TableContainer";
 import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
 import { Table, TableFooter, TableHead } from "@mui/material";
+
 import type { UserOrderDTO } from "@/store/orders/userOrdersSlice";
 import UserOrderActions, {
   type OrderActionsProps,
 } from "@/components/espaceprive/UserOrderActions";
+
 import { useOrdersActionManager } from "./useOrdersActionManager";
 const columns = ["", "Order", "Price", "Status", "Date", "Actions"];
 

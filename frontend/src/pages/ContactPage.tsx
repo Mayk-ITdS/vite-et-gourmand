@@ -1,7 +1,8 @@
 import { Button, TextField } from "@mui/material";
-import { SectionSurface } from "@/layouts/SectionSurface";
 import { useState } from "react";
 import { toast } from "sonner";
+
+import { SectionSurface } from "@/layouts/SectionSurface";
 
 export default function ContactPage() {
   const [form, setForm] = useState({

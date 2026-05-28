@@ -1,6 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { fetchAdminResourceRows } from "./adminCrud.thunks";
+
 import type { AdminRow } from "../adminCrud.types";
+
+import { fetchAdminResourceRows } from "./adminCrud.thunks";
 
 type AdminCrudState = {
   rowsByResource: Record<string, AdminRow[]>;

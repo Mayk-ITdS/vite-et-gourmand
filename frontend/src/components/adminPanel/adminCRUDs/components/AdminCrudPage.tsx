@@ -1,14 +1,17 @@
-import { useEffect, useState } from "react";
-import AdminDataTable from "./AdminDataTable";
+import { useCallback, useEffect, useState } from "react";
+
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
+
 import type { AdminFormData, AdminId, AdminResource, AdminRow } from "../adminCrud.types";
-import ResourceFormDialog from "./ResourceFormDialog";
 import {
   createAdminResourceRow,
   deleteAdminResourceRow,
   fetchAdminResourceRows,
   updateAdminResourceRow,
 } from "../model/adminCrud.thunks";
-import { useAppDispatch, useAppSelector } from "@/store/hooks";
+
+import AdminDataTable from "./AdminDataTable";
+import ResourceFormDialog from "./ResourceFormDialog";
 
 type AdminCrudPageProps = {
   resource: AdminResource;
@@ -48,18 +51,18 @@ const AdminCrudPage = ({ resource }: AdminCrudPageProps) => {
     endpoint: resource.endpoint,
   };
 
-  const refreshRows = () => {
-    dispatch(
+  const refreshRows = useCallback(() => {
+    void dispatch(
       fetchAdminResourceRows({
         key: resource.key,
         endpoint: resource.endpoint,
       }),
     );
-  };
+  }, [dispatch, resource.endpoint, resource.key]);
 
   useEffect(() => {
     refreshRows();
-  }, [dispatch, resource.key, resource.endpoint]);
+  }, [refreshRows]);
 
   const handleCreate = async (data: AdminFormData) => {
     await dispatch(
@@ -69,7 +72,7 @@ const AdminCrudPage = ({ resource }: AdminCrudPageProps) => {
       }),
     ).unwrap();
 
-    dispatch(fetchAdminResourceRows(resourceRef));
+    refreshRows();
     setOpenForm(false);
   };
 
@@ -82,7 +85,7 @@ const AdminCrudPage = ({ resource }: AdminCrudPageProps) => {
       }),
     ).unwrap();
 
-    dispatch(fetchAdminResourceRows(resourceRef));
+    refreshRows();
     setSelectedRow(null);
     setOpenForm(false);
   };
@@ -95,7 +98,7 @@ const AdminCrudPage = ({ resource }: AdminCrudPageProps) => {
       }),
     ).unwrap();
 
-    dispatch(fetchAdminResourceRows(resourceRef));
+    refreshRows();
   };
   return (
     <section>
@@ -131,7 +134,7 @@ const AdminCrudPage = ({ resource }: AdminCrudPageProps) => {
           const id = getRowId(row, resource.idKey);
 
           if (id !== null) {
-            handleDelete(Number(id));
+            void handleDelete(Number(id));
           }
         }}
       />
@@ -152,10 +155,11 @@ const AdminCrudPage = ({ resource }: AdminCrudPageProps) => {
               return;
             }
 
-            return handleUpdate(Number(id), data);
+            void handleUpdate(Number(id), data);
+            return;
           }
 
-          return handleCreate(data);
+          void handleCreate(data);
         }}
       />
     </section>

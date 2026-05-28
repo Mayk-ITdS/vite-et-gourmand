@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
+
 import { Button } from "@/components/ui/button";
 import { loginUser, registerUser, type RegisterPayload } from "@/store/menus/authSlice";
 import { useAppDispatch } from "@/store/hooks";
@@ -11,10 +12,10 @@ import { setAuthToken } from "@/utils/api";
 type Mode = "login" | "register";
 
 const inputClass =
-  "w-full rounded-md bg-background/80 px-4 py-3 text-sm text-foreground " +
-  "focus:outline-none focus:ring-2 focus:ring-primary disabled:opacity-50";
+  "w-full rounded-2xl border border-white/10 bg-white/[0.04] px-4 py-3 text-sm text-white " +
+  "placeholder:text-white/34 focus:outline-none focus:ring-2 focus:ring-[#a43c57] disabled:opacity-50";
 
-const errorClass = "text-xs text-red-300 mt-1";
+const errorClass = "mt-1 text-xs text-red-300";
 
 const AuthorizationPage = () => {
   const [mode, setMode] = useState<Mode>("login");
@@ -54,11 +55,11 @@ const AuthorizationPage = () => {
           const { token, user } = resultAction.payload;
           setAuthToken(token);
           if (user.role === "admin") {
-            navigate("/admin");
+            void navigate("/admin");
           } else if (user.role === "employee") {
-            navigate("/employee");
+            void navigate("/employee");
           } else {
-            navigate("/espaceprive");
+            void navigate("/espaceprive");
           }
           toast("Login Successful");
         }
@@ -68,28 +69,42 @@ const AuthorizationPage = () => {
     }
   };
   return (
-    <section className="w-full py-24">
-      <div className="mx-auto max-w-7xl px-6">
-        <div className="relative overflow-hidden rounded-3xl border border-white/15 bg-[linear-gradient(135deg,rgba(102,4,20,0.85),rgba(61,24,31,0.75))] backdrop-blur-xl shadow-[0_30px_80px_rgba(0,0,0,0.45)]">
-          <div className="relative grid gap-12 p-10 md:p-16 lg:grid-cols-2 items-center">
-            <div className="space-y-6 text-white">
-              <span className="inline-block rounded-full bg-white/15 px-4 py-1 text-sm tracking-wide">
-                Espace client & suivi premium
+    <section className="mx-auto max-w-[1180px] py-16">
+      <div className="overflow-hidden rounded-[2.2rem] border border-white/10 bg-[linear-gradient(135deg,rgba(17,20,26,0.98),rgba(9,11,15,0.96))] shadow-[0_30px_90px_rgba(0,0,0,0.35)] lg:grid lg:grid-cols-[0.92fr_1.08fr]">
+        <div className="hidden border-r border-white/10 bg-[radial-gradient(circle_at_top_left,rgba(166,61,89,0.28),transparent_28%),linear-gradient(180deg,rgba(20,14,20,0.92),rgba(10,12,17,0.88))] p-10 lg:flex lg:flex-col lg:justify-between">
+          <div>
+            <span className="rounded-full border border-white/10 bg-white/[0.04] px-4 py-2 text-[0.72rem] uppercase tracking-[0.32em] text-white/55">
+              Espace prive
+            </span>
+            <h1 className="mt-6 font-display text-5xl text-[#f8f1ea]">
+              {mode === "login" ? "Connexion" : "Inscription"}
+            </h1>
+            <p className="mt-4 max-w-md text-sm leading-7 text-white/62">
+              Une interface resserrée, sombre et premium inspirée de la maquette hi-fi,
+              pour gérer vos commandes, vos devis et votre suivi client.
+            </p>
+          </div>
+
+          <div className="rounded-[1.6rem] border border-white/10 bg-black/20 p-5 text-sm text-white/62">
+            <p>Commandes centralisées</p>
+            <p className="mt-2">Facturation et statut en temps réel</p>
+            <p className="mt-2">Support premium et récupération de mot de passe</p>
+          </div>
+        </div>
+
+        <div className="p-6 md:p-8 lg:p-10">
+          <div className="mx-auto max-w-xl">
+            <div className="mb-6 lg:hidden">
+              <span className="rounded-full border border-white/10 bg-white/[0.04] px-4 py-2 text-[0.72rem] uppercase tracking-[0.32em] text-white/55">
+                Espace prive
               </span>
-
-              <h1 className="text-3xl md:text-4xl font-semibold tracking-tight">
-                {mode === "login"
-                  ? "Accédez à votre espace"
-                  : "Créez votre compte client"}
+              <h1 className="mt-5 font-display text-4xl text-[#f8f1ea]">
+                {mode === "login" ? "Connexion" : "Inscription"}
               </h1>
-
-              <p className="max-w-xl text-white/85">
-                Commandes, suivi en temps réel, facturation et avis client — tout est
-                centralisé dans votre espace personnel.
-              </p>
             </div>
-            <div className="rounded-2xl bg-white/10 backdrop-blur-md p-6 md:p-8">
-              <div className="mb-6 flex rounded-full bg-white/10 p-1">
+
+            <div className="rounded-[1.7rem] border border-white/10 bg-white/[0.04] p-5 shadow-[0_18px_45px_rgba(0,0,0,0.24)] md:p-7">
+              <div className="mb-6 flex rounded-full border border-white/10 bg-black/20 p-1">
                 {(["login", "register"] as Mode[]).map((m) => (
                   <button
                     key={m}
@@ -98,19 +113,21 @@ const AuthorizationPage = () => {
                     className={[
                       "flex-1 rounded-full px-4 py-2 text-sm transition",
                       mode === m
-                        ? "bg-white/20 text-white"
-                        : "text-white/70 hover:text-white",
+                        ? "bg-[linear-gradient(135deg,#a43c57,#742b3f)] text-white shadow-[0_16px_35px_rgba(116,43,63,0.32)]"
+                        : "text-white/54 hover:text-white",
                     ].join(" ")}
                   >
                     {m === "login" ? "Connexion" : "Inscription"}
                   </button>
                 ))}
               </div>
+
               {message && (
-                <div className="mb-4 rounded-lg bg-red-100 px-4 py-3 text-sm text-red-800">
+                <div className="mb-4 rounded-2xl border border-red-400/20 bg-red-500/10 px-4 py-3 text-sm text-red-200">
                   {message}
                 </div>
               )}
+
               <form
                 className="space-y-4"
                 onSubmit={handleSubmit(onSubmit)}
@@ -274,7 +291,7 @@ const AuthorizationPage = () => {
                 <Button
                   type="submit"
                   disabled={isSubmitting}
-                  className="w-full mt-2"
+                  className="mt-2 h-12 w-full rounded-full bg-[linear-gradient(135deg,#a43c57,#742b3f)] text-white shadow-[0_18px_40px_rgba(116,43,63,0.32)] hover:opacity-95"
                 >
                   {mode === "login" ? "Se connecter" : "Créer mon compte"}
                 </Button>
