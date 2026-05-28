@@ -1,6 +1,7 @@
 import axios from "axios";
 
 const TOKEN_KEY = "authToken";
+const AUTH_EXPIRED_EVENT = "auth:expired";
 
 let authToken: string | null = localStorage.getItem(TOKEN_KEY);
 const api = axios.create({
@@ -19,15 +20,26 @@ export const setAuthToken = (token: string | null) => {
 };
 
 api.interceptors.request.use((config) => {
-  config.headers.Authorization = `Bearer ${authToken}`;
-  console.log("AXIOS TOKEN:", authToken);
-  console.log("AXIOS URL:", config.url);
   if (authToken) {
     config.headers.Authorization = `Bearer ${authToken}`;
+  } else if (config.headers.Authorization) {
+    delete config.headers.Authorization;
   }
 
-  console.log("AXIOS HEADERS:", config.headers);
   return config;
 });
 
+api.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (axios.isAxiosError(error) && error.response?.status === 401 && authToken) {
+      setAuthToken(null);
+      window.dispatchEvent(new Event(AUTH_EXPIRED_EVENT));
+    }
+
+    return Promise.reject(error);
+  },
+);
+
+export { AUTH_EXPIRED_EVENT };
 export default api;
