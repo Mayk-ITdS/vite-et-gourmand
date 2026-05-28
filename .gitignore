@@ -4,13 +4,13 @@ node_modules
 node_modules/
 backend/node_modules/
 frontend/node_modules/
-
+.png
 # builds
 dist/
 build/
 backend/dist/
 frontend/dist/
-
+artefacts-doc/
 # env / secrets
 .env
 .env.*

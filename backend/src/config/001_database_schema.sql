@@ -186,8 +186,8 @@ CONSTRAINT ck_reservations_event_date CHECK (event_date >= date_res_made)
 );
 
 Create table if not exists reservation_menus(
-res_id bigint not null references reservations(res_id),
-menu_id bigint not null references menus(menu_id),
+res_id bigint not null references reservations(res_id) ON DELETE CASCADE,
+menu_id bigint not null references menus(menu_id) ON DELETE CASCADE,
 unit_price_snapshot numeric(10,2) not null,
 quantity bigint not null,
 notes TEXT,

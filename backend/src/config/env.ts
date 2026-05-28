@@ -4,6 +4,22 @@ const must = (name: string): string => {
   return v;
 };
 
+const optional = (name: string): string | undefined => {
+  const value = process.env[name]?.trim();
+
+  return value ? value : undefined;
+};
+
+const optionalNumber = (name: string): number | undefined => {
+  const value = optional(name);
+
+  if (!value) {
+    return undefined;
+  }
+
+  return Number(value);
+};
+
 export const ENV = {
   NODE_ENV: process.env.NODE_ENV ?? "development",
   SERVER: {
@@ -21,6 +37,15 @@ export const ENV = {
   },
   JWT: {
     SECRET: must("JWT_SECRET"),
+  },
+  FRONTEND_URL: optional("FRONTEND_URL") ?? "http://localhost:4174",
+  MAIL: {
+    FROM: optional("MAIL_FROM") ?? "Vites & Gourmand <no-reply@vites-gourmand.local>",
+    HOST: optional("SMTP_HOST"),
+    PORT: optionalNumber("SMTP_PORT"),
+    USER: optional("SMTP_USER"),
+    PASS: optional("SMTP_PASS"),
+    SECURE: optional("SMTP_SECURE") === "true",
   },
 
   MONGO_URI_ADMIN: must("MONGO_URI_ADMIN"),
