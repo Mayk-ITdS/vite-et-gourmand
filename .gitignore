@@ -15,7 +15,7 @@ artefacts-doc/
 .env
 .env.*
 !.env.example
-
+screens/
 # logs
 *.log
 npm-debug.log*
