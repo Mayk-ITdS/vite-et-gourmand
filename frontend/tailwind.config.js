@@ -5,6 +5,7 @@ export default {
   safelist: [
     { pattern: /(bg|text|border|shadow|backdrop|ring|from|to|via)-/ },
     { pattern: /(blur|opacity|foreground|background)/ },
+    { pattern: /font-(sans|display|mono)/ },
   ],
 
   theme: {
@@ -16,6 +17,11 @@ export default {
         "secondary-foreground": "var(--secondary-foreground)",
         background: "var(--background)",
         foreground: "var(--foreground)",
+      },
+      fontFamily: {
+        sans: ["var(--font-sans)"],
+        display: ["var(--font-display)"],
+        mono: ["var(--font-mono)"],
       },
     },
   },

@@ -435,7 +435,7 @@ const RawDeliveryFields = ({
             <option value="g">g</option>
             <option value="l">l</option>
             <option value="ml">ml</option>
-            <option value="szt">szt</option>
+            <option value="pcs">pcs</option>
           </select>
         </Field>
 
@@ -565,7 +565,7 @@ const SynthesisFields = ({ control, register }: IngredientsArrayProps) => {
             <option value="g">g</option>
             <option value="l">l</option>
             <option value="ml">ml</option>
-            <option value="szt">szt</option>
+            <option value="pcs">pcs</option>
           </select>
         </Field>
 

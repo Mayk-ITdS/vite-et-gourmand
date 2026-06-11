@@ -132,3 +132,36 @@ export const deleteAdminResourceRow = createAsyncThunk<
     });
   }
 });
+
+type RunRowActionArg = {
+  resourceKey: string;
+  path: string;
+  method: "patch" | "post" | "delete";
+  body?: Record<string, unknown>;
+};
+
+export const runAdminRowAction = createAsyncThunk<
+  { key: string },
+  RunRowActionArg,
+  { rejectValue: AdminCrudError }
+>(
+  "adminCrud/runRowAction",
+  async ({ resourceKey, path, method, body }, { rejectWithValue }) => {
+    try {
+      if (method === "delete") {
+        await api.delete(path);
+      } else {
+        await api[method](path, body ?? {});
+      }
+
+      return {
+        key: resourceKey,
+      };
+    } catch (err: unknown) {
+      return rejectWithValue({
+        key: resourceKey,
+        message: getErrorMessage(err),
+      });
+    }
+  },
+);

@@ -1,29 +1,63 @@
 import { Outlet } from "react-router-dom";
 import Box from "@mui/material/Box";
-
 import Navbar from "@/components/ui/Navbar";
 import Footer from "@/components/ui/Footer";
 import { Toaster } from "@/components/ui/sonner";
 
 const AppLayout = () => {
   return (
-    <Box className="relative min-h-screen overflow-hidden bg-[#080a0f] text-[#f4efe9]">
-      <Box className="pointer-events-none fixed inset-0 bg-[radial-gradient(circle_at_top_left,rgba(172,49,78,0.24),transparent_30%),radial-gradient(circle_at_78%_14%,rgba(214,188,120,0.14),transparent_24%),radial-gradient(circle_at_50%_120%,rgba(0,0,0,0.76),transparent_62%)]" />
-      <Box className="pointer-events-none fixed inset-0 opacity-[0.055] [background-image:linear-gradient(rgba(255,255,255,0.65)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.65)_1px,transparent_1px)] [background-size:92px_92px]" />
+    <Box
+      sx={{
+        minHeight: "100vh",
+        display: "flex",
+        flexDirection: "column",
+        backgroundColor: "#2a1f16",
+        backgroundImage: `
+        repeating-linear-gradient(
+        90deg,
+        rgba(255, 255, 255, 0.035),
+        rgba(255, 255, 255, 0.035) 1px,
+        transparent 1px,
+        transparent 5px
+      ),
+        /* subtle vignette */
+        radial-gradient(circle at 50% 120%, rgba(0,0,0,0.45), transparent 60%),
 
-      <Box className="relative z-10 flex min-h-screen flex-col">
-        <Box className="sticky top-0 z-50 border-b border-white/10 bg-[#080a0f]/72 backdrop-blur-2xl">
-          <Navbar />
-        </Box>
-        <Box sx={{ flex: 1 }}>
-          <Box className="mx-auto w-full max-w-[1440px] px-4 py-6 md:px-6 lg:px-8">
-            <Outlet />
-          </Box>
-        </Box>
+        /* wine warmth */
+        radial-gradient(circle at 65% 18%, rgba(140,50,55,0.22), transparent 50%),
 
-        <Footer />
-        <Toaster />
+        /* light reflections */
+        radial-gradient(circle at 20% 10%, rgba(255,255,255,0.06), transparent 40%),
+        radial-gradient(circle at 80% 30%, rgba(255,255,255,0.04), transparent 45%),
+
+        /* micro noise */
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.6' numOctaves='2'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='0.07'/%3E%3C/svg%3E")
+          
+      `,
+        backgroundRepeat: "repeat",
+        backgroundAttachment: "fixed",
+        color: "#f5f5f4",
+      }}
+    >
+      <Box
+        sx={{
+          position: "sticky",
+          top: 0,
+          zIndex: 100,
+          background: "rgba(2,6,23,0.6)",
+          backdropFilter: "blur(18px)",
+          WebkitBackdropFilter: "blur(18px)",
+          borderBottom: "1px solid rgba(255,255,255,0.08)",
+        }}
+      >
+        <Navbar />
       </Box>
+      <Box sx={{ flex: 1, px: { xs: 2, md: 4 }, py: 4 }}>
+        <Outlet />
+      </Box>
+
+      <Footer />
+      <Toaster />
     </Box>
   );
 };
