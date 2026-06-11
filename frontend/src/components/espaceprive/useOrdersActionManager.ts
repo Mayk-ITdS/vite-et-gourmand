@@ -17,18 +17,7 @@ export const useOrdersActionManager = () => {
 
   const handleSubmitReview = useCallback(
     async (data: SubmitReviewData) => {
-      await dispatch(
-        createReview({
-          resId: data.orderId,
-          payload: {
-            orderId: data.orderId,
-            pseudo: data.pseudo,
-            rating: data.rating,
-            content: data.content,
-            avatar: data.avatar,
-          },
-        }),
-      ).unwrap();
+      await dispatch(createReview(data)).unwrap();
     },
     [dispatch],
   );

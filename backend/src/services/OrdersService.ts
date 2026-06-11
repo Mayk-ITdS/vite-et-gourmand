@@ -45,6 +45,38 @@ export class OrdersService {
     }
   };
 
+  updateStatusByAdmin = async (
+    orderId: number,
+    nextStatus: string | undefined,
+    adminUserId: number,
+  ) => {
+    const allowed = ["pending", "confirmed", "completed", "cancelled"] as const;
+    if (!nextStatus || !(allowed as readonly string[]).includes(nextStatus)) {
+      throw new ApiError(400, "Invalid status value", false);
+    }
+    const updated = await this.orderRepo.updateStatusByAdmin(
+      orderId,
+      nextStatus as (typeof allowed)[number],
+      adminUserId,
+    );
+    if (!updated) {
+      throw new ApiError(404, "Order not found", false);
+    }
+    return updated;
+  };
+
+  confirmOrderByEmployee = async (orderId: number, employeeUserId: number) => {
+    const updated = await this.orderRepo.updateStatusByAdmin(
+      orderId,
+      "confirmed",
+      employeeUserId,
+    );
+    if (!updated) {
+      throw new ApiError(404, "Order not found", false);
+    }
+    return updated;
+  };
+
   async createReservation(userId: number, dto: CreateOrderDTO) {
     const menusFromDb = await this.orderRepo.findMenusByIds(
       dto.menus.map((m) => m.menuId),

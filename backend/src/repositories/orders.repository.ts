@@ -12,19 +12,59 @@ export class OrderRepository {
     const result = await pgPool.query(sql, [id, userId]);
     return result.rows[0] ?? null;
   };
+
+  updateStatusByAdmin = async (
+    orderId: number,
+    nextStatus: "pending" | "confirmed" | "completed" | "cancelled",
+    adminUserId: number,
+  ) => {
+    const client = await pgPool.connect();
+    try {
+      await client.query("BEGIN");
+      const updated = await client.query(
+        `UPDATE reservations
+            SET res_status = $1
+          WHERE res_id = $2
+          RETURNING res_id, res_status`,
+        [nextStatus, orderId],
+      );
+      if (updated.rowCount === 0) {
+        await client.query("ROLLBACK");
+        return null;
+      }
+      const history = await client.query(
+        `INSERT INTO order_status_history(res_id, status, changed_by, changed_at)
+         VALUES ($1, $2, $3, NOW())
+         RETURNING history_id, status, changed_at, changed_by`,
+        [orderId, nextStatus, adminUserId],
+      );
+      await client.query("COMMIT");
+      return {
+        resId: Number(updated.rows[0].res_id),
+        status: updated.rows[0].res_status as string,
+        history: history.rows[0],
+      };
+    } catch (err) {
+      await client.query("ROLLBACK");
+      throw err;
+    } finally {
+      client.release();
+    }
+  };
   async fullOrdersScan() {
     const result = await pgPool.query<UserOrderRow>(
       `
     SELECT 
       r.res_id,
+      u.user_email,
       r.no_persons,
       r.event_name,
       r.equipement_loaned,
       r.equipement_returned,
       r.event_date,
       r.total_price,
+      r.res_status AS status,
 
-      osh.status,
       osh.changed_at,
       osh.changed_by,
 
@@ -41,9 +81,10 @@ export class OrderRepository {
 
     FROM reservations r
 
+    LEFT JOIN users u ON u.user_id = r.user_id
+
     LEFT JOIN LATERAL (
       SELECT 
-        osh.status,
         osh.changed_at,
         osh.changed_by
       FROM order_status_history osh
@@ -64,13 +105,14 @@ export class OrderRepository {
 
     GROUP BY
       r.res_id,
+      u.user_email,
       r.no_persons,
       r.event_name,
       r.equipement_loaned,
       r.equipement_returned,
       r.event_date,
       r.total_price,
-      osh.status,
+      r.res_status,
       osh.changed_at,
       osh.changed_by
 
@@ -184,20 +226,10 @@ export class OrderRepository {
 
   async findOrderById(id: number): Promise<OrderRow | null> {
     const sql = `SELECT
-                r.res_id,
-                r.event_date,
-                r.res_status,
-                r.total_price,
-                m.menu_id,
-                m.menu_name,
-                m.image_url,
-                jsonb_build_object(m.images::jsonb) as gallery
+                  r.res_id,
+                  r.res_status AS status
                 FROM reservations r
-                JOIN menus m ON r.menu_id = m.menu_id
-                LEFT JOIN menu_gallery g ON g.menu_id = m.menu_id
-                WHERE r.user_id = $1
-                GROUP BY r.res_id, m.menu_id
-                ORDER BY r.date_res_for DESC;`;
+                WHERE r.res_id = $1`;
 
     const result = await pgPool.query<OrderRow>(sql, [id]);
     if (!result.rowCount) {
