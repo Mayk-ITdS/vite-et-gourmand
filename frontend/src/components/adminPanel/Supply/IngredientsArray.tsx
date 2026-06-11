@@ -47,7 +47,10 @@ const IngredientsArray = ({ control, register }: IngredientsArrayProps) => {
             key={field.id}
             className="grid gap-3 rounded-xl border border-neutral-200 bg-neutral-50 p-3 md:grid-cols-[1.3fr_1fr_1fr_1fr_0.7fr_auto]"
           >
-            <label htmlFor={nameId} className={labelClass}>
+            <label
+              htmlFor={nameId}
+              className={labelClass}
+            >
               Nom d’un ingrédient
               <input
                 {...register(`ingredients.${index}.ingredient_name` as const, {
@@ -59,7 +62,10 @@ const IngredientsArray = ({ control, register }: IngredientsArrayProps) => {
               />
             </label>
 
-            <label htmlFor={dietId} className={labelClass}>
+            <label
+              htmlFor={dietId}
+              className={labelClass}
+            >
               Régime
               <select
                 {...register(`ingredients.${index}.ingredient_diet_type` as const, {
@@ -74,7 +80,10 @@ const IngredientsArray = ({ control, register }: IngredientsArrayProps) => {
               </select>
             </label>
 
-            <label htmlFor={caloriesId} className={labelClass}>
+            <label
+              htmlFor={caloriesId}
+              className={labelClass}
+            >
               Calories
               <input
                 {...register(`ingredients.${index}.ingredient_calories` as const, {
@@ -88,7 +97,10 @@ const IngredientsArray = ({ control, register }: IngredientsArrayProps) => {
               />
             </label>
 
-            <label htmlFor={quantityId} className={labelClass}>
+            <label
+              htmlFor={quantityId}
+              className={labelClass}
+            >
               Quantité
               <input
                 {...register(`ingredients.${index}.ingredient_quantity` as const, {
@@ -103,7 +115,10 @@ const IngredientsArray = ({ control, register }: IngredientsArrayProps) => {
               />
             </label>
 
-            <label htmlFor={unitId} className={labelClass}>
+            <label
+              htmlFor={unitId}
+              className={labelClass}
+            >
               Unité
               <select
                 {...register(`ingredients.${index}.ingredient_unit` as const, {
@@ -116,7 +131,7 @@ const IngredientsArray = ({ control, register }: IngredientsArrayProps) => {
                 <option value="g">g</option>
                 <option value="l">l</option>
                 <option value="ml">ml</option>
-                <option value="szt">szt</option>
+                <option value="pcs">pcs</option>
               </select>
             </label>
 
