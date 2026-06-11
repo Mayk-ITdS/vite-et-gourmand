@@ -35,6 +35,10 @@ import ForgotPasswordPage from "./components/adminPanel/authResetPass/ForgotPass
 import ResetPasswordPage from "./components/adminPanel/authResetPass/ResetPasswordPage";
 import AdminGestionUsers from "./components/adminPanel/adminCRUDs/pages/AdminGestionUsers";
 import AdminOrdersManager from "./components/adminPanel/adminCRUDs/pages/AdminOrdersManager";
+import EmployeeLayout from "./components/employeePanel/EmployeeLayout";
+import EmployeeDashboard from "./components/employeePanel/EmployeeDashboard";
+import EmployeeReviews from "./components/employeePanel/EmployeeReviews";
+import EmployeeOrders from "./components/employeePanel/EmployeeOrders";
 import { logout } from "./store/menus/authSlice";
 import { getTokenRemainingMs } from "./utils/authToken";
 
@@ -204,12 +208,25 @@ function App() {
           </Route>
 
           {/* EMPLOYEE */}
-          {/* <Route element={<RoleGuard allowedRoles={["employee"]} />}>
-            <Route path="/employee" element={<EmployeeLayout />}>
-              <Route index element={<EmployeeDashboard />} />
-              <Route path="orders" element={<EmployeeOrders />} />
+          <Route element={<RoleGuard allowedRoles={["employee", "admin"]} />}>
+            <Route
+              path="/employee"
+              element={<EmployeeLayout />}
+            >
+              <Route
+                index
+                element={<EmployeeDashboard />}
+              />
+              <Route
+                path="reviews"
+                element={<EmployeeReviews />}
+              />
+              <Route
+                path="orders"
+                element={<EmployeeOrders />}
+              />
             </Route>
-          </Route> */}
+          </Route>
         </Routes>
       </Router>
     </>

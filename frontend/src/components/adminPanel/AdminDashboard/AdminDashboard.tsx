@@ -1,10 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
-import { Crown, Euro, ReceiptText, Sparkles } from "lucide-react";
-
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { fetchAdminDashboard } from "@/store/slices/adminAnalyticsSlice";
 import type { MenuStat, MonthStat, StatusStat } from "@/types/adminAnalTypes";
-
 import MonthlyRevenueChart from "./LinearMenusRevenuesChart";
 
 const currency = new Intl.NumberFormat("fr-FR", {
@@ -14,26 +11,35 @@ const currency = new Intl.NumberFormat("fr-FR", {
 });
 
 const getMenuLabel = (menu: MenuStat) => {
-  return `Menu #${menu.menuId ?? "?"}`;
+  return (
+    menu.menuId,
+    menu.timesOrdered,
+    menu.totalRevenue,
+    `Menu #${menu.menuId ?? menu.menuId ?? "?"}`
+  );
 };
+
 // const getMonthLabel = (month: number) => {
 //   if (!month) return "—";
+
 //   return new Intl.DateTimeFormat("fr-FR", {
 //     month: "short",
 //   }).format(new Date(2026, month - 1, 1));
 // };
+
 const AdminDashboard = () => {
   const dispatch = useAppDispatch();
+
   const { data, loading, error } = useAppSelector((state) => state.adminAnalytics);
   const [menuPage, setMenuPage] = useState(1);
-
   useEffect(() => {
-    void dispatch(fetchAdminDashboard());
+    dispatch(fetchAdminDashboard());
   }, [dispatch]);
 
   const menus: MenuStat[] = data.menus;
   const monthlyStats: MonthStat[] = data.months;
   const statusStats: StatusStat[] = data.statuses;
+
   const analytics = useMemo(() => {
     const sortedByRevenue = [...menus].sort(
       (a, b) => Number(b.totalRevenue) - Number(a.totalRevenue),
@@ -55,6 +61,7 @@ const AdminDashboard = () => {
 
   const maxStatusCount = Math.max(...statusStats.map((item) => Number(item.count)), 1);
   const MENU_PAGE_SIZE = 5;
+
   const sortedMenus = useMemo(() => {
     return [...menus].sort(
       (a, b) => Number(b.totalRevenue ?? 0) - Number(a.totalRevenue ?? 0),
@@ -62,12 +69,13 @@ const AdminDashboard = () => {
   }, [menus]);
 
   const menuPageCount = Math.max(1, Math.ceil(sortedMenus.length / MENU_PAGE_SIZE));
+
   const safeMenuPage = Math.min(menuPage, menuPageCount);
+
   const paginatedMenus = sortedMenus.slice(
     (safeMenuPage - 1) * MENU_PAGE_SIZE,
     safeMenuPage * MENU_PAGE_SIZE,
   );
-
   if (loading) {
     return (
       <section className="space-y-6">
@@ -102,33 +110,31 @@ const AdminDashboard = () => {
     <section className="space-y-8">
       <div className="flex flex-col justify-between gap-4 md:flex-row md:items-end">
         <div>
-          <p className="text-sm font-medium uppercase tracking-[0.3em] text-[#e5c57d]">
-            Overview
+          <p className="text-sm font-medium uppercase tracking-[0.3em] text-amber-300">
+            Admin analytics
           </p>
-          <h1 className="mt-3 font-display text-4xl text-white md:text-5xl">
-            Vue d'ensemble hi-fi.
-          </h1>
+
           <p className="mt-2 max-w-2xl text-sm text-slate-400">
             Vue consolidée des commandes, revenus, performances menus et statuts
             opérationnels.
           </p>
         </div>
-        <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.03] px-4 py-3 text-sm text-slate-300">
-          <Sparkles className="h-4 w-4 text-[#e5c57d]" />
+
+        <div className="rounded-2xl border border-white/10 bg-white/[0.03] px-4 py-3 text-sm text-slate-300">
           Données synchronisées depuis PostgreSQL et MongoDB
         </div>
       </div>
+
       <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-        <div className="rounded-[1.7rem] border border-white/10 bg-[linear-gradient(180deg,rgba(17,19,25,0.98),rgba(10,12,17,0.96))] p-5 shadow-xl">
-          <Euro className="h-5 w-5 text-[#e5c57d]" />
+        <div className="rounded-2xl border border-white/10 bg-slate-950 p-5 shadow-xl">
           <p className="text-sm text-slate-400">Revenu total</p>
           <p className="mt-3 text-3xl font-semibold text-white">
             {currency.format(analytics.totalRevenue)}
           </p>
           <p className="mt-3 text-xs text-emerald-400">Cumul des revenus par menu</p>
         </div>
-        <div className="rounded-[1.7rem] border border-white/10 bg-[linear-gradient(180deg,rgba(17,19,25,0.98),rgba(10,12,17,0.96))] p-5 shadow-xl">
-          <ReceiptText className="h-5 w-5 text-[#e5c57d]" />
+
+        <div className="rounded-2xl border border-white/10 bg-slate-950 p-5 shadow-xl">
           <p className="text-sm text-slate-400">Commandes</p>
           <p className="mt-3 text-3xl font-semibold text-white">
             {analytics.totalOrders}
@@ -137,15 +143,16 @@ const AdminDashboard = () => {
             Total calculé depuis les menus commandés
           </p>
         </div>
-        <div className="rounded-[1.7rem] border border-white/10 bg-[linear-gradient(180deg,rgba(17,19,25,0.98),rgba(10,12,17,0.96))] p-5 shadow-xl">
+
+        <div className="rounded-2xl border border-white/10 bg-slate-950 p-5 shadow-xl">
           <p className="text-sm text-slate-400">Panier moyen</p>
           <p className="mt-3 text-3xl font-semibold text-white">
             {currency.format(analytics.averageOrderValue)}
           </p>
           <p className="mt-3 text-xs text-slate-500">Revenu moyen par commande</p>
         </div>
-        <div className="rounded-[1.7rem] border border-white/10 bg-[linear-gradient(180deg,rgba(17,19,25,0.98),rgba(10,12,17,0.96))] p-5 shadow-xl">
-          <Crown className="h-5 w-5 text-[#e5c57d]" />
+
+        <div className="rounded-2xl border border-white/10 bg-slate-950 p-5 shadow-xl">
           <p className="text-sm text-slate-400">Meilleur menu</p>
           <p className="mt-3 truncate text-2xl font-semibold text-white">
             {analytics.bestMenu ? getMenuLabel(analytics.bestMenu) : "—"}
@@ -155,14 +162,17 @@ const AdminDashboard = () => {
           </p>
         </div>
       </div>
+
       <div className="grid gap-6 xl:grid-cols-[1.35fr_0.65fr]">
         <div className="grid gap-6 xl:grid-cols-[1.35fr_0.65fr]">
           <MonthlyRevenueChart data={monthlyStats} />
+
           <div className="rounded-2xl w-full border border-white/10 bg-slate-950 p-6 shadow-xl">
             <h2 className="text-xl font-semibold text-white">Statuts des commandes</h2>
             <p className="mb-6 text-sm text-slate-400">
               Répartition opérationnelle par statut.
             </p>
+
             {statusStats.length ? (
               <div className="space-y-4">
                 {statusStats.map((item, index) => {
@@ -175,6 +185,7 @@ const AdminDashboard = () => {
                         <span className="capitalize text-slate-300">{item.status}</span>
                         <span className="text-slate-400">{count}</span>
                       </div>
+
                       <div className="h-2 overflow-hidden rounded-full bg-white/10">
                         <div
                           className="h-full rounded-full bg-emerald-400"
@@ -193,6 +204,7 @@ const AdminDashboard = () => {
           </div>
         </div>
       </div>
+
       <div className="rounded-2xl border border-white/10 bg-slate-950 p-6 shadow-xl">
         <div className="mb-6 flex flex-col justify-between gap-3 md:flex-row md:items-center">
           <div>
@@ -202,6 +214,7 @@ const AdminDashboard = () => {
             </p>
           </div>
         </div>
+
         <div className="overflow-x-auto">
           <table className="w-full border-collapse text-sm">
             <thead>
@@ -213,11 +226,13 @@ const AdminDashboard = () => {
                 <th className="px-4 py-4 text-right font-medium">Statut</th>
               </tr>
             </thead>
+
             <tbody>
               {paginatedMenus.map((menu) => {
                 const orders = Number(menu.timesOrdered ?? 0);
                 const revenue = Number(menu.totalRevenue ?? 0);
                 const average = orders > 0 ? revenue / orders : 0;
+
                 return (
                   <tr
                     key={menu.menuId}
@@ -241,6 +256,7 @@ const AdminDashboard = () => {
             <p className="text-sm text-slate-500">
               Page {safeMenuPage} sur {menuPageCount} · {sortedMenus.length} menus
             </p>
+
             <div className="flex gap-2">
               <button
                 type="button"
@@ -250,6 +266,7 @@ const AdminDashboard = () => {
               >
                 Précédent
               </button>
+
               <button
                 type="button"
                 disabled={safeMenuPage === menuPageCount}

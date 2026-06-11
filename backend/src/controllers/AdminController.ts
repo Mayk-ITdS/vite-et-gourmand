@@ -4,7 +4,6 @@ import { AuthService } from "../services/AuthService.js";
 import AdminAnalyticsService from "../services/AdminAnalyticsService.js";
 import { OrdersService } from "../services/OrdersService.js";
 import { ApiError, UserRequest } from "../types/users.js";
-import { createCipheriv, privateEncrypt } from "node:crypto";
 import { MenuService } from "../services/MenuService.js";
 import { UserPatchRequest } from "../types/requests/menu.patch.js";
 import { IdParams, MenuCreateRequest, MenuDeleteRequest } from "../types/menus/menus.js";
@@ -115,6 +114,24 @@ class AdminController {
       console.error("where:", err?.where);
       console.error("stack:", err?.stack);
       throw new ApiError(400, String(err), false);
+    }
+  };
+
+  patchOrderStatus = async (req: UserRequest, res: Response, next: NextFunction) => {
+    try {
+      if (!req.user) {
+        return res.status(401).json({ message: "Unauthorized" });
+      }
+      const orderId = Number(req.params.id);
+      const { status } = req.body as { status?: string };
+      const result = await this.orderService.updateStatusByAdmin(
+        orderId,
+        status,
+        Number(req.user.user_id),
+      );
+      return res.status(200).json(result);
+    } catch (error) {
+      next(error);
     }
   };
 }

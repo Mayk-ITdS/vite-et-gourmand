@@ -1,6 +1,5 @@
 import { Router } from "express";
 import authMiddleware from "../middlewares/auth.js";
-
 import AdminController from "../controllers/AdminController.js";
 import { authorize } from "../middlewares/authorize.js";
 console.log("ADMIN ROUTES LOADED");
@@ -47,7 +46,7 @@ router.patch(
   "/orders/:id",
   authMiddleware,
   authorize(["admin"]),
-  AdminController.patchMenu,
+  AdminController.patchOrderStatus,
 );
 router.get("/users", authMiddleware, authorize(["admin"]), AdminController.getUsers);
 router.post(
