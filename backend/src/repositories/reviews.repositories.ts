@@ -21,13 +21,14 @@ export class ReviewsRepository {
       await client.query("BEGIN");
 
       await client.query(
-        `INSERT INTO reviews (res_id,pseudo, rating, comment, created_at, isApproved)
-          VALUES ($1, $2, $3, $4, $5, $6)`,
+        `INSERT INTO reviews (res_id, pseudo, rating, comment, created_by, created_at, isApproved)
+          VALUES ($1, $2, $3, $4, $5, $6, $7)`,
         [
           data.orderId,
           data.pseudo,
           data.score,
           data.content,
+          data.createdBy,
           data.createdAt,
           data.isApproved,
         ],
@@ -77,20 +78,50 @@ export class ReviewsRepository {
     return await this.collection.findOne({ orderId });
   }
 
+  async findByCreatedBy(userId: number) {
+    return await this.collection
+      .find({ createdBy: String(userId) })
+      .sort({ createdAt: -1 })
+      .toArray();
+  }
+
   async findAll() {
     return await this.collection.find().toArray();
   }
   async findPending() {
     return await this.collection
-      .find({ isApproved: false })
+      .find({ isApproved: { $ne: true }, status: { $ne: "rejected" } })
       .sort({ createdAt: -1 })
       .toArray();
   }
 
-  async approve(id: string) {
+  async approve(id: string, moderatorId: string) {
     return await this.collection.updateOne(
       { _id: new ObjectId(id) },
-      { $set: { isApproved: true } },
+      {
+        $set: {
+          isApproved: true,
+          status: "approved",
+          rejectionReason: null,
+          moderatedBy: moderatorId,
+          moderatedAt: new Date(),
+        },
+      },
+    );
+  }
+
+  async reject(id: string, reason: string, moderatorId: string) {
+    return await this.collection.updateOne(
+      { _id: new ObjectId(id) },
+      {
+        $set: {
+          isApproved: false,
+          status: "rejected",
+          rejectionReason: reason,
+          moderatedBy: moderatorId,
+          moderatedAt: new Date(),
+        },
+      },
     );
   }
 
@@ -108,5 +139,10 @@ export interface ReviewUser {
   score: number;
   avatar?: string | null;
   createdAt?: Date;
+  createdBy?: string;
   isApproved?: boolean;
+  status?: "pending" | "approved" | "rejected";
+  rejectionReason?: string | null;
+  moderatedBy?: string | null;
+  moderatedAt?: Date | null;
 }

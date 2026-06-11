@@ -28,11 +28,17 @@ const fetchReviews = createAsyncThunk<ReviewUser[], void, { rejectValue: ClientE
 );
 export const createReview = createAsyncThunk<
   void,
-  { resId: number; payload: CreateReviewPayloadDTO },
+  CreateReviewPayloadDTO,
   { rejectValue: ClientError }
->("reviews/create", async ({ resId, payload }, { rejectWithValue }) => {
+>("reviews/create", async (payload, { rejectWithValue }) => {
   try {
-    await api.post(`/reviews/${resId}`, payload);
+    const body = {
+      pseudo: payload.pseudo,
+      content: payload.content,
+      score: payload.rating,
+      avatar: payload.avatar,
+    };
+    await api.post(`/reviews/${payload.orderId}`, body);
   } catch (err) {
     return rejectWithValue(toClientError(err));
   }
