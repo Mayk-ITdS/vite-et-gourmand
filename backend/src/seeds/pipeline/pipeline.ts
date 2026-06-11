@@ -5,6 +5,7 @@ import { seedUsers } from "./seedUsers.js";
 import { seedMenuItems } from "./seedMenuItems.js";
 import { seedMenus } from "./seedMenus.js";
 import { linkRelations } from "./seedRelationsMenus.js";
+import { seedStock } from "./seedStock.js";
 import seedMongoAnalytics from "./seedMongoAnalytics.js";
 import seedReviews from "./seedAvis.js";
 import { seedReservationMenus } from "./seedReservationMenus.js";
@@ -19,6 +20,8 @@ async function main() {
   let reservationMenusInserted = 0;
   let mongoAnalyticsInserted = 0;
   let reviewsInserted = 0;
+  let stockProductsInserted = 0;
+  let stockLinksCreated = 0;
   try {
     const alreadySeeded = await client.query(`SELECT 1 FROM reservations LIMIT 1`);
 
@@ -37,6 +40,10 @@ async function main() {
     const itemsInserted = await seedMenuItems(client, menuItems);
 
     await linkRelations(client, finalMenus, itemsInserted.itemMap, menusRes.menuMap);
+
+    const stockRes = await seedStock(client, itemsInserted.itemMap);
+    stockProductsInserted = stockRes.productsInserted;
+    stockLinksCreated = stockRes.linksCreated;
 
     reservationsInserted = await seedReservations(client);
     reservationMenusInserted = await seedReservationMenus(client);
@@ -64,6 +71,8 @@ async function main() {
 
   console.log("Users inserted:", usersInserted);
   console.log("Menus inserted:", menusInserted);
+  console.log("Stock products inserted:", stockProductsInserted);
+  console.log("Product-to-item links created:", stockLinksCreated);
   console.log("Reservations inserted:", reservationsInserted);
   console.log("ReservationMenus inserted:", reservationMenusInserted);
   console.log("Mongo Analytics events:", mongoAnalyticsInserted);
