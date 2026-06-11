@@ -8,32 +8,46 @@ const router = Router();
 
 router.get("/public", ReviewsController.loadReviews as RequestHandler);
 
+router.get(
+  "/mine",
+  authMiddleware,
+  authorize(["user"]),
+  ReviewsController.getMyReviews as RequestHandler,
+);
+
 router.post(
   "/:id",
   authMiddleware,
   authorize(["user"]),
-  ReviewsController.createOne as RequestHandler
+  ReviewsController.createOne as RequestHandler,
 );
 
 router.get(
   "/pending",
   authMiddleware,
   authorize(["employee", "admin"]),
-  ReviewsController.getPendingReviews as RequestHandler
+  ReviewsController.getPendingReviews as RequestHandler,
 );
 
 router.patch(
   "/:id/approve",
   authMiddleware,
-  authorize(["employee"]),
-  ReviewsController.approveReview as RequestHandler
+  authorize(["employee", "admin"]),
+  ReviewsController.approveReview as RequestHandler,
+);
+
+router.patch(
+  "/:id/reject",
+  authMiddleware,
+  authorize(["employee", "admin"]),
+  ReviewsController.rejectReview as RequestHandler,
 );
 
 router.delete(
   "/:id",
   authMiddleware,
-  authorize(["employee"]),
-  ReviewsController.deleteReview as RequestHandler
+  authorize(["admin"]),
+  ReviewsController.deleteReview as RequestHandler,
 );
 
 export default router;

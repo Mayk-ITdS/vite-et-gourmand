@@ -30,14 +30,11 @@ const ReviewDialog = ({ open, orderId, onClose }: ReviewDialogProps) => {
 
     void dispatch(
       createReview({
-        resId: orderId,
-        payload: {
-          orderId,
-          pseudo,
-          content,
-          rating: score ?? 5,
-          avatar: null,
-        },
+        orderId,
+        pseudo,
+        content,
+        rating: score ?? 5,
+        avatar: null,
       }),
     );
 

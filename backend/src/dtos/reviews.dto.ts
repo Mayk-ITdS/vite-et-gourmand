@@ -8,7 +8,15 @@ export const reviewZodSchema = z.object({
   avatar: z.string().url().optional().nullable(),
 });
 export type ReviewDTO = z.infer<typeof reviewZodSchema>;
+
+export type ReviewStatus = "pending" | "approved" | "rejected";
+
 export interface ReviewDocument extends ReviewDTO {
   createdAt: Date;
+  createdBy: string;
   isApproved: boolean;
+  status?: ReviewStatus;
+  rejectionReason?: string | null;
+  moderatedBy?: string | null;
+  moderatedAt?: Date | null;
 }
