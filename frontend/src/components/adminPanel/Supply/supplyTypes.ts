@@ -4,7 +4,7 @@ export type ProductType = "raw" | "semi" | "finished";
 
 export type DeliveryMode = "lineage" | "synthesis";
 
-export type ProductUnit = "kg" | "g" | "l" | "ml" | "szt";
+export type ProductUnit = "kg" | "g" | "l" | "ml" | "pcs";
 
 export type IngredientUnit = ProductUnit;
 
