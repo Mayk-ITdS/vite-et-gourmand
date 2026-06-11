@@ -9,6 +9,7 @@ import orderRoutes from "./routes/orderRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
 import adminRoutes from "./routes/adminRoutes.js";
 import reviewsRoutes from "./routes/reviewsRoutes.js";
+import employeeRoutes from "./routes/employeeRoutes.js";
 import { createAdmin } from "./config/createAdmin.js";
 
 const app = express();
@@ -20,6 +21,7 @@ app.use("/health", healthRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/orders", orderRoutes);
 app.use("/api/reviews", reviewsRoutes);
+app.use("/api/employee", employeeRoutes);
 
 app.use(globalErrorHandler);
 console.log("BACKEND INSTANCE STARTED", new Date().toISOString());
