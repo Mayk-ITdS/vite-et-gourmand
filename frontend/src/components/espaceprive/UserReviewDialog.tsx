@@ -26,7 +26,6 @@ const UserReviewDialog = ({
   const [rating, setRating] = useState<number | null>(5);
   const [content, setContent] = useState("");
   const [pseudo, setPseudo] = useState("");
-  const [avatar, setAvatar] = useState("");
   const handleSubmit = async () => {
     if (!rating) return;
 
@@ -35,9 +34,8 @@ const UserReviewDialog = ({
       rating,
       content,
       pseudo,
-      avatar,
+      avatar: null,
     });
-    setAvatar("");
     setPseudo("");
     setContent("");
     setRating(5);
@@ -70,6 +68,14 @@ const UserReviewDialog = ({
           </Box>
 
           <TextField
+            label="Pseudo affiché publiquement"
+            value={pseudo}
+            onChange={(event) => setPseudo(event.target.value)}
+            fullWidth
+            required
+          />
+
+          <TextField
             label="Votre commentaire"
             multiline
             minRows={4}
@@ -86,7 +92,7 @@ const UserReviewDialog = ({
         <Button
           variant="contained"
           onClick={handleSubmit}
-          disabled={!rating}
+          disabled={!rating || pseudo.trim().length < 2 || content.trim().length < 25}
         >
           Envoyer
         </Button>
