@@ -1,6 +1,6 @@
 type ProductType = "raw" | "semi" | "finished";
 type DietType = "Vegetarien" | "Vegan" | "Classique";
-type Unit = "kg" | "g" | "l" | "ml" | "szt";
+type Unit = "kg" | "g" | "l" | "ml" | "pcs";
 
 type StockMode = "lineage" | "synthesis";
 

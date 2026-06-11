@@ -1,6 +1,6 @@
 import { useState, type ReactNode } from "react";
 
-import type { AdminColumn, AdminRow } from "../adminCrud.types";
+import type { AdminColumn, AdminRow, AdminRowAction } from "../adminCrud.types";
 
 import { ConfirmDialog } from "./ConfirmDialog";
 
@@ -9,8 +9,22 @@ export type AdminDataTableProps = {
   rows: AdminRow[];
   idKey: string;
   loading?: boolean;
+  canEdit?: boolean;
+  canDelete?: boolean;
+  rowActions?: AdminRowAction[];
   onEdit?: (row: AdminRow) => void;
   onDelete?: (row: AdminRow) => void;
+  onRowAction?: (action: AdminRowAction, row: AdminRow) => void;
+};
+
+const rowActionClassName = (variant: AdminRowAction["variant"]): string => {
+  if (variant === "success") {
+    return "rounded-lg px-3 py-1 text-sm text-green-400 hover:bg-green-500/10";
+  }
+  if (variant === "danger") {
+    return "rounded-lg px-3 py-1 text-sm text-red-400 hover:bg-red-500/10";
+  }
+  return "rounded-lg px-3 py-1 text-sm text-blue-400 hover:bg-blue-500/10";
 };
 
 const getStringValue = (value: unknown): string | null => {
@@ -105,8 +119,12 @@ const AdminDataTable = ({
   rows,
   idKey,
   loading = false,
+  canEdit = true,
+  canDelete = true,
+  rowActions = [],
   onEdit,
   onDelete,
+  onRowAction,
 }: AdminDataTableProps) => {
   const [pendingDeleted, setPendingDeleted] = useState<AdminRow | null>(null);
   if (loading) {
@@ -136,7 +154,9 @@ const AdminDataTable = ({
                 </th>
               ))}
 
-              {(onEdit || onDelete) && (
+              {(rowActions.length > 0 ||
+                (onEdit && canEdit) ||
+                (onDelete && canDelete)) && (
                 <th className="px-4 py-4 text-right font-medium">Actions</th>
               )}
             </tr>
@@ -183,10 +203,22 @@ const AdminDataTable = ({
                   );
                 })}
 
-                {(onEdit || onDelete) && (
+                {(rowActions.length > 0 ||
+                  (onEdit && canEdit) ||
+                  (onDelete && canDelete)) && (
                   <td className="px-4 py-4 text-right">
                     <div className="flex justify-end gap-2">
-                      {onEdit && (
+                      {rowActions.map((action) => (
+                        <button
+                          key={action.key}
+                          type="button"
+                          onClick={() => onRowAction?.(action, row)}
+                          className={rowActionClassName(action.variant)}
+                        >
+                          {action.label}
+                        </button>
+                      ))}
+                      {onEdit && canEdit && (
                         <button
                           type="button"
                           onClick={() => onEdit(row)}
@@ -195,7 +227,7 @@ const AdminDataTable = ({
                           Edit
                         </button>
                       )}
-                      {onDelete && (
+                      {onDelete && canDelete && (
                         <button
                           type="button"
                           onClick={() => setPendingDeleted(row)}

@@ -147,7 +147,7 @@ in_stock numeric(8,2) not null,
 unit varchar(30) not null, 
 constraint ck_arrival_date check(arrival_date <= CURRENT_DATE),
 constraint ck_expiration_date check(expiration_date >= CURRENT_DATE + 7),
-constraint ck_product_unit check(unit in('kg','g','l','ml','szt'))
+constraint ck_product_unit check(unit in('kg','g','l','ml','pcs'))
 );
 
 Create table if not exists products_to_items(
@@ -165,7 +165,7 @@ diet_type diet_enum not null,
 calories numeric(8,2) not null,
 ingredient_unit varchar(10) not null, 
 primary key(product_id,ingredient_name,ingredient_unit),
-constraint ck_products_ingredients_unit CHECK (ingredient_unit IN ('kg','g','l','ml','lp'))
+constraint ck_products_ingredients_unit CHECK (ingredient_unit IN ('kg','g','l','ml','pcs'))
 );
 
 Create table if not exists reservations(
