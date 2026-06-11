@@ -48,7 +48,7 @@ const UserOrderPage = () => {
     content: string;
     avatar: string | null;
   }) => {
-    await dispatch(createReview({ resId: data.orderId, payload: data })).unwrap();
+    await dispatch(createReview(data)).unwrap();
   };
   if (status === "loading") {
     return (
