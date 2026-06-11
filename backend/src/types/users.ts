@@ -84,4 +84,5 @@ export {
   type UserAuthContext,
   type DbUser,
   type DbUserInsert,
+  type AuthJwtPayload,
 };

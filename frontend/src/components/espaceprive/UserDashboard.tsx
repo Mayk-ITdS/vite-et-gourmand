@@ -10,6 +10,7 @@ import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { fetchMyOrders } from "@/store/orders/userOrdersSlice";
 
 import { useOrdersActionManager } from "./useOrdersActionManager";
+import MyReviewsPanel from "./MyReviewsPanel";
 
 const UserDashboard = () => {
   const dispatch = useAppDispatch();
@@ -111,6 +112,8 @@ const UserDashboard = () => {
             onSubmitReview={handleSubmitReview}
           />
         </Box>
+
+        <MyReviewsPanel />
       </Box>
     </Paper>
   );
