@@ -38,7 +38,7 @@ const AuthorizationPage = () => {
       try {
         await dispatch(registerUser(data)).unwrap();
         // setMessageType("success");
-        toast("Compte créé. Vous pouvez maintenant vous connecter.");
+        toast.success("Compte créé. Vous pouvez maintenant vous connecter.");
         setMode("login");
       } catch (e) {
         // setMessageType("error");

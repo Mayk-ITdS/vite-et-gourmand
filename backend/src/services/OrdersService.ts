@@ -1,8 +1,9 @@
 import { CreateOrderDTO } from "../dtos/orders.dtos.js";
 import { OrderRepository } from "../repositories/orders.repository.js";
-import { ApiError, User } from "../types/users.js";
+
 import { calculatePricing } from "./pricing.service.js";
 import AdminAnalyticsService from "./AdminAnalyticsService.js";
+import { ApiError } from "../types/errors.js";
 
 export class OrdersService {
   constructor(
@@ -29,7 +30,7 @@ export class OrdersService {
   deleteOneOrder = async (orderId: number) => {
     try {
       const response = await this.orderRepo.deleteOrderById(orderId);
-      console.log("Response after delete : ", response);
+
       return response;
     } catch (e) {
       throw new ApiError(404, "Id doesn`t exist", false);
@@ -78,6 +79,12 @@ export class OrdersService {
   };
 
   async createReservation(userId: number, dto: CreateOrderDTO) {
+    if (!dto.menus?.length) {
+      throw new ApiError(400, "Order must contain at least one menu", true);
+    }
+    if (!dto?.prestation?.date || !dto?.prestation?.city) {
+      throw new ApiError(400, "Missing prestation data", true);
+    }
     const menusFromDb = await this.orderRepo.findMenusByIds(
       dto.menus.map((m) => m.menuId),
     );
@@ -99,9 +106,6 @@ export class OrdersService {
       dto.menus,
       pricing,
     );
-    console.log("PRICING MENUS:", pricing.menus);
-    console.log("ANALYTICS INSTANCE:", this.analytics);
-
     for (const menu of pricing.menus) {
       await this.analytics.registerOrder({
         menuId: Number(menu.menuId),

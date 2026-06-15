@@ -8,7 +8,7 @@ import corpoEvent from "@/assets/corpo1.avif";
 import Equipe from "@/components/ui/Equipe";
 import { teamData } from "@/lib/teamData";
 import Avis from "@/components/ui/Avis";
-import { opinions } from "@/lib/mockData";
+
 import CTAChefCall from "@/components/CTAChefCall";
 import HowItWorksSection from "@/components/HowItWorksSection";
 import { cn } from "@/lib/utils";
@@ -124,7 +124,7 @@ const Home = () => {
       </section>
       <Equipe members={teamData} />
       <HowItWorksSection />
-      <Avis opinions={opinions} />
+      <Avis />
 
       <div id="callback">
         <CTAChefCall />
