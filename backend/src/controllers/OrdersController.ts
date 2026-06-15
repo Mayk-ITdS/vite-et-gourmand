@@ -1,4 +1,4 @@
-import { Response } from "express";
+import { NextFunction, Response } from "express";
 import { OrdersService } from "../services/OrdersService.js";
 import { ApiError, User, UserRequest } from "../types/users.js";
 import { CreateOrderDTO } from "../dtos/orders.dtos.js";
@@ -15,7 +15,7 @@ export class OrdersController {
     return res.status(200).json({ data });
   };
 
-  saveNewOrders = async (req: UserRequest, res: Response) => {
+  saveNewOrders = async (req: UserRequest, res: Response, next: NextFunction) => {
     try {
       if (!req.user) {
         return res.status(401).json({ message: "Unauthorized" });
@@ -23,15 +23,11 @@ export class OrdersController {
 
       const userId = req.user.user_id;
       const data: CreateOrderDTO = req.body;
-
       const response = await this.orderService.createReservation(userId, data);
-      console.log("Reservation created:", response);
-
-      console.log("RES ID:", response?.reservationId);
 
       return res.status(201).json(response);
     } catch (err) {
-      console.error(err);
+      next(err);
       return res.status(500).json({ message: "Operation failed" });
     }
   };
@@ -46,7 +42,6 @@ export class OrdersController {
       );
 
       res.status(204).json(response);
-      console.log("Poszlo w delete, a to twoj order :", orderId);
     } catch (e) {
       throw new ApiError(500, String(e), false);
     }
