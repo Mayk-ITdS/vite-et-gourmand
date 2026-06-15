@@ -1,30 +1,16 @@
+import { useEffect } from "react";
 import type { RecentStockLot } from "./supplyTypes";
-const mockLots: RecentStockLot[] = [
-  {
-    id: 1,
-    productName: "tomates",
-    type: "raw",
-    producerName: "Ferme du Soleil",
-    quantity: 10,
-    unit: "kg",
-    arrivalDate: "2026-05-01",
-    expirationDate: "2026-05-12",
-    status: "arrived",
-  },
-  {
-    id: 2,
-    productName: "sauce tomate maison",
-    type: "semi",
-    producerName: "Cuisine Centrale",
-    quantity: 5,
-    unit: "kg",
-    arrivalDate: "2026-05-01",
-    expirationDate: "2026-05-12",
-    status: "arrived",
-  },
-];
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import { fetchProducts } from "./supplySlice";
 
 const RecentStockLotsTable = () => {
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(fetchProducts());
+  }, [dispatch]);
+
+  const products = useAppSelector((state) => state.products.rows);
   return (
     <section className="rounded-2xl border bg-white p-6 shadow-sm">
       <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
@@ -59,23 +45,26 @@ const RecentStockLotsTable = () => {
           </thead>
 
           <tbody className="divide-y">
-            {mockLots.map((lot) => (
-              <tr key={lot.id} className="hover:bg-neutral-50/70">
-                <td className="px-4 py-3 font-medium text-neutral-950">{lot.productName}</td>
+            {products.map((lot) => (
+              <tr
+                key={lot.id}
+                className="hover:bg-neutral-50/70"
+              >
+                <td className="px-4 py-3 font-medium text-neutral-950">
+                  {lot.product_name}
+                </td>
 
                 <td className="px-4 py-3">
-                  <ProductTypeBadge type={lot.type} />
+                  <ProductTypeBadge type={lot.product_type} />
                 </td>
 
-                <td className="px-4 py-3 text-neutral-600">{lot.producerName}</td>
+                <td className="px-4 py-3 text-neutral-600">{lot.producer_name}</td>
 
-                <td className="px-4 py-3 text-neutral-900">
-                  {lot.quantity} {lot.unit}
-                </td>
+                <td className="px-4 py-3 text-neutral-900">{lot.quantity}</td>
 
-                <td className="px-4 py-3 text-neutral-600">{lot.arrivalDate}</td>
+                <td className="px-4 py-3 text-neutral-600">{lot.arrival_date}</td>
 
-                <td className="px-4 py-3 text-neutral-600">{lot.expirationDate}</td>
+                <td className="px-4 py-3 text-neutral-600">{lot.expiration_date}</td>
 
                 <td className="px-4 py-3">
                   <span className="rounded-full bg-emerald-50 px-2 py-1 text-xs font-medium text-emerald-700">

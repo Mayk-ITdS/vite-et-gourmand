@@ -19,14 +19,6 @@ const getMenuLabel = (menu: MenuStat) => {
   );
 };
 
-// const getMonthLabel = (month: number) => {
-//   if (!month) return "—";
-
-//   return new Intl.DateTimeFormat("fr-FR", {
-//     month: "short",
-//   }).format(new Date(2026, month - 1, 1));
-// };
-
 const AdminDashboard = () => {
   const dispatch = useAppDispatch();
 

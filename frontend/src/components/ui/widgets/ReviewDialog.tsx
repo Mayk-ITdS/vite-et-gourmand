@@ -10,7 +10,7 @@ import {
 import { useState } from "react";
 
 import { useAppDispatch } from "@/store/hooks";
-import { createReview } from "@/store/reviews";
+import { createReview } from "@/store/slices/reviews";
 
 type ReviewDialogProps = {
   open: boolean;

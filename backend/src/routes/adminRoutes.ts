@@ -22,6 +22,12 @@ router.get(
   authorize(["admin", "employee"]),
   AdminController.getAdminOrders,
 );
+router.get(
+  "/products",
+  authMiddleware,
+  authorize(["admin"]),
+  AdminController.getDashboardProducts,
+);
 router.get("/menus", authMiddleware, authorize(["admin"]), AdminController.getMenus);
 // router.post('menus',authMiddleware, authorize(['admin']), AdminController)
 router.patch(
