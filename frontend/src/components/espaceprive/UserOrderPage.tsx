@@ -11,7 +11,7 @@ import { fetchMyOrders } from "@/store/orders/userOrdersSlice";
 import UserOrderStatusBadge from "@/components/espaceprive/UserOrderStatusBadge";
 import UserOrderTimeline from "@/components/espaceprive/UserOrderTimeline";
 import UserOrderActions from "@/components/espaceprive/UserOrderActions";
-import { createReview } from "@/store/reviews";
+import { createReview } from "@/store/slices/reviews";
 
 import { useOrdersActionManager } from "./useOrdersActionManager";
 

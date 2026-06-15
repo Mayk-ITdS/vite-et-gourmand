@@ -4,7 +4,7 @@ import type { ClientError } from "@/types/errors";
 import api from "@/utils/api";
 import type { ReviewUser } from "@/types/avis";
 
-import { toClientError } from "./funcs/toClientError";
+import { toClientError } from "../funcs/toClientError";
 
 // import type { RootState } from "./store";
 export interface CreateReviewPayloadDTO {
@@ -18,7 +18,7 @@ const fetchReviews = createAsyncThunk<ReviewUser[], void, { rejectValue: ClientE
   "fetch/reviews",
   async (_, { rejectWithValue }) => {
     try {
-      const response = await api.get("/reviews/public");
+      const response = await api.get<ReviewUser[]>("/reviews/public");
       // const state = getState() as RootState;
       return response.data;
     } catch (err) {

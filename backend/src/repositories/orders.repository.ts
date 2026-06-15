@@ -1,14 +1,27 @@
 import { pgPool } from "../config/db.js";
 import { OrderRow, UserOrderDTO, UserOrderRow } from "../types/orders/types.js";
 import { ApiError } from "../types/errors.js";
+import mapPostgresError from "../funcs/mapPostgresError.js";
 
 export class OrderRepository {
   cancelUserOrderById = async (id: number, userId: number) => {
-    const sql = `INSERT INTO order_status_history(res_id,status,changed_by,changed_at)
-                 SELECT r.res_id, 'cancelled', $2, NOW()
-                 FROM reservations r where r.res_id = $1 
-                 AND r.user_id = $2 
-                 RETURNING *;`;
+    const sql = `with updated as (
+                Update reservations
+                Set res_status = 'cancelled'
+                Where res_id =$1
+                AND user_id = $1
+                RETURNING res_id
+                                )
+                Insert into order_status_history(
+                sres_id, 
+                status, 
+                changed_by, 
+                changed_at
+                )
+                Select res_id, 'cancelled', $2, NOW()
+                FROM updated
+                RETURNING *;
+                `;
     const result = await pgPool.query(sql, [id, userId]);
     return result.rows[0] ?? null;
   };
@@ -209,10 +222,13 @@ export class OrderRepository {
       if (!result.rowCount) {
         throw new ApiError(404, "Id doesn`t exist", false);
       }
-      console.log("deleted order: ", result);
+
       return result.rows[0];
-    } catch (e) {
-      throw new ApiError(404, String(e), false);
+    } catch (error) {
+      if (error instanceof ApiError) {
+        throw error;
+      }
+      throw mapPostgresError(error);
     }
   };
   async findMenusByIds(ids: number[]) {
@@ -252,10 +268,6 @@ export class OrderRepository {
     pricing: { totalTTC: number },
   ) {
     const client = await pgPool.connect();
-    console.log(
-      "Jestesmy w orders.repository w funkcji createReservationTransaction:",
-      userId,
-    );
 
     try {
       await client.query("BEGIN");
@@ -322,7 +334,9 @@ export class OrderRepository {
       );
 
       const reservationId = reservationResult.rows[0].res_id;
-
+      if (!reservationId) {
+        throw new ApiError(500, "Reservation creation failed", false);
+      }
       for (const menu of menus) {
         const result = await client.query(
           `
@@ -340,7 +354,7 @@ export class OrderRepository {
           [reservationId, menu.quantity, menu.menuId],
         );
         if (result.rowCount === 0) {
-          throw new Error("Menu not found");
+          throw new ApiError(404, "Menu not found", true);
         }
       }
       await client.query(
@@ -357,10 +371,6 @@ export class OrderRepository {
       );
 
       await client.query("COMMIT");
-      const check = await client.query(
-        "SELECT res_id FROM reservations ORDER BY res_id DESC LIMIT 1",
-      );
-      console.log("LAST RES FROM DB:", check.rows);
 
       return {
         reservationId,
@@ -372,7 +382,10 @@ export class OrderRepository {
       };
     } catch (e) {
       await client.query("ROLLBACK");
-      throw e;
+      if (e instanceof ApiError) {
+        throw e;
+      }
+      throw mapPostgresError(e);
     } finally {
       client.release();
     }

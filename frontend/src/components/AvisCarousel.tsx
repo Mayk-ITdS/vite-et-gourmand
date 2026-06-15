@@ -1,13 +1,13 @@
 import useEmblaCarousel from "embla-carousel-react";
 import Autoplay from "embla-carousel-autoplay";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { useCallback } from "react";
-
-import type { Opinions } from "@/types/avis";
-
+import { useCallback, useEffect } from "react";
 import AvisCard from "./AvisCard";
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import { fetchReviews } from "@/store/slices/reviews";
 
-export default function AvisCarousel({ opinions }: Opinions) {
+export default function AvisCarousel() {
+  const dispatch = useAppDispatch();
   const [emblaRef, emblaApi] = useEmblaCarousel(
     {
       loop: true,
@@ -21,7 +21,10 @@ export default function AvisCarousel({ opinions }: Opinions) {
       }),
     ],
   );
-
+  useEffect(() => {
+    dispatch(fetchReviews()).unwrap();
+  }, []);
+  const avis = useAppSelector((state) => state.reviews.data);
   const scrollPrev = useCallback(() => {
     emblaApi?.scrollPrev();
   }, [emblaApi]);
@@ -70,7 +73,7 @@ export default function AvisCarousel({ opinions }: Opinions) {
         className="overflow-hidden"
       >
         <div className="flex gap-3">
-          {opinions.map((opinion, index) => (
+          {avis.map((avi, index) => (
             <div
               key={index}
               className="
@@ -79,7 +82,7 @@ export default function AvisCarousel({ opinions }: Opinions) {
                 md:flex-[0_0_33%]
               "
             >
-              <AvisCard opinion={opinion} />
+              <AvisCard avis={avi} />
             </div>
           ))}
         </div>

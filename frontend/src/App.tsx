@@ -1,11 +1,4 @@
-import {
-  Route,
-  BrowserRouter as Router,
-  Routes,
-  useLocation,
-  useNavigate,
-} from "react-router-dom";
-import { useEffect, useEffectEvent } from "react";
+import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 
 import Home from "./pages/Home";
 import MentionsLegales from "./pages/MentionsLegales";
@@ -19,8 +12,6 @@ import AuthGuard from "./utils/AuthGuard";
 import AdminLayout from "./components/adminPanel/AdminLayout";
 import RoleGuard from "./utils/RoleGuard";
 import AdminDashboard from "./components/adminPanel/AdminDashboard/AdminDashboard";
-import { useAppDispatch, useAppSelector } from "./store/hooks";
-import { AUTH_EXPIRED_EVENT, setAuthToken } from "./utils/api";
 import OrderConfirmation from "./pages/OrderConfirmation";
 import ContactPage from "./pages/ContactPage";
 import TeamPage from "./pages/TeamPage";
@@ -39,67 +30,14 @@ import EmployeeLayout from "./components/employeePanel/EmployeeLayout";
 import EmployeeDashboard from "./components/employeePanel/EmployeeDashboard";
 import EmployeeReviews from "./components/employeePanel/EmployeeReviews";
 import EmployeeOrders from "./components/employeePanel/EmployeeOrders";
-import { logout } from "./store/menus/authSlice";
-import { getTokenRemainingMs } from "./utils/authToken";
-
-function AuthSessionWatcher() {
-  const dispatch = useAppDispatch();
-  const navigate = useNavigate();
-  const location = useLocation();
-  const token = useAppSelector((state) => state.auth.token);
-
-  const expireSession = useEffectEvent(() => {
-    void dispatch(logout());
-
-    if (location.pathname !== "/auth") {
-      void navigate("/auth", { replace: true });
-    }
-  });
-
-  useEffect(() => {
-    setAuthToken(token ?? null);
-  }, [token]);
-
-  useEffect(() => {
-    const handleUnauthorized = () => {
-      expireSession();
-    };
-
-    window.addEventListener(AUTH_EXPIRED_EVENT, handleUnauthorized);
-
-    return () => {
-      window.removeEventListener(AUTH_EXPIRED_EVENT, handleUnauthorized);
-    };
-  }, []);
-
-  useEffect(() => {
-    if (!token) {
-      return;
-    }
-
-    const remainingMs = getTokenRemainingMs(token);
-    if (remainingMs <= 0) {
-      expireSession();
-      return;
-    }
-
-    const timeoutId = window.setTimeout(() => {
-      expireSession();
-    }, remainingMs);
-
-    return () => {
-      window.clearTimeout(timeoutId);
-    };
-  }, [token]);
-
-  return null;
-}
+import AuthSessionWatcher from "./utils/AuthSessionWatcher";
 
 function App() {
   return (
     <>
       <Router>
         <AuthSessionWatcher />
+        {/* Public */}
         <Routes>
           <Route element={<AppLayout />}>
             <Route
@@ -142,6 +80,7 @@ function App() {
               path="/"
               element={<Home />}
             />
+            {/* Authorized */}
             <Route element={<AuthGuard />}>
               <Route
                 path="/orders"
@@ -151,6 +90,7 @@ function App() {
                 path="/commande/confirmee"
                 element={<OrderConfirmation />}
               />
+              {/* Auth user */}
               <Route element={<RoleGuard allowedRoles={["user"]} />}>
                 <Route
                   path="/espaceprive"
@@ -176,6 +116,7 @@ function App() {
               </Route>
             </Route>
           </Route>
+          {/* ADMIN */}
           <Route element={<RoleGuard allowedRoles={["admin"]} />}>
             <Route
               path="/admin"
@@ -185,9 +126,6 @@ function App() {
                 index
                 element={<AdminDashboard />}
               />
-              {/* <Route path="menus" element={<AdminMenus />} />
-              <Route path="orders" element={<AdminOrders />} />
-              <Route path="users" element={<AdminUsers />} /> */}
               <Route
                 path="/admin/supply"
                 element={<AdminSupplyPage />}
@@ -206,9 +144,8 @@ function App() {
               />
             </Route>
           </Route>
-
           {/* EMPLOYEE */}
-          <Route element={<RoleGuard allowedRoles={["employee", "admin"]} />}>
+          <Route element={<RoleGuard allowedRoles={["employee", "user"]} />}>
             <Route
               path="/employee"
               element={<EmployeeLayout />}
