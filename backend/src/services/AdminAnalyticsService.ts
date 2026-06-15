@@ -3,7 +3,6 @@ import { StockMode } from "../dtos/ingest.dto.js";
 import { ApiError } from "../types/users.js";
 import { StockRepository } from "../repositories/StockRepository.js";
 import { IngestProductsQuery } from "../types/stock.js";
-import { generateKeySync } from "node:crypto";
 import type { MonthStat } from "../types/orders/types.js";
 
 type MenuStatsDoc = {
@@ -136,13 +135,15 @@ class AdminAnalyticsService {
       const result = await this.stockRep.ingestStock(mode, payload);
       return result;
     } catch (err: any) {
-      console.error("REAL ERROR IN SERVICE:");
-      console.error("message:", err?.message);
-      console.error("code:", err?.code);
-      console.error("detail:", err?.detail);
-      console.error("where:", err?.where);
-      console.error("stack:", err?.stack);
-      throw new ApiError(400, String(err), false);
+      throw new ApiError(400, String(err.message), false);
+    }
+  };
+  getAllProducts = async () => {
+    try {
+      const result = await this.stockRep.fetchAllProducts();
+      return result;
+    } catch (e) {
+      throw new ApiError(500, String(e), true);
     }
   };
 }

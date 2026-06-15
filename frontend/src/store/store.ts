@@ -3,16 +3,15 @@ import { persistReducer, persistStore } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import { combineReducers } from "@reduxjs/toolkit";
 import { FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER } from "redux-persist";
-
 import adminCrudReducer from "@/components/adminPanel/adminCRUDs/model/adminCrudSlice";
-
 import { ordersReducer } from "./orders/orderSlice";
 import { authReducer } from "./menus/authSlice";
 import { menuReducer } from "./menus/menusSlice";
 import { userOrdersReducer } from "./orders/userOrdersSlice";
 import { userProfileReducer } from "./slices/userProfileSlice";
 import analReducer from "./slices/adminAnalyticsSlice";
-import { reviewsReducer } from "./reviews";
+import { reviewsReducer } from "./slices/reviews";
+import productReducer from "@/components/adminPanel/Supply/supplySlice";
 
 const rootReducer = combineReducers({
   menus: menuReducer,
@@ -23,7 +22,9 @@ const rootReducer = combineReducers({
   profile: userProfileReducer,
   adminAnalytics: analReducer,
   adminCrud: adminCrudReducer,
+  products: productReducer,
 });
+
 const persistConfig = {
   key: "root",
   storage,

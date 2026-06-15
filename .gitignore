@@ -15,7 +15,8 @@ artefacts-doc/
 .env
 .env.*
 !.env.example
-
+.vscode
+screens/
 # logs
 *.log
 npm-debug.log*
