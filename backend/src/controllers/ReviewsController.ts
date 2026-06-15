@@ -64,6 +64,7 @@ class ReviewsController {
       reason,
       String(req.user.user_id),
     );
+
     res.json({ message: "Rejected" });
   };
 

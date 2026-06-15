@@ -7,7 +7,6 @@ export interface Prestation {
   time: string;
   distanceKm: number;
 }
-
 export type CreateOrderDTO = {
   menus: {
     menuId: number;

@@ -1,4 +1,4 @@
-import { Request, Response, NextFunction } from "express";
+import { NextFunction, Request, Response } from "express";
 import pino from "pino";
 import { ApiError } from "../types/users.js";
 
@@ -8,12 +8,15 @@ const globalErrorHandler = (
   err: unknown,
   req: Request,
   res: Response,
-  _next: NextFunction,
+  next: NextFunction,
 ) => {
+  if (res.headersSent) {
+    return next(err);
+  }
   const isApiError = err instanceof ApiError;
-
   const statusCode = isApiError ? err.statusCode : 500;
   const message = isApiError ? err.message : "Internal Server Error";
+
   const sanitizePayload = (body: unknown) => {
     if (!body || typeof body !== "object") {
       return body;
@@ -35,9 +38,9 @@ const globalErrorHandler = (
         clone[key] = "[REDACTED]";
       }
     }
-
     return clone;
   };
+
   logger.error({
     msg: "Request processing failed",
     request: {
