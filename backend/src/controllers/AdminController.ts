@@ -116,6 +116,17 @@ class AdminController {
       throw new ApiError(400, String(err), false);
     }
   };
+  getDashboardProducts = async (req: UserRequest, res: Response, next: NextFunction) => {
+    try {
+      const adminId = req.params;
+      console.info(adminId);
+      const response = await AdminAnalyticsService.getAllProducts();
+      console.info(response);
+      res.status(200).json(response);
+    } catch (error) {
+      next(error);
+    }
+  };
 
   patchOrderStatus = async (req: UserRequest, res: Response, next: NextFunction) => {
     try {

@@ -1,12 +1,15 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo } from "react";
 import { Link } from "react-router-dom";
-
-import api from "@/utils/api";
+import { fetchAdminResourceRows } from "../adminPanel/adminCRUDs/model/adminCrud.thunks";
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import type { UserOrderDTO } from "@/store/orders/orderTypes";
 
 type Counts = {
   pendingReviews: number | null;
   pendingOrders: number | null;
 };
+
+type EmployeeOrdersDataRow = Pick<UserOrderDTO, "resId" | "history">;
 
 const StatCard = ({
   label,
@@ -29,45 +32,29 @@ const StatCard = ({
 );
 
 const EmployeeDashboard = () => {
-  const [counts, setCounts] = useState<Counts>({
-    pendingReviews: null,
-    pendingOrders: null,
-  });
+  const dispatch = useAppDispatch();
+  const reviews = useAppSelector(
+    (state) => state.adminCrud.rowsByResource["employee-reviews"],
+  );
+  const orders = useAppSelector(
+    (state) => state.adminCrud.rowsByResource["orders"] as EmployeeOrdersDataRow[],
+  );
 
   useEffect(() => {
-    let active = true;
-
-    const load = async () => {
-      try {
-        const [reviews, orders] = await Promise.all([
-          api.get("/reviews/pending"),
-          api.get("/employee/orders"),
-        ]);
-
-        if (!active) return;
-
-        const reviewRows = Array.isArray(reviews.data) ? reviews.data : [];
-        const orderRows = Array.isArray(orders.data?.data) ? orders.data.data : [];
-
-        setCounts({
-          pendingReviews: reviewRows.length,
-          pendingOrders: orderRows.filter(
-            (o: { status?: string }) => o.status === "pending",
-          ).length,
-        });
-      } catch {
-        if (active) {
-          setCounts({ pendingReviews: null, pendingOrders: null });
-        }
-      }
-    };
-
-    void load();
-
-    return () => {
-      active = false;
-    };
+    dispatch(
+      fetchAdminResourceRows({ key: "employee-reviews", endpoint: "/admin/reviews" }),
+    );
+    dispatch(fetchAdminResourceRows({ key: "orders", endpoint: "/admin/orders" }));
   }, []);
+
+  const counts: Counts = useMemo(() => {
+    return {
+      pendingReviews: reviews.filter((data) => data.status === "pending").length,
+      pendingOrders: orders.filter(
+        (orderRow) => orderRow.history[0].status !== "confirmed",
+      ).length,
+    };
+  }, [orders, reviews]);
 
   return (
     <section className="space-y-8">
