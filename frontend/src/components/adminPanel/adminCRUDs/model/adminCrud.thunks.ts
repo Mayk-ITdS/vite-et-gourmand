@@ -1,9 +1,9 @@
+import type { AdminFormData, AdminId, AdminRow } from "../adminCrud.types";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
 import api from "@/utils/api";
 
-import type { AdminFormData, AdminId, AdminRow } from "../adminCrud.types";
 type ResourceRef = {
   key: string;
   endpoint: string;

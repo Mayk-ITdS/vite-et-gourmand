@@ -2,7 +2,7 @@ import { useCallback } from "react";
 
 import { useAppDispatch } from "@/store/hooks";
 import { cancelOrder } from "@/store/orders/userOrdersSlice";
-import { createReview } from "@/store/reviews";
+import { createReview } from "@/store/slices/reviews";
 
 type SubmitReviewData = {
   pseudo: string;

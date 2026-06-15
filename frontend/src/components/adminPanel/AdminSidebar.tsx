@@ -4,10 +4,6 @@ type SidebarItem = {
   label: string;
   path: string;
 };
-// type DeeperItems={
-//   label:string;
-//   path:string;
-// }
 type SidebarSection = {
   title: string;
   items: SidebarItem[];

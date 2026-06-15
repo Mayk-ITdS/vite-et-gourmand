@@ -1,8 +1,6 @@
-import type { Opinions } from "@/types/avis";
-
 import AvisCarousel from "../AvisCarousel";
 
-const Avis = ({ opinions }: Opinions) => {
+const Avis = () => {
   return (
     <section className="py-28">
       <div className="flex flex-col items-center justify-center px-4 space-y-14">
@@ -16,7 +14,7 @@ const Avis = ({ opinions }: Opinions) => {
           </p>
         </header>
 
-        <AvisCarousel opinions={opinions} />
+        <AvisCarousel />
       </div>
     </section>
   );
