@@ -7,6 +7,7 @@ import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { setStep, startOrderFromMenu } from "@/store/orders/orderSlice";
 import { selectMenuDetails } from "@/store/menus/selectors";
 import { clearMenuDetails, fetchMenuById } from "@/store/menus/menusSlice";
+import { optimizeImageUrl } from "@/lib/utils";
 
 const MenuDetails = () => {
   const { id } = useParams<{ id: string }>();
@@ -61,8 +62,9 @@ const MenuDetails = () => {
     <div className="min-h-screen text-white">
       <section className="relative h-[70vh] w-full overflow-hidden bg-black/80">
         <img
-          src={menu.images?.[currentImage] || menu.image_url}
+          src={optimizeImageUrl(menu.images?.[currentImage] || menu.image_url, 1280)}
           alt={menu.menu_name}
+          decoding="async"
           className="w-full h-full object-cover transition-opacity duration-1000"
         />
         <div className="absolute inset-0 bg-black/60" />
@@ -78,7 +80,9 @@ const MenuDetails = () => {
         {(menu.images ?? []).map((img: string, idx: number) => (
           <img
             key={idx}
-            src={img}
+            src={optimizeImageUrl(img, 300)}
+            loading="lazy"
+            decoding="async"
             onClick={() => setCurrentImage(idx)}
             className={`w-36 h-24 cursor-pointer object-cover rounded-lg transition-all duration-300 ${
               currentImage === idx
@@ -92,16 +96,16 @@ const MenuDetails = () => {
         <Button
           onClick={handleAddToCart}
           sx={{
-            backgroundColor: "#facc15",
-            color: "black",
+            backgroundColor: "#7e253b",
+            color: "white",
             px: 4,
             py: 2,
             fontWeight: "bold",
             borderRadius: "2rem",
-            boxShadow: "0 0 20px rgba(250,204,21,0.6)",
+            boxShadow: "0 0 20px rgba(126,37,59,0.6)",
             "&:hover": {
-              backgroundColor: "#fde047",
-              boxShadow: "0 0 30px rgba(250,204,21,0.9)",
+              backgroundColor: "#6a1f32",
+              boxShadow: "0 0 30px rgba(126,37,59,0.9)",
             },
           }}
           startIcon={<ShoppingCart />}
@@ -148,12 +152,17 @@ const MenuDetails = () => {
             Menu Composition
           </h2>
 
-          {["starter", "main", "dessert"].map((type) => (
+          {[
+            { type: "starter", label: "Entrées" },
+            { type: "main", label: "Plats" },
+            { type: "dessert", label: "Desserts" },
+            { type: "drink", label: "Accords mets & vins" },
+          ].map(({ type, label }) => (
             <div
               key={type}
               className="mb-8"
             >
-              <h3 className="text-xl mb-4 uppercase">{type}</h3>
+              <h3 className="text-xl mb-4 uppercase">{label}</h3>
 
               {menu.items
                 ?.filter((i) => i.item_type === type)

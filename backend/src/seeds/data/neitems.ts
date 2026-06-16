@@ -35,7 +35,7 @@ export const menuItems = [
     diet_type: "Vegan",
     min_preparation_time: "30 minutes",
     in_stock: 20,
-    image_url: "https://images.unsplash.com/photo-1604908176997-431c13a6c98f",
+    image_url: "https://images.unsplash.com/photo-1467003909585-2f8a72700288",
   },
   {
     item_code: "null",
@@ -119,7 +119,7 @@ export const menuItems = [
     diet_type: "Vegan",
     min_preparation_time: "45 minutes",
     in_stock: 15,
-    image_url: "https://images.unsplash.com/photo-1604908176997-431c13a6c98f",
+    image_url: "https://images.unsplash.com/photo-1467003909585-2f8a72700288",
   },
   {
     item_code: "null",
@@ -143,7 +143,7 @@ export const menuItems = [
     diet_type: "Vegan",
     min_preparation_time: "30 minutes",
     in_stock: 20,
-    image_url: "https://images.unsplash.com/photo-1604908176997-431c13a6c98f",
+    image_url: "https://images.unsplash.com/photo-1467003909585-2f8a72700288",
   },
   {
     item_code: "null",
@@ -263,7 +263,7 @@ export const menuItems = [
     diet_type: "Vegan",
     min_preparation_time: "30 minutes",
     in_stock: 20,
-    image_url: "https://images.unsplash.com/photo-1604908176997-431c13a6c98f",
+    image_url: "https://images.unsplash.com/photo-1467003909585-2f8a72700288",
   },
   {
     item_code: "null",
@@ -323,7 +323,7 @@ export const menuItems = [
     diet_type: "Vegan",
     min_preparation_time: "30 minutes",
     in_stock: 20,
-    image_url: "https://images.unsplash.com/photo-1604908176997-431c13a6c98f",
+    image_url: "https://images.unsplash.com/photo-1467003909585-2f8a72700288",
   },
   {
     item_code: "null",
@@ -1391,7 +1391,7 @@ export const menuItems = [
     diet_type: "Vegan",
     min_preparation_time: "00:30:00",
     in_stock: 20,
-    image_url: "https://images.unsplash.com/photo-1604908176997-431c13a6c98f",
+    image_url: "https://images.unsplash.com/photo-1467003909585-2f8a72700288",
   },
   {
     item_code: "ST_VG_002",
@@ -1586,7 +1586,7 @@ export const menuItems = [
     diet_type: "Vegetarien",
     min_preparation_time: "30 minutes",
     in_stock: 20,
-    image_url: "https://images.unsplash.com/photo-1604908176997-431c13a6c98f",
+    image_url: "https://images.unsplash.com/photo-1467003909585-2f8a72700288",
   },
   {
     item_code: "null",
@@ -1870,7 +1870,7 @@ export const menuItems = [
     diet_type: "Classique",
     min_preparation_time: "35 minutes",
     in_stock: 18,
-    image_url: "https://images.unsplash.com/photo-1604908176997-431c13a6c98f",
+    image_url: "https://images.unsplash.com/photo-1467003909585-2f8a72700288",
   },
 
   // ====================== CLASSIQUE — MAINS ======================
@@ -2176,9 +2176,9 @@ export const finalMenus = [
     order_lead_time: "72 hours",
     quantity_in_stock: 1,
     min_preparation_time: "03:45:00",
-    image_url: "https://images.unsplash.com/photo-1514516870926-205989ea1fdf",
+    image_url: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0",
     images: [
-      "https://images.unsplash.com/photo-1514516870926-205989ea1fdf",
+      "https://images.unsplash.com/photo-1414235077428-338989a2e8c0",
       "https://images.unsplash.com/photo-1551183053-bf91a1d81141",
     ],
     themes: ["Vernissage"],
@@ -2272,9 +2272,9 @@ export const finalMenus = [
     order_lead_time: "72 hours",
     quantity_in_stock: 1,
     min_preparation_time: "04:00:00",
-    image_url: "https://images.unsplash.com/photo-1514516870926-205989ea1fdf",
+    image_url: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0",
     images: [
-      "https://images.unsplash.com/photo-1514516870926-205989ea1fdf",
+      "https://images.unsplash.com/photo-1414235077428-338989a2e8c0",
       "https://images.unsplash.com/photo-1510812431401-41d2bd2722f3",
     ],
     themes: ["Vernissage"],
@@ -2416,9 +2416,9 @@ export const finalMenus = [
     order_lead_time: "72 hours",
     quantity_in_stock: 1,
     min_preparation_time: "04:00:00",
-    image_url: "https://images.unsplash.com/photo-1514516870926-205989ea1fdf",
+    image_url: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0",
     images: [
-      "https://images.unsplash.com/photo-1514516870926-205989ea1fdf",
+      "https://images.unsplash.com/photo-1414235077428-338989a2e8c0",
       "https://images.unsplash.com/photo-1551183053-bf91a1d81141",
     ],
     themes: ["Vernissage"],
@@ -2512,9 +2512,9 @@ export const finalMenus = [
     order_lead_time: "72 hours",
     quantity_in_stock: 1,
     min_preparation_time: "04:00:00",
-    image_url: "https://images.unsplash.com/photo-1514516870926-205989ea1fdf",
+    image_url: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0",
     images: [
-      "https://images.unsplash.com/photo-1514516870926-205989ea1fdf",
+      "https://images.unsplash.com/photo-1414235077428-338989a2e8c0",
       "https://images.unsplash.com/photo-1514361892635-eae31d0e8d6f",
     ],
     themes: ["Dîner Privé"],
@@ -2610,9 +2610,9 @@ export const finalMenus = [
     order_lead_time: "72 hours",
     quantity_in_stock: 14,
     min_preparation_time: "03:15:00",
-    image_url: "https://images.unsplash.com/photo-1604908176997-431c13a6c98f",
+    image_url: "https://images.unsplash.com/photo-1467003909585-2f8a72700288",
     images: [
-      "https://images.unsplash.com/photo-1604908176997-431c13a6c98f",
+      "https://images.unsplash.com/photo-1467003909585-2f8a72700288",
       "https://images.unsplash.com/photo-1504674900247-0877df9cc836",
     ],
     themes: ["Vernissage"],

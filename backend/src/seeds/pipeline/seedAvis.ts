@@ -14,7 +14,12 @@ const seedReviews = async () => {
         content: o.content,
         score: o.score,
         createdAt: new Date(o.createdAt.$date),
-      }))
+        isApproved: true,
+        status: "approved" as const,
+        rejectionReason: null,
+        moderatedBy: null,
+        moderatedAt: new Date(),
+      })),
     );
   return (await result).insertedCount;
 };
