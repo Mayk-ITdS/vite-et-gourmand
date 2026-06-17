@@ -3,6 +3,7 @@ import TextField from "@mui/material/TextField";
 
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { setPersons, setStep } from "@/store/orders/orderSlice";
+import { optimizeImageUrl } from "@/lib/utils";
 
 export default function StepMenuSelection() {
   const dispatch = useAppDispatch();
@@ -19,8 +20,10 @@ export default function StepMenuSelection() {
 
         {menu.image_url && (
           <img
-            src={menu.image_url}
+            src={optimizeImageUrl(menu.image_url, 400)}
             alt={menu.menu_name}
+            loading="lazy"
+            decoding="async"
             className="
               w-56 h-36
               object-cover

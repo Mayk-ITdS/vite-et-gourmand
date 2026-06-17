@@ -25,7 +25,12 @@ export default function AvisCard({ avis }: { avis: ReviewUser }) {
             />
           ))}
         </div>
-        <span className="rounded-full">{avis.avatar}</span>
+        <span className="rounded-full">
+          <img
+            src={avis.avatar}
+            alt="Avatar d`un utilisateur"
+          />
+        </span>
         <p className="text-sm text-white leading-relaxed flex-1">“{avis.content}”</p>
 
         <div className="pt-4 border-t border-white/10">

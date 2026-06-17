@@ -8,7 +8,7 @@ import type { FiltersState } from "@/types/menus";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { fetchMenus } from "@/store/menus/menusSlice";
 import restaurant from "@/assets/valentin-kremer-S8BhJ0HB-WQ-unsplash.webp";
-import { cn } from "@/lib/utils";
+import { cn, optimizeImageUrl } from "@/lib/utils";
 import { selectFilteredMenus } from "@/store/menus/selectors";
 import { Euro } from "lucide-react";
 
@@ -66,7 +66,7 @@ const MenuGlobale = () => {
                   fixed bottom-6 right-6 
                   z-50 
                   px-5 py-3 
-                  bg-[#b11226] 
+                  bg-[#7e253b] 
                   text-white 
                   rounded-full 
                   shadow-lg 
@@ -117,22 +117,24 @@ const MenuGlobale = () => {
               </button>
             </div>
 
-            <div className="p-4">
+            <div className="p-3 md:p-4">
               {sections.map((s) => (
                 <section key={s.id}>
                   <Card
                     className={cn(
-                      "mb-6 rounded-2xl",
+                      "mb-3 gap-2 py-3 rounded-2xl",
                       "bg-white/5 backdrop-blur-xl",
                       "border border-white/10",
                       "shadow-[0_10px_40px_rgba(0,0,0,0.45)]",
                       "hover:border-primary/40 transition",
                     )}
                   >
-                    <CardTitle className="uppercase text-xs tracking-[0.3em] text-white/60 border-b border-white/10 pb-3 mb-4">
+                    <CardTitle className="uppercase text-[0.7rem] tracking-[0.25em] text-white/60 border-b border-white/10 px-4 pb-2">
                       {s.label}
                     </CardTitle>
-                    <CardContent>{s.render(filters, setFilters)}</CardContent>
+                    <CardContent className="px-4">
+                      {s.render(filters, setFilters)}
+                    </CardContent>
                   </Card>
                 </section>
               ))}
@@ -153,19 +155,20 @@ const MenuGlobale = () => {
                 }
                 className="flex-1 border border-white/20 rounded-xl py-3 text-white/80 hover:bg-white/10 transition"
               >
-                Button RESET
+                Réinitialiser
               </Button>
               <Button
                 sx={{
-                  backgroundColor: "black",
-                  border: "1px solid blueviolet",
+                  backgroundColor: "#7e253b",
+                  border: "1px solid #7e253b",
                   borderRadius: "8px",
                   paddingX: "2rem",
+                  "&:hover": { backgroundColor: "#6a1f32" },
                 }}
                 onClick={() => setShowFilters(false)}
-                className="flex-1 bg-primary rounded-xl py-3 text-white font-medium shadow-lg hover:opacity-90 transition"
+                className="flex-1 rounded-xl py-3 text-white font-medium shadow-lg transition"
               >
-                BUTTON APPLY
+                Appliquer
               </Button>
             </div>
           </aside>
@@ -173,7 +176,9 @@ const MenuGlobale = () => {
             {filteredMenus.map((menu) => (
               <div
                 key={menu.menu_id}
-                style={{ backgroundImage: `url(${menu.image_url})` }}
+                style={{
+                  backgroundImage: `url(${optimizeImageUrl(menu.image_url, 600)})`,
+                }}
                 className={cn(
                   "h-auto w-full bg-cover bg-no-repeat bg-center rounded-xl shadow-xl",
                   "transform hover:scale-105 transition-transform duration-300 cursor-pointer",
@@ -185,22 +190,20 @@ const MenuGlobale = () => {
                   <CardContent className="transform translate-y-[0%]">
                     <div className="flex flex-col w-full gap-4 items-center justify-center rounded-md bg-black/50 py-2 px-3">
                       <Button
+                        component={Link}
+                        to={`/menus/${menu.menu_id}`}
                         sx={{
-                          border: "1px solid blueviolet",
+                          border: "1px solid #7e253b",
                           borderRadius: "8px",
                           paddingX: "2rem",
-                          backgroundColor: "black",
+                          backgroundColor: "#7e253b",
+                          color: "white",
+                          "&:hover": { backgroundColor: "#6a1f32" },
                         }}
-                        content="Order"
                       >
-                        <Button
-                          component={Link}
-                          to={`/menus/${menu.menu_id}`}
-                        >
-                          ORDER
-                        </Button>
+                        ORDER
                       </Button>
-                      <p className="text-sm text-center opacity-100 z-100">
+                      <p className="text-sm text-center opacity-100 z-100 line-clamp-2">
                         {menu.description}
                       </p>
                       <div className="w-full flex flex-row justify-between">

@@ -170,7 +170,7 @@ export const sections: Section[] = [
     render: (state, setState) => (
       <div className="space-y-3">
         {
-          <fieldset className="flex gap-4 flex-col">
+          <fieldset className="grid grid-cols-2 gap-2">
             {themeValues.map((theme) => {
               const isSelected = state.themes?.includes(theme) ?? false;
               return (
@@ -179,7 +179,7 @@ export const sections: Section[] = [
                   data-theme={state.themes}
                   onClick={() => toggleTheme(theme, setState)}
                   className={cn(
-                    "w-full py-3 px-5 rounded-xl text-sm font-medium transition-all duration-300",
+                    "w-full py-2 px-3 rounded-lg text-xs font-medium transition-all duration-300",
                     "border border-white/10",
                     isSelected
                       ? "bg-primary text-white shadow-lg"
@@ -203,7 +203,10 @@ export const sections: Section[] = [
         {
           <fieldset className="flex gap-5 py-2 justify-around">
             {diets.map((d) => (
-              <div key={d} className="flex flex-col items-center">
+              <div
+                key={d}
+                className="flex flex-col items-center"
+              >
                 <DietCircleButton
                   selected={state.regime?.includes(d) ?? false}
                   diet={d}
@@ -219,9 +222,7 @@ export const sections: Section[] = [
                     })
                   }
                 />
-                <p className="text-xs px-2 font-medium text-secondary-foreground">
-                  {d}
-                </p>
+                <p className="text-xs px-2 font-medium text-secondary-foreground">{d}</p>
               </div>
             ))}
           </fieldset>
