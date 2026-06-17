@@ -71,7 +71,17 @@ const AuthorizationPage = () => {
   return (
     <section className="w-full py-24">
       <div className="mx-auto max-w-7xl px-6">
-        <div className="relative overflow-hidden rounded-3xl border border-white/15 bg-[linear-gradient(135deg,rgba(102,4,20,0.85),rgba(61,24,31,0.75))] backdrop-blur-xl shadow-[0_30px_80px_rgba(0,0,0,0.45)]">
+        <div
+          className="
+            relative 
+            overflow-hidden 
+            rounded-3xl 
+            border 
+            border-white/15 
+            bg-[linear-gradient(135deg,rgba(102,4,20,0.85),rgba(61,24,31,0.75))] 
+            backdrop-blur-xl 
+            shadow-[0_30px_80px_rgba(0,0,0,0.45)]"
+        >
           <div className="relative grid gap-12 p-10 md:p-16 lg:grid-cols-2 items-center">
             <div className="space-y-6 text-white">
               <span className="inline-block rounded-full bg-white/15 px-4 py-1 text-sm tracking-wide">
