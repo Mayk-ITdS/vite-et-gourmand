@@ -25,6 +25,7 @@ import UserDashboard from "./components/espaceprive/UserDashboard";
 import ForgotPasswordPage from "./components/adminPanel/authResetPass/ForgotPasswordPage";
 import ResetPasswordPage from "./components/adminPanel/authResetPass/ResetPasswordPage";
 import AdminGestionUsers from "./components/adminPanel/adminCRUDs/pages/AdminGestionUsers";
+import AdminGestionEmployees from "./components/adminPanel/adminCRUDs/pages/AdminGestionEmployees";
 import AdminOrdersManager from "./components/adminPanel/adminCRUDs/pages/AdminOrdersManager";
 import EmployeeLayout from "./components/employeePanel/EmployeeLayout";
 import EmployeeDashboard from "./components/employeePanel/EmployeeDashboard";
@@ -139,13 +140,17 @@ function App() {
                 element={<AdminGestionUsers />}
               />
               <Route
+                path="/admin/employees"
+                element={<AdminGestionEmployees />}
+              />
+              <Route
                 path="/admin/orders"
                 element={<AdminOrdersManager />}
               />
             </Route>
           </Route>
           {/* EMPLOYEE */}
-          <Route element={<RoleGuard allowedRoles={["employee", "user"]} />}>
+          <Route element={<RoleGuard allowedRoles={["employee", "admin"]} />}>
             <Route
               path="/employee"
               element={<EmployeeLayout />}
