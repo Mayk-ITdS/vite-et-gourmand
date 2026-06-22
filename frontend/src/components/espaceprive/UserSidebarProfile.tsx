@@ -28,7 +28,9 @@ const UserSidebarProfile = () => {
         mb: 4,
         p: 2,
         borderRadius: 2,
-        background: "rgba(255,255,255,0.03)",
+        border: "1px solid rgba(212,175,55,0.18)",
+        background:
+          "linear-gradient(135deg, rgba(126,37,59,0.22), rgba(255,255,255,0.02))",
         backdropFilter: "blur(8px)",
       }}
     >

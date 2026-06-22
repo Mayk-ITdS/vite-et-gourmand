@@ -36,7 +36,6 @@ const UserOrderPage = () => {
       return String(id) === String(orderId);
     });
   }, [orders, orderId]);
-
   const handleEditOrder = (id: number | string) => {
     void navigate(`/espaceprive/orders/${id}/edit`);
   };
@@ -79,13 +78,11 @@ const UserOrderPage = () => {
     );
   }
 
-  const currentStatus = status;
-
   return (
     <Paper
       variant="glass"
       elevation={2}
-      sx={{ borderRadius: "12px", p: 3 }}
+      sx={{ borderRadius: "12px", p: { xs: 2, md: 3 } }}
     >
       <Box sx={{ display: "grid", gap: 3 }}>
         <Box
@@ -108,7 +105,7 @@ const UserOrderPage = () => {
             </Typography>
           </Box>
 
-          <UserOrderStatusBadge status={currentStatus} />
+          <UserOrderStatusBadge status={order.history[0]?.status} />
         </Box>
 
         <Divider sx={{ borderColor: "rgba(255,255,255,0.08)" }} />
