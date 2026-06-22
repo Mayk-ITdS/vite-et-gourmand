@@ -18,7 +18,7 @@ export default function UserLayout() {
     <Box
       sx={{
         display: "grid",
-        gridTemplateColumns: { xs: "1fr", md: "260px 1fr" },
+        gridTemplateColumns: { xs: "minmax(0, 1fr)", md: "260px minmax(0, 1fr)" },
         minHeight: "75vh",
         gap: 4,
       }}
@@ -31,7 +31,10 @@ export default function UserLayout() {
             xs: "1px solid rgba(255,255,255,0.08)",
             md: "none",
           },
-          p: 3,
+          background: {
+            md: "linear-gradient(180deg, rgba(126,37,59,0.10), rgba(20,18,16,0))",
+          },
+          p: { xs: 2, md: 3 },
           position: { md: "sticky" },
           top: 100,
           height: "fit-content",
@@ -41,7 +44,13 @@ export default function UserLayout() {
 
         <Box
           component="nav"
-          sx={{ display: "grid", gap: 1 }}
+          sx={{
+            display: "flex",
+            flexDirection: { xs: "row", md: "column" },
+            gap: 1,
+            overflowX: { xs: "auto", md: "visible" },
+            pb: { xs: 1, md: 0 },
+          }}
         >
           <SidebarNavItem
             label="Dashboard"

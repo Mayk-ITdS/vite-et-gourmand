@@ -27,7 +27,10 @@ const sections: SidebarSection[] = [
   },
   {
     title: "Administration",
-    items: [{ label: "Utilisateurs", path: "/admin/users" }],
+    items: [
+      { label: "Utilisateurs", path: "/admin/users" },
+      { label: "Employés", path: "/admin/employees" },
+    ],
   },
 ];
 

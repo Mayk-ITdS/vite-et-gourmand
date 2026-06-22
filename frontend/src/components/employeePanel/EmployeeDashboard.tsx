@@ -2,14 +2,16 @@ import { useEffect, useMemo } from "react";
 import { Link } from "react-router-dom";
 import { fetchAdminResourceRows } from "../adminPanel/adminCRUDs/model/adminCrud.thunks";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
-import type { UserOrderDTO } from "@/store/orders/orderTypes";
 
 type Counts = {
   pendingReviews: number | null;
   pendingOrders: number | null;
 };
 
-type EmployeeOrdersDataRow = Pick<UserOrderDTO, "resId" | "history">;
+type EmployeeOrdersDataRow = {
+  res_id: number;
+  status: string | null;
+};
 
 const StatCard = ({
   label,
@@ -42,17 +44,17 @@ const EmployeeDashboard = () => {
 
   useEffect(() => {
     dispatch(
-      fetchAdminResourceRows({ key: "employee-reviews", endpoint: "/admin/reviews" }),
+      fetchAdminResourceRows({ key: "employee-reviews", endpoint: "/reviews/pending" }),
     );
     dispatch(fetchAdminResourceRows({ key: "orders", endpoint: "/admin/orders" }));
-  }, []);
+  }, [dispatch]);
 
   const counts: Counts = useMemo(() => {
     return {
-      pendingReviews: reviews.filter((data) => data.status === "pending").length,
-      pendingOrders: orders.filter(
-        (orderRow) => orderRow.history[0].status !== "confirmed",
-      ).length,
+      pendingReviews: reviews?.length ?? null,
+      pendingOrders: orders
+        ? orders.filter((orderRow) => orderRow?.status === "pending").length
+        : null,
     };
   }, [orders, reviews]);
 
@@ -68,12 +70,12 @@ const EmployeeDashboard = () => {
       <div className="grid gap-4 sm:grid-cols-2">
         <StatCard
           label="Avis en attente de modération"
-          value={counts.pendingReviews}
+          value={counts?.pendingReviews}
           to="/employee/reviews"
         />
         <StatCard
           label="Réservations en attente"
-          value={counts.pendingOrders}
+          value={counts?.pendingOrders}
           to="/employee/orders"
         />
       </div>

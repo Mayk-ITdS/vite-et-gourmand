@@ -15,10 +15,17 @@ const UserSettingsPage = () => {
     <Paper
       variant="glass"
       elevation={2}
-      sx={{ borderRadius: "12px", p: 3 }}
+      sx={{ borderRadius: "12px", p: { xs: 2, md: 3 } }}
     >
       <Box sx={{ display: "grid", gap: 3 }}>
         <Box>
+          <Typography
+            variant="overline"
+            sx={{ color: "#d4af37", letterSpacing: "0.18em" }}
+          >
+            Mon compte
+          </Typography>
+
           <Typography
             variant="h5"
             sx={{ mb: 1 }}
@@ -37,8 +44,11 @@ const UserSettingsPage = () => {
         <Box
           sx={{
             border: "1px solid rgba(255,255,255,0.08)",
+            borderLeft: "3px solid #7e253b",
             borderRadius: 2,
-            p: 2,
+            p: { xs: 2, md: 2.5 },
+            background:
+              "linear-gradient(135deg, rgba(126,37,59,0.10), rgba(255,255,255,0.02))",
             display: "grid",
             gap: 1.5,
           }}
@@ -57,7 +67,21 @@ const UserSettingsPage = () => {
           />
           <ProfileRow
             label="Téléphone"
-            value={profile?.phone}
+            value={profile?.mobileNumber}
+          />
+          <ProfileRow
+            label="Adresse"
+            value={
+              profile?.street
+                ? [profile?.houseNumber, profile?.street]
+                    .filter((part) => part !== undefined && part !== null && part !== "")
+                    .join(" ")
+                : undefined
+            }
+          />
+          <ProfileRow
+            label="Code postal"
+            value={profile?.zipCode}
           />
           <ProfileRow
             label="Ville"

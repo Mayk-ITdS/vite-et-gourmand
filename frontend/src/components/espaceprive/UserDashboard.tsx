@@ -23,17 +23,24 @@ const UserDashboard = () => {
   }, [dispatch]);
 
   const activeOrders = orders.filter(
-    (ord) => !["cancelled", "completed"].includes(ord.history[0].status),
+    (ord) => !["cancelled", "completed"].includes(ord.history[0]?.status ?? ""),
   );
 
   return (
     <Paper
       variant="glass"
       elevation={2}
-      sx={{ borderRadius: "12px", p: 3 }}
+      sx={{ borderRadius: "12px", p: { xs: 2, md: 3 } }}
     >
-      <Box sx={{ display: "grid", gap: 4 }}>
+      <Box sx={{ display: "grid", gap: { xs: 3, md: 4 } }}>
         <Box>
+          <Typography
+            variant="overline"
+            sx={{ color: "#d4af37", letterSpacing: "0.18em" }}
+          >
+            Espace personnel
+          </Typography>
+
           <Typography
             variant="h5"
             sx={{ mb: 1 }}
@@ -125,13 +132,20 @@ const SummaryCard = ({ label, value }: { label: string; value: number }) => {
       sx={{
         border: "1px solid rgba(255,255,255,0.08)",
         borderRadius: 2,
-        p: 2,
-        background: "rgba(255,255,255,0.03)",
+        p: 2.5,
+        background:
+          "linear-gradient(135deg, rgba(126,37,59,0.18), rgba(212,175,55,0.06))",
+        boxShadow: "inset 0 1px 0 rgba(255,255,255,0.06)",
+        transition: "transform 0.2s ease, border-color 0.2s ease",
+        "&:hover": {
+          transform: "translateY(-2px)",
+          borderColor: "rgba(212,175,55,0.35)",
+        },
       }}
     >
       <Typography
         variant="body2"
-        sx={{ color: "rgba(255,255,255,0.6)" }}
+        sx={{ color: "rgba(255,255,255,0.7)" }}
       >
         {label}
       </Typography>
