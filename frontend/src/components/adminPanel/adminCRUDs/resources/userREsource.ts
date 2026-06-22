@@ -29,6 +29,46 @@ export const usersResource = {
   ],
 } satisfies AdminResource;
 
+export const employeesResource = {
+  key: "employees",
+  idKey: "user_id",
+  label: "Employés",
+  endpoint: "/admin/employees",
+
+  permissions: {
+    canEdit: false,
+    canDelete: false,
+  },
+
+  columns: [
+    { key: "user_id", label: "ID" },
+    { key: "user_first_name", label: "Prénom" },
+    { key: "user_last_name", label: "Nom" },
+    { key: "user_email", label: "Email" },
+    { key: "mobile_number", label: "Téléphone" },
+    { key: "city", label: "Ville" },
+    { key: "is_active", label: "Statut", type: "boolean" },
+  ],
+
+  fields: [
+    { name: "firstName", label: "Prénom", type: "text", required: true },
+    { name: "lastName", label: "Nom", type: "text", required: true },
+    { name: "email", label: "Email", type: "email", required: true },
+    {
+      name: "password",
+      label: "Mot de passe (8 caractères min.)",
+      type: "password",
+      required: true,
+    },
+    { name: "mobileNumber", label: "Téléphone", type: "text", required: true },
+    { name: "street", label: "Rue", type: "text", required: true },
+    { name: "houseNumber", label: "Numéro", type: "number", required: true },
+    { name: "zipCode", label: "Code postal", type: "text", required: true },
+    { name: "city", label: "Ville", type: "text", required: true },
+    { name: "country", label: "Pays", type: "text", required: true },
+  ],
+} satisfies AdminResource;
+
 export const ordersResource = {
   key: "orders",
   idKey: "res_id",

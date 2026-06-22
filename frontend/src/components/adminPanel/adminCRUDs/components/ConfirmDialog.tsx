@@ -54,7 +54,6 @@ export const ConfirmDialog = ({
         >
           {cancelLabel}
         </Button>
-
         <Button
           onClick={onConfirm}
           color={confirmColor}

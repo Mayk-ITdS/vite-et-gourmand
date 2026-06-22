@@ -23,7 +23,7 @@ export default function AvisCarousel() {
   );
   useEffect(() => {
     dispatch(fetchReviews()).unwrap();
-  }, []);
+  }, [dispatch]);
   const avis = useAppSelector((state) => state.reviews.data);
   const scrollPrev = useCallback(() => {
     emblaApi?.scrollPrev();
