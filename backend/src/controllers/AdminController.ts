@@ -57,6 +57,64 @@ class AdminController {
       throw new ApiError(500, String(err), false);
     }
   };
+  getEmployees = async (_req: UserRequest, res: Response) => {
+    const data = await this.usersService.listEmployees();
+    return res.status(200).json(data);
+  };
+  createEmployee = async (req: UserRequest, res: Response) => {
+    try {
+      const body = req.body ?? {};
+      const required = [
+        "firstName",
+        "lastName",
+        "email",
+        "password",
+        "mobileNumber",
+        "city",
+        "street",
+        "zipCode",
+        "country",
+      ];
+
+      for (const key of required) {
+        if (!body[key] || String(body[key]).trim() === "") {
+          throw new ApiError(400, `Champ requis manquant : ${key}`);
+        }
+      }
+
+      const houseNumber = Number(body.houseNumber);
+      if (!Number.isInteger(houseNumber) || houseNumber <= 0) {
+        throw new ApiError(400, "Numéro de rue invalide");
+      }
+
+      if (String(body.password).length < 8) {
+        throw new ApiError(400, "Mot de passe trop court (8 caractères minimum)");
+      }
+
+      const created = await this.usersService.createEmployee({
+        firstName: String(body.firstName).trim(),
+        lastName: String(body.lastName).trim(),
+        email: String(body.email).trim(),
+        password: String(body.password),
+        mobileNumber: String(body.mobileNumber).trim(),
+        city: String(body.city).trim(),
+        street: String(body.street).trim(),
+        houseNumber,
+        zipCode: String(body.zipCode).trim(),
+        country: String(body.country).trim(),
+      });
+
+      return res.status(201).json(created);
+    } catch (err: any) {
+      if (err instanceof ApiError) {
+        throw err;
+      }
+      if (err?.code === "23505" || /already exists/i.test(String(err?.message))) {
+        throw new ApiError(409, "Email déjà utilisé");
+      }
+      throw new ApiError(500, String(err), false);
+    }
+  };
   getMenus = async (req: UserRequest, res: Response) => {
     try {
       const data = await this.menuService.getAllMenus();

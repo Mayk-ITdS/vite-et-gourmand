@@ -55,6 +55,18 @@ router.patch(
   AdminController.patchOrderStatus,
 );
 router.get("/users", authMiddleware, authorize(["admin"]), AdminController.getUsers);
+router.get(
+  "/employees",
+  authMiddleware,
+  authorize(["admin"]),
+  AdminController.getEmployees,
+);
+router.post(
+  "/employees",
+  authMiddleware,
+  authorize(["admin"]),
+  AdminController.createEmployee,
+);
 router.post(
   "/stock/ingest",
   authMiddleware,

@@ -23,6 +23,7 @@ export type UserOrderRow = {
   event_date: string;
   total_price: string;
   status: OrderStatus;
+  res_status: OrderStatus | null;
   changed_at: string;
   changed_by: number;
   menu_id: number | string;
