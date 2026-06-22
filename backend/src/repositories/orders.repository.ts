@@ -147,6 +147,7 @@ export class OrderRepository {
       r.equipement_returned,
       r.event_date,
       r.total_price,
+      r.res_status,
 
       osh.status,
       osh.changed_at,
@@ -188,32 +189,36 @@ export class OrderRepository {
       [id],
     );
 
-    return result.rows.map((row) => ({
-      resId: Number(row.res_id),
-      noPersons: Number(row.no_persons),
-      eventName: row.event_name,
-      equipmentLoaned: row.equipement_loaned,
-      equipmentReturned: row.equipement_returned,
-      eventDate: row.event_date,
-      totalPrice: Number(row.total_price),
+    return result.rows.map((row) => {
+      const effectiveStatus = row.status ?? row.res_status ?? null;
 
-      menuId: Number(row.menu_id),
-      unitPriceSnapshot: Number(row.unit_price_snapshot),
-      theme: row.theme,
+      return {
+        resId: Number(row.res_id),
+        noPersons: Number(row.no_persons),
+        eventName: row.event_name,
+        equipmentLoaned: row.equipement_loaned,
+        equipmentReturned: row.equipement_returned,
+        eventDate: row.event_date,
+        totalPrice: Number(row.total_price),
 
-      history: row.status
-        ? [
-            {
-              status: row.status,
-              changedAt: row.changed_at,
-              changedBy:
-                row.changed_by === null || row.changed_by === undefined
-                  ? null
-                  : Number(row.changed_by),
-            },
-          ]
-        : [],
-    }));
+        menuId: Number(row.menu_id),
+        unitPriceSnapshot: Number(row.unit_price_snapshot),
+        theme: row.theme,
+
+        history: effectiveStatus
+          ? [
+              {
+                status: effectiveStatus,
+                changedAt: row.changed_at,
+                changedBy:
+                  row.changed_by === null || row.changed_by === undefined
+                    ? null
+                    : Number(row.changed_by),
+              },
+            ]
+          : [],
+      };
+    });
   }
   deleteOrderById = async (orderId: number) => {
     try {

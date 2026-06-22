@@ -79,13 +79,14 @@ export class AuthService {
   async login(dto: LoginDTO) {
     try {
       let account;
-      let role: "user" | "admin";
+      let role: "user" | "admin" | "employee";
 
       const user = await this.userRepo.findByEmail(dto.email);
 
       if (user) {
         account = user;
-        role = "user";
+        const resolvedRole = await this.userRepo.getRoleByUserId(user.user_id);
+        role = resolvedRole === "employee" ? "employee" : "user";
       } else {
         const admin = await this.adminRepo.findByEmail(dto.email);
         if (!admin) throw new ApiError(401, "Invalid credentials", false);
