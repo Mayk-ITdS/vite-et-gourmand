@@ -18,7 +18,7 @@ const RecentStockLotsTable = () => {
           <h2 className="text-lg font-semibold text-neutral-950">Derniers lots reçus</h2>
 
           <p className="mt-1 text-sm text-neutral-500">
-            Aperçu des dernières entrées de stock. À connecter à la table products.
+            Aperçu des dernières entrées de stock.
           </p>
         </div>
 
