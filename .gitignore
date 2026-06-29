@@ -13,6 +13,7 @@ frontend/dist/
 artefacts-doc/
 # env / secrets
 .env
+images/*
 .env.*
 !.env.example
 *.vscode/*
@@ -22,7 +23,7 @@ screens/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-
+docs/*
 # coverage
 coverage/
 
