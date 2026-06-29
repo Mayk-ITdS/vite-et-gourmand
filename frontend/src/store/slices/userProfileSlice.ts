@@ -27,19 +27,22 @@ export const updateProfile = createAsyncThunk(
     data: {
       firstName: string;
       lastName: string;
-      phone: string;
+      mobileNumber: string;
       city: string;
+      street: string;
+      houseNumber: number;
+      zipCode: string;
       country: string;
     },
-    { rejectWithValue }
+    { rejectWithValue },
   ) => {
     try {
-      const res = await api.put("/users/me", data);
+      const res = await api.patch("/users/me", data);
       return res.data;
     } catch (err) {
       return rejectWithValue(toClientError(err));
     }
-  }
+  },
 );
 
 const profileSlice = createSlice({
@@ -48,6 +51,18 @@ const profileSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
+      .addCase(fetchMyProfile.pending, (state) => {
+        state.status = "loading";
+        state.error = null;
+      })
+      .addCase(fetchMyProfile.fulfilled, (state, action) => {
+        state.status = "succeeded";
+        state.data = action.payload;
+        state.error = null;
+      })
+      .addCase(fetchMyProfile.rejected, (state) => {
+        state.status = "failed";
+      })
       .addCase(updateProfile.pending, (state) => {
         state.status = "loading";
       })

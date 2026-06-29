@@ -8,7 +8,10 @@ interface Props {
 
 export default function SidebarNavItem({ label, to }: Props) {
   return (
-    <NavLink to={to} style={{ textDecoration: "none" }}>
+    <NavLink
+      to={to}
+      style={{ textDecoration: "none" }}
+    >
       {({ isActive }) => (
         <Box
           sx={{
@@ -16,11 +19,14 @@ export default function SidebarNavItem({ label, to }: Props) {
             py: 1.5,
             borderRadius: 2,
             fontSize: "0.9rem",
+            fontWeight: isActive ? 600 : 400,
+            whiteSpace: "nowrap",
+            borderLeft: isActive ? "3px solid #d4af37" : "3px solid transparent",
             transition: "all 0.2s ease",
-            background: isActive ? "rgba(255,255,255,0.08)" : "transparent",
+            background: isActive ? "rgba(126,37,59,0.22)" : "transparent",
             color: isActive ? "#fff" : "rgba(255,255,255,0.7)",
             "&:hover": {
-              background: "rgba(255,255,255,0.05)",
+              background: "rgba(126,37,59,0.14)",
               color: "#fff",
             },
           }}

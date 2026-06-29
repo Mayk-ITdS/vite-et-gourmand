@@ -22,16 +22,25 @@ type Props = {
 type ProfileForm = {
   firstName: string;
   lastName: string;
-  phone: string;
+  mobileNumber: string;
   city: string;
+  street: string;
+  houseNumber: string;
+  zipCode: string;
   country: string;
 };
 
 const createInitialUserForm = (initialProfile: Profile | null): ProfileForm => ({
   firstName: initialProfile?.firstName ?? "",
   lastName: initialProfile?.lastName ?? "",
-  phone: initialProfile?.phone ?? "",
+  mobileNumber: initialProfile?.mobileNumber ?? "",
   city: initialProfile?.city ?? "",
+  street: initialProfile?.street ?? "",
+  houseNumber:
+    initialProfile?.houseNumber !== undefined && initialProfile?.houseNumber !== null
+      ? String(initialProfile.houseNumber)
+      : "",
+  zipCode: initialProfile?.zipCode ?? "",
   country: initialProfile?.country ?? "",
 });
 
@@ -57,7 +66,18 @@ const EditProfileDialog = ({ open, onClose, profile }: Props) => {
       setSaving(true);
       setError(null);
 
-      await dispatch(updateProfile(form)).unwrap();
+      await dispatch(
+        updateProfile({
+          firstName: form.firstName,
+          lastName: form.lastName,
+          mobileNumber: form.mobileNumber,
+          city: form.city,
+          street: form.street,
+          houseNumber: Number(form.houseNumber) || 0,
+          zipCode: form.zipCode,
+          country: form.country,
+        }),
+      ).unwrap();
 
       onClose();
     } catch (err: unknown) {
@@ -95,8 +115,23 @@ const EditProfileDialog = ({ open, onClose, profile }: Props) => {
           />
           <TextField
             label="Téléphone"
-            value={form.phone}
-            onChange={(e) => handleChange("phone", e.target.value)}
+            value={form.mobileNumber}
+            onChange={(e) => handleChange("mobileNumber", e.target.value)}
+          />
+          <TextField
+            label="Rue"
+            value={form.street}
+            onChange={(e) => handleChange("street", e.target.value)}
+          />
+          <TextField
+            label="Numéro"
+            value={form.houseNumber}
+            onChange={(e) => handleChange("houseNumber", e.target.value)}
+          />
+          <TextField
+            label="Code postal"
+            value={form.zipCode}
+            onChange={(e) => handleChange("zipCode", e.target.value)}
           />
           <TextField
             label="Ville"

@@ -3,9 +3,13 @@ interface Profile {
   firstName: string;
   lastName: string;
   email: string;
-  phone: string;
+  mobileNumber: string;
   city: string;
+  street: string;
+  houseNumber: number;
+  zipCode: string;
   country: string;
+  isActive?: boolean;
 }
 
 type AuthUser = {
