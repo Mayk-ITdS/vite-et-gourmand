@@ -35,7 +35,7 @@ const Navbar: React.FC = () => {
   return (
     <div className="mx-auto container flex items-center justify-between py-6">
       <div className="text-2xl mx-4 font-semibold tracking-tight">
-        <Link to="/">Vites & Gourmand</Link>
+        <Link to="/">Vite & Gourmand</Link>
       </div>
       <nav className="hidden md:flex items-center gap-10">
         <Link
