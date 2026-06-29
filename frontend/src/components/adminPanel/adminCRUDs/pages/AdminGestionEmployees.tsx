@@ -1,5 +1,6 @@
 import AdminCrudPage from "../components/AdminCrudPage";
-import { employeesResource } from "../resources/userREsource";
-
-const AdminGestionEmployees = () => <AdminCrudPage resource={employeesResource} />;
+import { reviewsModerationResource } from "../resources/employeeResources";
+const AdminGestionEmployees = () => (
+  <AdminCrudPage resource={reviewsModerationResource} />
+);
 export default AdminGestionEmployees;

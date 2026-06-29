@@ -17,8 +17,8 @@ const IngestionPreview = ({ mode, payload }: IngestionPreviewProps) => {
         <h2 className="mt-1 text-lg font-semibold">Payload envoyé à ingest_stock()</h2>
 
         <p className="mt-2 text-sm text-neutral-400">
-          Cette zone sert à visualiser la structure attendue par la procédure SQL. Tu brancheras
-          ensuite les vraies valeurs du formulaire.
+          Aperçu du payload construit à partir des données de livraison avant validation
+          et insertion par PostgreSQL.
         </p>
       </div>
 
@@ -33,11 +33,6 @@ const IngestionPreview = ({ mode, payload }: IngestionPreviewProps) => {
           <span className="rounded-full bg-emerald-400/10 px-2 py-1 text-xs font-medium text-emerald-300">
             arrived
           </span>
-        </div>
-
-        <div className="flex items-center justify-between">
-          <span className="text-neutral-400">Validation</span>
-          <span className="text-neutral-200">À faire côté UI/API</span>
         </div>
       </div>
 
